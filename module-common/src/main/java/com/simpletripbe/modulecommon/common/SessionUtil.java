@@ -1,4 +1,4 @@
-package com.dashboardbe.common;
+package com.simpletripbe.modulecommon.common;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpStatusCodeException;
