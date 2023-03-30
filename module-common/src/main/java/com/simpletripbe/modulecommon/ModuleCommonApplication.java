@@ -1,13 +1,13 @@
-package com.simpletripbe.simpletripbe;
+package com.simpletripbe.modulecommon;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SimpleTripBeApplication {
+public class ModuleCommonApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SimpleTripBeApplication.class, args);
+        SpringApplication.run(ModuleCommonApplication.class, args);
     }
 
 }
