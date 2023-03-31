@@ -1,7 +1,5 @@
 package com.simpletripbe.modulecommon.common.response;
 
-import io.micrometer.core.instrument.util.StringUtils;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.WeekFields;
@@ -21,13 +19,13 @@ public class LocalDateTimeUtils {
 
     }
 
-    public static LocalDateTime parse(final String localDateTimeString) {
-        if (StringUtils.isBlank(localDateTimeString)) {
-            return null;
-        }
-        return LocalDateTime.parse(localDateTimeString, YYYY_MM_DD_HH_MM);
-
-    }
+//    public static LocalDateTime parse(final String localDateTimeString) {
+//        if (StringUtils.isBlank(localDateTimeString)) {
+//            return null;
+//        }
+//        return LocalDateTime.parse(localDateTimeString, YYYY_MM_DD_HH_MM);
+//
+//    }
 
     public static int getWeekOfYear(final LocalDateTime localDateTime) {
         return localDateTime.get(WeekFields.of(Locale.KOREA).weekOfYear());
