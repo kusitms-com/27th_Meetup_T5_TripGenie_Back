@@ -1,0 +1,29 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true # for config error
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/st
+    username: root
+    password: qwer1234
+  thymeleaf:
+    cache: false
+
+  # spring data jpa ??
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: always
+
+logging:
+  level:
+    sql: info

@@ -1,0 +1,32 @@
+version: '3'
+services:
+  mysqldb:
+    container_name: mysqldb
+    platform: linux/amd64
+    image: mysql:8.0.32
+    restart: always
+    environment:
+      - MYSQL_DATABASE=SimpleTrip
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_PASSWORD=1234
+    healthcheck:
+      test: [ 'CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD' ]
+      interval: 10s
+      timeout: 2s
+      retries: 100
+    ports:
+      - 3306:3306
+
+  backend:
+    build: .
+    restart: always
+    environment:
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: com.mysql.cj.jdbc.Driver
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/SimpleTrip?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+    ports:
+      - 8080:8080
+    depends_on:
+      mysqldb:
+        condition: service_healthy

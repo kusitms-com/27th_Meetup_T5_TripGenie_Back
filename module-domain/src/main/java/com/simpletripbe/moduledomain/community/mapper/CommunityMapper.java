@@ -15,10 +15,8 @@ public interface CommunityMapper {
 
     // 조건이 여러 개라면 @Mappings로 묶어서 안에 Mapping을 세팅해준다.
     @Mappings({
-            @Mapping(source = "nickname2", target = "nickname"), // 변수명이 다를 경우 매핑 설정
-
             // source에는 있지만 target에는 없는 경우 target쪽 매핑 무시
-            @Mapping(target = "id", ignore = true),
+            @Mapping(source = "id", target = "id", ignore = true),
             @Mapping(target = "content", ignore = true),
             @Mapping(target = "createDate", ignore = true)
     })
