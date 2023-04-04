@@ -1,0 +1,33 @@
+name: Backend CD
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 Checkout
+        uses: actions/checkout@v3
+
+      - name: 스프링부트 애플리케이션 빌드 # (1)
+        run: ./gradlew build -x test
+
+      - name: 도커 이미지 빌드 # (2)
+        run: docker build —build-arg DEPENDENCY=build/dependency -t ${{ secrets.DOCKER_IMG }} —platform linux/amd64 .
+        
+      - name: 도커 이미지 push
+        run: docker push ${{ secrets.DOCKER_IMG }} 
+        
+      - name: 배포
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.WAS_HOST }}
+          username: ${{ secrets.WAS_USERNAME }}
+          password: ${{ secrets.WAS_PASSWORD }}
+          port: ${{ secrets.WAS_SSH_PORT }}
+          script: |
+            docker stop $(docker ps -a -q) 
+            docker rm $(docker ps -a -q) 
+            docker pull ${{ secrets.DOCKER_IMG }}
+            docker run -d -p 8080:8080 ${{ secrets.DOCKER_IMG }}
