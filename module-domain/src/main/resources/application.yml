@@ -1,22 +1,30 @@
 spring:
+  config:
+    activate:
+      on-profile: local
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+
   main:
     allow-bean-definition-overriding: true # for config error
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/st
-    username: root
-    password: qwer1234
-  thymeleaf:
-    cache: false
+    url: jdbc:mysql://simpletrip-db.cznmvedo4osi.ap-northeast-2.rds.amazonaws.com:3306/simpletrip
+    username: admin
+    password: simple123
 
-  # spring data jpa ??
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    open-in-view: false
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    generate-ddl: true
+    properties:
+      hibernate:
+        format_sql: true
+        hbm2ddl:
+          auto: create
+        show_sql: true
 
   batch:
     job:
