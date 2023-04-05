@@ -19,7 +19,7 @@ public class CommunityController {
 
     private final CommunityService communityService;
 
-    @GetMapping(value = "/selectAll")
+    @GetMapping("/selectAll")
     public ResponseEntity<BaseResponseBody<List<InfoDTO>>> selectAllList() {
 
         List<InfoDTO> list = communityService.selectAllList();
