@@ -34,6 +34,8 @@ dependencies {
     // mapstruct
     implementation 'org.mapstruct:mapstruct:1.5.2.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+
+    implementation project(':module-common')
 }
 
 tasks.named('test') {
