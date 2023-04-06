@@ -4,6 +4,11 @@ on:
   push:
     branches: [ master ] # master branch에 push될 때 해당 파일을 실행
 
+env:
+  DB_URL: ${{ secrets.DB_URL }}
+  DB_USERNAME: ${{ secrets.DB_USERNAME }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
