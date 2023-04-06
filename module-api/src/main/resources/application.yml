@@ -35,3 +35,19 @@ spring:
 logging:
   level:
     sql: info
+
+# oauth settings
+app:
+  google:
+    url: https://accounts.google.com/o/oauth2/v2/auth
+    callback:
+      url: https://localhost:8080/oauth/google/callback
+    client:
+      id: 1059234526171-pp9kjq71447p213eprfv0so8qmohtaqj.apps.googleusercontent.com
+      secret: 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
+    auth:
+      scope: profile,email
+    token:
+      url: https://oauth2.googleapis.com/token
+    userinfo:
+      url: https://www.googleapis.com/oauth2/vi/userinfo
