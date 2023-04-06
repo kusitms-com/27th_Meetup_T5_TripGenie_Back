@@ -13,14 +13,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: 환경변수 설정
-        run: |
-          echo "DB_URL=$DB_URL" >> .env
-          echo "DB_USERNAME=DB_USERNAME" >> .env
-          echo "DB_PASSWORD=DB_PASSWORD" >> .env
-        env:
-          DB_URL: ${{ secrets.DB_URL }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: echo "${{ secrets.DB_SECRETS }}" > ./src/main/resources/application.yml
 
       - name: 스프링부트 애플리케이션 빌드
         run: ./gradlew build -x test
@@ -44,4 +37,4 @@ jobs:
             docker stop $(docker ps -a -q) 
             docker rm $(docker ps -a -q) 
             docker pull ${{ secrets.DOCKER_IMG }}
-            docker run -d -p 8080:8080 ${{ secrets.DOCKER_IMG }}
+            docker run -p 8080:8080 ${{ secrets.DOCKER_IMG }}
