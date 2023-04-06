@@ -4,10 +4,6 @@ on:
   push:
     branches: [ master ] # master branch에 push될 때 해당 파일을 실행
 
-env:
-  DB_URL: ${{ secrets.DB_URL }}
-  DB_USERNAME: ${{ secrets.DB_USERNAME }}
-  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
 jobs:
   deploy:
@@ -15,6 +11,16 @@ jobs:
     steps:
       - name: 저장소 Checkout
         uses: actions/checkout@v2
+
+      - name: 환경변수 설정
+        run: |
+          echo "DB_URL=$DB_URL" >> .env
+          echo "DB_USERNAME=DB_USERNAME" >> .env
+          echo "DB_PASSWORD=DB_PASSWORD" >> .env
+        env:
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
       - name: 스프링부트 애플리케이션 빌드
         run: ./gradlew build -x test
