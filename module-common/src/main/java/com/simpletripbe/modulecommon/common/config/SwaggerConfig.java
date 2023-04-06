@@ -1,4 +1,4 @@
-package com.simpletripbe.modulecommon.common;
+package com.simpletripbe.modulecommon.common.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import lombok.RequiredArgsConstructor;
