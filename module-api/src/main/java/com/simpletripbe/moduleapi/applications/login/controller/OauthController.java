@@ -9,7 +9,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value="/auth")
+@RequestMapping(value="/oauth")
 public class OauthController {
 
     private final OauthService oauthService;
