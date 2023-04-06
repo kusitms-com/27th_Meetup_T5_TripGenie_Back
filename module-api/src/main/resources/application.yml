@@ -1,14 +1,4 @@
 spring:
-  config:
-    activate:
-      on-profile: local
----
-
-spring:
-  config:
-    activate:
-      on-profile: prod
-
   main:
     allow-bean-definition-overriding: true # for config error
 
