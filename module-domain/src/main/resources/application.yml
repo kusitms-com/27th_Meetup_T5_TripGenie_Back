@@ -1,29 +1,19 @@
 spring:
-  config:
-    activate:
-      on-profile: local
----
-
-spring:
-  config:
-    activate:
-      on-profile: prod
-
   main:
     allow-bean-definition-overriding: true # for config error
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://simpletrip-db.cznmvedo4osi.ap-northeast-2.rds.amazonaws.com:3306/simpletrip
-    username: admin
-    password: simple123
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
     properties:
       hibernate:
         format_sql: true
         hbm2ddl:
-          auto: create
+          auto: create-drop
         show_sql: true
 
   batch:
@@ -35,3 +25,19 @@ spring:
 logging:
   level:
     sql: info
+
+# oauth settings
+app:
+  google:
+    url: https://accounts.google.com/o/oauth2/v2/auth
+    callback:
+      url: ${GOOGLE_CALLBACK_URL}
+    client:
+      id: ${CLIENT_ID}
+      secret: ${CLIENT_SECRET}
+    auth:
+      scope: profile,email
+    token:
+      url: https://oauth2.googleapis.com/token
+    userinfo:
+      url: https://www.googleapis.com/oauth2/vi/userinfo

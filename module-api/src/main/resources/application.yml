@@ -31,10 +31,10 @@ app:
   google:
     url: https://accounts.google.com/o/oauth2/v2/auth
     callback:
-      url: https://localhost:8080/oauth/google/callback
+      url: ${GOOGLE_CALLBACK_URL}
     client:
-      id: 1059234526171-pp9kjq71447p213eprfv0so8qmohtaqj.apps.googleusercontent.com
-      secret: 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
+      id: ${CLIENT_ID}
+      secret: ${CLIENT_SECRET}
     auth:
       scope: profile,email
     token:
