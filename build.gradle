@@ -43,15 +43,11 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-jar {
-    manifest { // 빌드시 Main-Class 설정
-        attributes 'Main-Class': 'com.simpletripbe.moduleapi.ModuleApiApplication'
-    }
-}
 
 bootJar {
-    enabled = false
+    enabled = true
+    mainClass = 'com.simpletripbe.moduleapi.ModuleApiApplication'
 }
 jar {
-    enabled = true
+    enabled = false
 }
