@@ -33,8 +33,8 @@ app:
     callback:
       url: ${GOOGLE_CALLBACK_URL}
     client:
-      id: ${CLIENT_ID}
-      secret: ${CLIENT_SECRET}
+      id: ${GOOGLE_CLIENT_ID}
+      secret: ${GOOGLE_CLIENT_SECRET}
     auth:
       scope: profile,email
     token:

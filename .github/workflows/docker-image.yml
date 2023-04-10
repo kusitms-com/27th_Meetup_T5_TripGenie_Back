@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: 스프링부트 애플리케이션 빌드
-        run: ./gradlew build -x test
+        run: ./gradlew bootJar
 
       - name: 도커 이미지 빌드
         run: docker build -t ${{ secrets.DOCKER_IMG }} --platform linux/amd64 .
@@ -31,13 +31,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             docker stop $(docker ps -a -q) 
-            docker rm $(docker ps -a -q) 
+            docker rm -f $(docker ps -qa)
             docker pull ${{ secrets.DOCKER_IMG }}
-            docker run -d -p 8080:8080 \
-            -e DB_URL=${{ secrets.DB_URL }} \
-            -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
-            -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
-            -e GOOGLE_CALLBACK_URL=${{ secrets.GOOGLE_CALLBACK_URL }} \
-            -e CLIENT_ID=${{ secrets.CLIENT_ID }} \
-            -e CLIENT_SECRET=${{ secrets.CLIENT_SECRET }} \
-            ${{ secrets.DOCKER_IMG }}
+            docker-compose up -d
+            docker image prune -f

@@ -33,11 +33,23 @@ app:
     callback:
       url: ${GOOGLE_CALLBACK_URL}
     client:
-      id: ${CLIENT_ID}
-      secret: ${CLIENT_SECRET}
+      id: ${GOOGLE_CLIENT_ID}
+      secret: ${GOOGLE_CLIENT_SECRET}
     auth:
       scope: profile,email
     token:
       url: https://oauth2.googleapis.com/token
     userinfo:
       url: https://www.googleapis.com/oauth2/vi/userinfo
+
+# swagger setting
+springdoc:
+  swagger-ui:
+    path: /api-docs
+    disable-swagger-default-url: true
+    display-request-duration: true
+    operations-sorter: alpha # 정렬 기준
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  paths-to-match:
+    - /**
