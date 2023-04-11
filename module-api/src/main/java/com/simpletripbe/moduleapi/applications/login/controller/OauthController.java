@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.simpletripbe.moduleapi.applications.login.dto.GetSocialOAuthRes;
 import com.simpletripbe.moduleapi.applications.login.service.OauthService;
 import com.simpletripbe.moduleapi.applications.login.service.UserService;
+import com.simpletripbe.modulecommon.common.annotation.Valid;
 import com.simpletripbe.modulecommon.common.response.CommonCode;
 import com.simpletripbe.modulecommon.common.response.CommonResponse;
 import com.simpletripbe.moduledomain.community.dto.UserDTO;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -42,6 +44,17 @@ public class OauthController {
             return new CommonResponse(CommonCode.USER_ALREADY_EXIST, Map.of("userInfo", new GetSocialOAuthRes(user)));
         }
 
+    }
+
+    @PostMapping("/signIn")
+    public CommonResponse signIn(@RequestBody @Valid LoginDto requestBody) {
+        UserDTO user = userService.checkExistUser(requestBody.getEmail(), requestBody.getPassword());
+        //pasing 하기 쉽게 HashMap 사용(depth 최대한 얕게)
+        HashMap<String, String> attribute = new HashMap<>();
+        attribute.put("id", user.getId().toString());
+        attribute.put("nickname", user.getNickname().toString());
+        attribute.put("email", user.getEmail());
+        return new CommonResponse(CommonCode.SUCCESS, attribute);
     }
 
 }
