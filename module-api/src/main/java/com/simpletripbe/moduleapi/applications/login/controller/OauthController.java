@@ -46,15 +46,15 @@ public class OauthController {
 
     }
 
-    @PostMapping("/signIn")
-    public CommonResponse signIn(@RequestBody @Valid LoginDTO requestBody) {
-        UserDTO user = userService.checkExistUser(requestBody.getEmail(), requestBody.getPassword());
-
-        HashMap<String, String> attribute = new HashMap<>();
-        attribute.put("id", user.getId().toString());
-        attribute.put("nickname", user.getNickname());
-        attribute.put("email", user.getEmail());
-        return new CommonResponse(CommonCode.SUCCESS, attribute);
-    }
+//    @PostMapping("/signIn")
+//    public CommonResponse signIn(@RequestBody @Valid LoginDTO requestBody) {
+//        UserDTO user = userService.checkExistUser(requestBody.getEmail(), requestBody.getPassword());
+//
+//        HashMap<String, String> attribute = new HashMap<>();
+//        attribute.put("id", user.getId().toString());
+//        attribute.put("nickname", user.getNickname());
+//        attribute.put("email", user.getEmail());
+//        return new CommonResponse(CommonCode.SUCCESS, attribute);
+//    }
 
 }
