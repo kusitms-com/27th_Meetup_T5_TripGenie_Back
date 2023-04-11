@@ -1,11 +1,17 @@
 package com.simpletripbe.moduleapi.applications.login.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.simpletripbe.moduleapi.applications.login.dto.GetSocialOAuthRes;
 import com.simpletripbe.moduleapi.applications.login.service.OauthService;
+import com.simpletripbe.moduleapi.applications.login.service.UserService;
+import com.simpletripbe.modulecommon.common.response.CommonCode;
+import com.simpletripbe.modulecommon.common.response.CommonResponse;
+import com.simpletripbe.moduledomain.community.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -13,6 +19,7 @@ import java.io.IOException;
 public class OauthController {
 
     private final OauthService oauthService;
+    private final UserService userService;
 
     @GetMapping(value="/{socialLoginType}")
     public void socialLoginType(@PathVariable(name="socialLoginType") String socialLoginType) throws IOException {
@@ -20,9 +27,21 @@ public class OauthController {
     }
 
     @GetMapping(value="/{socialLoginType}/callback")
-    public void callback(
+    public CommonResponse callback(
             @PathVariable(name="socialLoginType") String socialLoginType,
             @RequestParam(name="code") String code) throws JsonProcessingException {
-        oauthService.oauthLogin(socialLoginType, code);
+
+        GetSocialOAuthRes res = oauthService.oauthLogin(socialLoginType, code);
+
+        UserDTO user = userService.findUserByEmail(res.getEmail());
+
+        if (user == null) {
+            return new CommonResponse(CommonCode.OAUTH_CHECK_SUCCESS, Map.of("userInfo", res));
+        } else {
+            // 유저가 이미 존재하는 경우 어떻게 Gateway에 데이터를 넘겨줄지에 따라 attribute 객체가 수정될 수 있음
+            return new CommonResponse(CommonCode.USER_ALREADY_EXIST, Map.of("userInfo", new GetSocialOAuthRes(user)));
+        }
+
     }
+
 }

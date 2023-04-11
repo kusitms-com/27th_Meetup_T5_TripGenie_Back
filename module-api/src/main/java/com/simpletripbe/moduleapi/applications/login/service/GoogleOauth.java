@@ -48,7 +48,7 @@ public class GoogleOauth {
     }
 
 
-    public ResponseEntity<String> requestAccessToekn(String code) {
+    public ResponseEntity<String> requestAccessToken(String code) {
 
         RestTemplate restTemplate = new RestTemplate();
 
