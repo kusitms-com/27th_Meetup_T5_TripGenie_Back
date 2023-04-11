@@ -18,21 +18,21 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value="/oauth")
+@RequestMapping(value = "/oauth")
 public class OauthController {
 
     private final OauthService oauthService;
     private final UserService userService;
 
-    @GetMapping(value="/{socialLoginType}")
-    public void socialLoginType(@PathVariable(name="socialLoginType") String socialLoginType) throws IOException {
+    @GetMapping(value = "/{socialLoginType}")
+    public void socialLoginType(@PathVariable(name = "socialLoginType") String socialLoginType) throws IOException {
         oauthService.request(socialLoginType);
     }
 
-    @GetMapping(value="/{socialLoginType}/callback")
+    @GetMapping(value = "/{socialLoginType}/callback")
     public CommonResponse callback(
-            @PathVariable(name="socialLoginType") String socialLoginType,
-            @RequestParam(name="code") String code) throws JsonProcessingException {
+            @PathVariable(name = "socialLoginType") String socialLoginType,
+            @RequestParam(name = "code") String code) throws JsonProcessingException {
 
         GetSocialOAuthRes res = oauthService.oauthLogin(socialLoginType, code);
 
@@ -41,7 +41,6 @@ public class OauthController {
         if (user == null) {
             return new CommonResponse(CommonCode.OAUTH_CHECK_SUCCESS, Map.of("userInfo", res));
         } else {
-            // 유저가 이미 존재하는 경우 어떻게 Gateway에 데이터를 넘겨줄지에 따라 attribute 객체가 수정될 수 있음
             return new CommonResponse(CommonCode.USER_ALREADY_EXIST, Map.of("userInfo", new GetSocialOAuthRes(user)));
         }
 
@@ -50,10 +49,10 @@ public class OauthController {
     @PostMapping("/signIn")
     public CommonResponse signIn(@RequestBody @Valid LoginDTO requestBody) {
         UserDTO user = userService.checkExistUser(requestBody.getEmail(), requestBody.getPassword());
-        //pasing 하기 쉽게 HashMap 사용(depth 최대한 얕게)
+
         HashMap<String, String> attribute = new HashMap<>();
         attribute.put("id", user.getId().toString());
-        attribute.put("nickname", user.getNickname().toString());
+        attribute.put("nickname", user.getNickname());
         attribute.put("email", user.getEmail());
         return new CommonResponse(CommonCode.SUCCESS, attribute);
     }

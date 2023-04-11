@@ -23,15 +23,10 @@ public class OauthService {
     public void request(String socialLoginType) throws IOException {
         String redirectURL;
 
-        switch (socialLoginType) {
-            case "google": {
-                redirectURL = googleOauth.getOauthRedirectURL();
-            }
-            break;
-            default: {
-                throw new IllegalArgumentException("알 수 없는 소셜 로그인 형식입니다.");
-            }
-
+        if (socialLoginType.equals("google")) {
+            redirectURL = googleOauth.getOauthRedirectURL();
+        } else {
+            throw new IllegalArgumentException("알 수 없는 소셜 로그인 형식입니다.");
         }
 
         response.sendRedirect(redirectURL);
