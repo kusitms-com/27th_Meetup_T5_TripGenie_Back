@@ -1,5 +1,7 @@
 package com.simpletripbe.moduledomain.community.dto;
 
+import com.simpletripbe.modulecommon.common.annotation.Email;
+import com.simpletripbe.modulecommon.common.annotation.NotBlank;
 import lombok.Getter;
 
 @Getter

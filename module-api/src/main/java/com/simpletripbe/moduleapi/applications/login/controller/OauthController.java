@@ -7,6 +7,7 @@ import com.simpletripbe.moduleapi.applications.login.service.UserService;
 import com.simpletripbe.modulecommon.common.annotation.Valid;
 import com.simpletripbe.modulecommon.common.response.CommonCode;
 import com.simpletripbe.modulecommon.common.response.CommonResponse;
+import com.simpletripbe.moduledomain.community.dto.LoginDTO;
 import com.simpletripbe.moduledomain.community.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +48,7 @@ public class OauthController {
     }
 
     @PostMapping("/signIn")
-    public CommonResponse signIn(@RequestBody @Valid LoginDto requestBody) {
+    public CommonResponse signIn(@RequestBody @Valid LoginDTO requestBody) {
         UserDTO user = userService.checkExistUser(requestBody.getEmail(), requestBody.getPassword());
         //pasing 하기 쉽게 HashMap 사용(depth 최대한 얕게)
         HashMap<String, String> attribute = new HashMap<>();
