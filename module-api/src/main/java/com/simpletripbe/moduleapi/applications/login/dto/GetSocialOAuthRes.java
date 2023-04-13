@@ -1,6 +1,6 @@
 package com.simpletripbe.moduleapi.applications.login.dto;
 
-import com.simpletripbe.moduledomain.community.dto.UserDTO;
+import com.simpletripbe.moduledomain.login.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

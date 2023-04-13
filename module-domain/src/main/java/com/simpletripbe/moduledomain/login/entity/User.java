@@ -1,4 +1,4 @@
-package com.simpletripbe.moduledomain.community.entity;
+package com.simpletripbe.moduledomain.login.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

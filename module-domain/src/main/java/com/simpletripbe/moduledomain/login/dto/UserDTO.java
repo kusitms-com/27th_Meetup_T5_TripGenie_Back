@@ -1,4 +1,4 @@
-package com.simpletripbe.moduledomain.community.dto;
+package com.simpletripbe.moduledomain.login.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;

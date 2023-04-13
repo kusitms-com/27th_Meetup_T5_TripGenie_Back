@@ -1,4 +1,4 @@
-package com.simpletripbe.moduledomain.community.dto;
+package com.simpletripbe.moduledomain.login.dto;
 
 import com.simpletripbe.modulecommon.common.annotation.Email;
 import com.simpletripbe.modulecommon.common.annotation.NotBlank;

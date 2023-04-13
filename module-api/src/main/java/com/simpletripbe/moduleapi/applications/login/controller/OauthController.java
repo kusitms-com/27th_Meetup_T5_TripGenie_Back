@@ -8,9 +8,9 @@ import com.simpletripbe.modulecommon.common.annotation.Valid;
 import com.simpletripbe.modulecommon.common.exception.CustomException;
 import com.simpletripbe.modulecommon.common.response.CommonCode;
 import com.simpletripbe.modulecommon.common.response.CommonResponse;
-import com.simpletripbe.moduledomain.community.dto.LoginDTO;
-import com.simpletripbe.moduledomain.community.dto.UserDTO;
-import com.simpletripbe.moduledomain.community.dto.UserDetailDTO;
+import com.simpletripbe.moduledomain.login.dto.LoginDTO;
+import com.simpletripbe.moduledomain.login.dto.UserDTO;
+import com.simpletripbe.moduledomain.login.dto.UserDetailDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,7 +71,8 @@ public class OauthController {
 
         try {
             UserDTO savedUser = userService.saveUser(userDetailDto);
-            if (savedUser != null) return new CommonResponse(CommonCode.SUCCESS, Map.of("user", new UserSummaryDto(savedUser)));
+
+            if (savedUser != null) return new CommonResponse(CommonCode.SUCCESS);
             return new CommonResponse(CommonCode.FAIL);
         }catch (Exception e) {
             throw new CustomException(CommonCode.FAIL);
