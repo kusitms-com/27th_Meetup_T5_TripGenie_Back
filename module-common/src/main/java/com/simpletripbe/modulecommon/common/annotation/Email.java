@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 )
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.PARAMETER, ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
-//@Repeatable(List.class)
+@Repeatable(Email.List.class)
 public @interface Email {
     String message() default "{javax.validation.constraints.Email.message}";
 

@@ -5,10 +5,12 @@ import com.simpletripbe.moduleapi.applications.login.dto.GetSocialOAuthRes;
 import com.simpletripbe.moduleapi.applications.login.service.OauthService;
 import com.simpletripbe.moduleapi.applications.login.service.UserService;
 import com.simpletripbe.modulecommon.common.annotation.Valid;
+import com.simpletripbe.modulecommon.common.exception.CustomException;
 import com.simpletripbe.modulecommon.common.response.CommonCode;
 import com.simpletripbe.modulecommon.common.response.CommonResponse;
 import com.simpletripbe.moduledomain.community.dto.LoginDTO;
 import com.simpletripbe.moduledomain.community.dto.UserDTO;
+import com.simpletripbe.moduledomain.community.dto.UserDetailDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,7 @@ public class OauthController {
 
     private final OauthService oauthService;
     private final UserService userService;
+    private final String DEFAULT_PICTURE_URL = "https://toppng.com//public/uploads/preview/user-account-management-logo-user-icon-11562867145a56rus2zwu.png";
 
     @GetMapping(value = "/{socialLoginType}")
     public void socialLoginType(@PathVariable(name = "socialLoginType") String socialLoginType) throws IOException {
@@ -46,15 +49,33 @@ public class OauthController {
 
     }
 
-//    @PostMapping("/signIn")
-//    public CommonResponse signIn(@RequestBody @Valid LoginDTO requestBody) {
-//        UserDTO user = userService.checkExistUser(requestBody.getEmail(), requestBody.getPassword());
-//
-//        HashMap<String, String> attribute = new HashMap<>();
-//        attribute.put("id", user.getId().toString());
-//        attribute.put("nickname", user.getNickname());
-//        attribute.put("email", user.getEmail());
-//        return new CommonResponse(CommonCode.SUCCESS, attribute);
-//    }
+    @PostMapping("/signIn")
+    public CommonResponse signIn(@RequestBody @Valid LoginDTO requestBody) {
+        UserDTO user = userService.checkExistUser(requestBody.getEmail(), requestBody.getPassword());
+
+        HashMap<String, String> attribute = new HashMap<>();
+        attribute.put("id", user.getId().toString());
+        attribute.put("nickname", user.getNickname());
+        attribute.put("email", user.getEmail());
+        return new CommonResponse(CommonCode.SUCCESS, attribute);
+    }
+
+    @PostMapping("/signUp")
+    public CommonResponse signUp(@RequestBody @Valid UserDetailDTO userDetailDto) {
+
+        if (userService.findAllUserByEmail(userDetailDto.getEmail()).size() > 0) throw new CustomException(CommonCode.USER_ALREADY_EXIST);
+        if (userService.findAllUserByNickname(userDetailDto.getNickname()).size() >0) throw new CustomException(CommonCode.NICKNAME_ALREADY_EXIST);
+        if (userDetailDto.getPictureUrl() == null) {
+            userDetailDto.setPictureUrl(DEFAULT_PICTURE_URL);
+        }
+
+        try {
+            UserDTO savedUser = userService.saveUser(userDetailDto);
+            if (savedUser != null) return new CommonResponse(CommonCode.SUCCESS, Map.of("user", new UserSummaryDto(savedUser)));
+            return new CommonResponse(CommonCode.FAIL);
+        }catch (Exception e) {
+            throw new CustomException(CommonCode.FAIL);
+        }
+    }
 
 }
