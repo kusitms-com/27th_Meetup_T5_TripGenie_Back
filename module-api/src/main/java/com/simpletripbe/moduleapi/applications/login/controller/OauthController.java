@@ -63,8 +63,10 @@ public class OauthController {
     @PostMapping("/signUp")
     public CommonResponse signUp(@RequestBody @Valid UserDetailDTO userDetailDto) {
 
-        if (userService.findAllUserByEmail(userDetailDto.getEmail()).size() > 0) throw new CustomException(CommonCode.USER_ALREADY_EXIST);
-        if (userService.findAllUserByNickname(userDetailDto.getNickname()).size() >0) throw new CustomException(CommonCode.NICKNAME_ALREADY_EXIST);
+        if (userService.findAllUserByEmail(userDetailDto.getEmail()).size() > 0)
+            throw new CustomException(CommonCode.USER_ALREADY_EXIST);
+        if (userService.findAllUserByNickname(userDetailDto.getNickname()).size() > 0)
+            throw new CustomException(CommonCode.NICKNAME_ALREADY_EXIST);
         if (userDetailDto.getPictureUrl() == null) {
             userDetailDto.setPictureUrl(DEFAULT_PICTURE_URL);
         }
@@ -74,7 +76,7 @@ public class OauthController {
 
             if (savedUser != null) return new CommonResponse(CommonCode.SUCCESS);
             return new CommonResponse(CommonCode.FAIL);
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new CustomException(CommonCode.FAIL);
         }
     }

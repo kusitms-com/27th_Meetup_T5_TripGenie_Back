@@ -70,7 +70,7 @@ public class GoogleOauth {
 
     public GoogleOauthToken getAccessToken(ResponseEntity<String> response) throws JsonProcessingException {
         log.info("response.getBody() = " + response.getBody());
-        GoogleOauthToken googleOauthToken= objectMapper.readValue(response.getBody(),GoogleOauthToken.class);
+        GoogleOauthToken googleOauthToken = objectMapper.readValue(response.getBody(), GoogleOauthToken.class);
         return googleOauthToken;
     }
 
@@ -79,20 +79,20 @@ public class GoogleOauth {
         RestTemplate restTemplate = new RestTemplate();
         //header에 accessToken을 담는다.
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization","Bearer "+oAuthToken.getAccess_token());
+        headers.add("Authorization", "Bearer " + oAuthToken.getAccess_token());
 
         //HttpEntity를 하나 생성해 헤더를 담아서 restTemplate으로 구글과 통신하게 된다.
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity(headers);
-        ResponseEntity<String> response = restTemplate.exchange(GOOGLE_SNS_USERINFO_URL, HttpMethod.GET,request,String.class);
+        ResponseEntity<String> response = restTemplate.exchange(GOOGLE_SNS_USERINFO_URL, HttpMethod.GET, request, String.class);
         log.info("response.getHeaders() = " + response.getHeaders());
-        log.info("responseEntity.getStatusCode()"+ response.getStatusCode());
+        log.info("responseEntity.getStatusCode()" + response.getStatusCode());
         log.info("response.getBody() = " + response.getBody());
         return response;
     }
 
     public GoogleUser getUserInfo(ResponseEntity<String> userInfoResponse) throws JsonProcessingException {
-        log.info("response.getBody() = "+userInfoResponse.getBody());
-        GoogleUser googleUser =objectMapper.readValue(userInfoResponse.getBody(), GoogleUser.class);
+        log.info("response.getBody() = " + userInfoResponse.getBody());
+        GoogleUser googleUser = objectMapper.readValue(userInfoResponse.getBody(), GoogleUser.class);
         return googleUser;
     }
 }
