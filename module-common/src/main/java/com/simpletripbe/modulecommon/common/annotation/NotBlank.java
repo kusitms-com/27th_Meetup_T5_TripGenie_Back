@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 )
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.PARAMETER, ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
-@Repeatable(NotBlank.List.class)
+//@Repeatable(NotBlank.List.class)
 public @interface NotBlank {
     String message() default "{javax.validation.constraints.NotBlank.message}";
 
