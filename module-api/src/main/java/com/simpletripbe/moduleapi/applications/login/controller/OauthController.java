@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.simpletripbe.moduleapi.applications.login.dto.GetSocialOAuthRes;
 import com.simpletripbe.moduleapi.applications.login.service.OauthService;
 import com.simpletripbe.moduleapi.applications.login.service.UserService;
-import com.simpletripbe.modulecommon.common.annotation.Valid;
 import com.simpletripbe.modulecommon.common.exception.CustomException;
 import com.simpletripbe.modulecommon.common.response.CommonCode;
 import com.simpletripbe.modulecommon.common.response.CommonResponse;
@@ -27,6 +26,11 @@ public class OauthController {
     private final UserService userService;
     private final String DEFAULT_PICTURE_URL = "https://toppng.com//public/uploads/preview/user-account-management-logo-user-icon-11562867145a56rus2zwu.png";
 
+    /**
+     * google social login api
+     * @param socialLoginType
+     * @throws IOException
+     */
     @GetMapping(value = "/{socialLoginType}")
     public void socialLoginType(@PathVariable(name = "socialLoginType") String socialLoginType) throws IOException {
         oauthService.request(socialLoginType);
@@ -49,8 +53,13 @@ public class OauthController {
 
     }
 
+    /**
+     * login api
+     * @param requestBody
+     * @return
+     */
     @PostMapping("/signIn")
-    public CommonResponse signIn(@RequestBody @Valid LoginDTO requestBody) {
+    public CommonResponse signIn(@RequestBody LoginDTO requestBody) {
         UserDTO user = userService.checkExistUser(requestBody.getEmail(), requestBody.getPassword());
 
         HashMap<String, String> attribute = new HashMap<>();
@@ -60,8 +69,13 @@ public class OauthController {
         return new CommonResponse(CommonCode.SUCCESS, attribute);
     }
 
+    /**
+     * 회원가입 api
+     * @param userDetailDto
+     * @return
+     */
     @PostMapping("/signUp")
-    public CommonResponse signUp(@RequestBody @Valid UserDetailDTO userDetailDto) {
+    public CommonResponse signUp(@RequestBody UserDetailDTO userDetailDto) {
 
         if (userService.findAllUserByEmail(userDetailDto.getEmail()).size() > 0)
             throw new CustomException(CommonCode.USER_ALREADY_EXIST);

@@ -1,12 +1,12 @@
 package com.simpletripbe.moduledomain.login.dto;
 
-import com.simpletripbe.modulecommon.common.annotation.Email;
-import com.simpletripbe.modulecommon.common.annotation.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
