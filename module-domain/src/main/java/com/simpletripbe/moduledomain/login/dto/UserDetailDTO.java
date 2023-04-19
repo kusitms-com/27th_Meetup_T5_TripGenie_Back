@@ -20,17 +20,14 @@ public class UserDetailDTO implements Serializable {
     private String name;
     @NotBlank
     private String nickname;
-    @NotBlank
-    private String password;
     private String pictureUrl;
-    private Date createdDt = null;
-    private String description;
+    @NotBlank
+    private String gender;
+    @NotBlank
+    private String birth;
     @Email
     @NotBlank
     private String email;
-    private String github;
-    private String blog;
-    private List<String> tags;
 
 }
 

@@ -10,16 +10,13 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
 
-    @Query(value = "select * from User user where user.email = :email", nativeQuery = true)
+    @Query(value = "select * from user user where user.email = :email", nativeQuery = true)
     UserDTO findByEmail(@Param("email") String email);
 
-    @Query(value = "select * from User user where user.email = :email", nativeQuery = true)
+    @Query(value = "select * from user user where user.email = :email", nativeQuery = true)
     List<UserDTO> findAllByEmail(@Param("email") String email);
 
-    @Query(value = "select * from User user where user.nickname = :nickname", nativeQuery = true)
+    @Query(value = "select * from user user where user.nickname = :nickname", nativeQuery = true)
     List<UserDTO> findAllByNickname(@Param("nickname") String nickname);
-
-    @Query(value = "select * from User user where user.nickname = :nickname", nativeQuery = true)
-    UserDTO insertUser(@Param("nickname") UserDTO userDTO);
 
 }

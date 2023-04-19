@@ -4,6 +4,8 @@ import com.simpletripbe.modulecommon.common.exception.CustomException;
 import com.simpletripbe.modulecommon.common.response.CommonCode;
 import com.simpletripbe.moduledomain.login.dto.UserDTO;
 import com.simpletripbe.moduledomain.login.dto.UserDetailDTO;
+import com.simpletripbe.moduledomain.login.entity.User;
+import com.simpletripbe.moduledomain.login.mapper.UserMapper;
 import com.simpletripbe.moduledomain.login.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     public UserDTO findUserByEmail(String email) {
         UserDTO targetUser = userRepository.findByEmail(email);
@@ -37,9 +40,12 @@ public class UserService {
         return userRepository.findAllByNickname(nickname);
     }
 
-    public UserDTO saveUser(UserDetailDTO userDetailDto) {
-        UserDTO newUser = new UserDTO();
-        return userRepository.insertUser(newUser);
+    public User saveUser(UserDetailDTO userDetailDto) {
+
+        User newUser = new User();
+        newUser = userMapper.toEntity(userDetailDto);
+
+        return userRepository.save(newUser);
     }
 
 }

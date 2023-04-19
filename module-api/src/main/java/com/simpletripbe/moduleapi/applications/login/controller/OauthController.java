@@ -10,6 +10,7 @@ import com.simpletripbe.modulecommon.common.response.CommonResponse;
 import com.simpletripbe.moduledomain.login.dto.LoginDTO;
 import com.simpletripbe.moduledomain.login.dto.UserDTO;
 import com.simpletripbe.moduledomain.login.dto.UserDetailDTO;
+import com.simpletripbe.moduledomain.login.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,7 @@ public class OauthController {
 
     /**
      * google social login api
+     *
      * @param socialLoginType
      * @throws IOException
      */
@@ -36,6 +38,13 @@ public class OauthController {
         oauthService.request(socialLoginType);
     }
 
+    /**
+     * callback -> login api
+     * @param socialLoginType
+     * @param code
+     * @return
+     * @throws JsonProcessingException
+     */
     @GetMapping(value = "/{socialLoginType}/callback")
     public CommonResponse callback(
             @PathVariable(name = "socialLoginType") String socialLoginType,
@@ -55,6 +64,7 @@ public class OauthController {
 
     /**
      * login api
+     *
      * @param requestBody
      * @return
      */
@@ -71,6 +81,7 @@ public class OauthController {
 
     /**
      * 회원가입 api
+     *
      * @param userDetailDto
      * @return
      */
@@ -81,15 +92,20 @@ public class OauthController {
             throw new CustomException(CommonCode.USER_ALREADY_EXIST);
         if (userService.findAllUserByNickname(userDetailDto.getNickname()).size() > 0)
             throw new CustomException(CommonCode.NICKNAME_ALREADY_EXIST);
+
         if (userDetailDto.getPictureUrl() == null) {
             userDetailDto.setPictureUrl(DEFAULT_PICTURE_URL);
         }
 
         try {
-            UserDTO savedUser = userService.saveUser(userDetailDto);
+            User savedUser = userService.saveUser(userDetailDto);
 
-            if (savedUser != null) return new CommonResponse(CommonCode.SUCCESS);
-            return new CommonResponse(CommonCode.FAIL);
+            if (savedUser != null) {
+                return new CommonResponse(CommonCode.SUCCESS);
+            } else {
+                return new CommonResponse(CommonCode.FAIL);
+            }
+
         } catch (Exception e) {
             throw new CustomException(CommonCode.FAIL);
         }
