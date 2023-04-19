@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class UserDetailDTO implements Serializable {
+    private String id;
     @NotBlank
     private String name;
     @NotBlank
@@ -28,6 +29,8 @@ public class UserDetailDTO implements Serializable {
     @Email
     @NotBlank
     private String email;
+    @NotBlank
+    private Date date;
 
 }
 

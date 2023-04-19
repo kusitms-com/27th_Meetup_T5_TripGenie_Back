@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity(name = "user")
 @Data
@@ -21,6 +22,6 @@ public class User {
     private String picture;
     private String gender;
     private String birth;
-    private LocalDateTime createDate;
+    private Date createDate;
 
 }

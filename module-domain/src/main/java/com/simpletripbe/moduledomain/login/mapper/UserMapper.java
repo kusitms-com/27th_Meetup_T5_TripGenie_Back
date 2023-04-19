@@ -12,7 +12,8 @@ import org.mapstruct.*;
 public interface UserMapper {
 
     @Mappings({
-            @Mapping(source = "pictureUrl", target = "picture")
+            @Mapping(source = "pictureUrl", target = "picture"),
+            @Mapping(source = "date", target = "createDate", dateFormat = "dd.MM.yyyy")
     })
     User toEntity(UserDetailDTO userDetailDTO);
 
