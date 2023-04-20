@@ -24,16 +24,35 @@ public class MyCarrierRepositoryCustomImpl implements MyCarrierRepositoryCustom 
     }
 
     @Override
-    public List<MyCarrier> findAllByDbsts() {
+    public List<String> findAllByDbsts() {
 
         QMyCarrier q = QMyCarrier.myCarrier;
 
-        List<MyCarrier> results = jpaQueryFactory
-                .selectFrom(q)
+        List<String> results = jpaQueryFactory
+                .select(q.country).distinct()
+                .from(q)
                 .where(q.dbsts.eq("A"))
                 .fetch();
 
         return results;
 
     }
+
+    @Override
+    public List<MyCarrier> findAllByCountry(String country) {
+
+        QMyCarrier q = QMyCarrier.myCarrier;
+
+        List<MyCarrier> results = jpaQueryFactory
+                .selectFrom(q)
+                .distinct()
+                .where(
+                        q.dbsts.eq("A").and(q.country.eq(country))
+                )
+                .fetch();
+
+        return results;
+
+    }
+
 }

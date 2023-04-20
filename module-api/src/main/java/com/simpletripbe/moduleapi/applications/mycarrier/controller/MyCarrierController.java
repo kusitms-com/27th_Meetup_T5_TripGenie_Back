@@ -12,10 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,9 +29,9 @@ public class MyCarrierController {
      */
     @Operation(summary = "컈리어 전체 목록 조회 api", description = "selectAll")
     @GetMapping("selectAll")
-    public ApiResponse<List<CarrierListDTO>> selectAll () {
+    public ApiResponse<List<String>> selectAll () {
 
-        final List<CarrierListDTO> responses
+        final List<String> responses
                 = myCarrierService.selectAll();
 
         return ApiResponse.success(responses);
@@ -58,8 +55,20 @@ public class MyCarrierController {
      */
 
     /**
-     * 상세페이지 - 목록 조회
+     * 상세페이지 - 해당 국가의 전체 목록 조회
      */
+    @Operation(summary = "해당 국가의 전체 목록 조회 api", description = "selectDetailAll")
+    @GetMapping("selectDetailAll")
+    public ApiResponse<List<CarrierListDTO>> selectDetailAll(
+            @RequestParam String country
+    ) {
+
+        final List<CarrierListDTO> responses
+                = myCarrierService.selectDetailAll(country);
+
+        return ApiResponse.success(responses);
+
+    }
 
     /**
      * 상세페이지 - 이미지, 파일, 링크 저장

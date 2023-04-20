@@ -19,9 +19,16 @@ public class MainCarrierService {
     private final MyCarrierRepository myCarrierRepository;
     private final MyCarrierMapper myCarrierMapper;
 
-    public List<CarrierListDTO> selectAll() {
+    public List<String> selectAll() {
 
-        List<MyCarrier> entityResult = myCarrierRepository.findAllByDbsts();
+        List<String> entityResult = myCarrierRepository.findAllByDbsts();
+
+        return entityResult;
+    }
+
+    public List<CarrierListDTO> selectDetailAll(String country) {
+
+        List<MyCarrier> entityResult = myCarrierRepository.findAllByCountry(country);
         List<CarrierListDTO> result = myCarrierMapper.toCarrierDto(entityResult);
 
         return result;

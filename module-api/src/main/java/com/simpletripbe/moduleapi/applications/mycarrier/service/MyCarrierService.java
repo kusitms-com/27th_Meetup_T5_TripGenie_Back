@@ -18,9 +18,15 @@ public class MyCarrierService {
     private final MainCarrierService mainCarrierService;
 
     @Transactional(readOnly = true)
-    public List<CarrierListDTO> selectAll() {
+    public List<String> selectAll() {
         return mainCarrierService
                 .selectAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<CarrierListDTO> selectDetailAll(String country) {
+        return mainCarrierService
+                .selectDetailAll(country);
     }
 
 }
