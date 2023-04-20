@@ -1,12 +1,12 @@
 package com.simpletripbe.moduledomain.mycarrier.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
-@NoArgsConstructor
+@Setter
 @AllArgsConstructor
+@RequiredArgsConstructor
+@Builder
 public class CarrierListDTO {
 
     private String country;

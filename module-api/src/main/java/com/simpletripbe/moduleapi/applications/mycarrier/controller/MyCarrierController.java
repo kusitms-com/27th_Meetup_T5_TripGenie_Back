@@ -32,12 +32,10 @@ public class MyCarrierController {
      */
     @Operation(summary = "컈리어 전체 목록 조회 api", description = "selectAll")
     @GetMapping("selectAll")
-    public ApiResponse<List<CarrierListDTO>> selectAll (
-            @PageableDefault final Pageable pageable
-    ) {
+    public ApiResponse<List<CarrierListDTO>> selectAll () {
 
-        final Page<CarrierListDTO> responses
-                = myCarrierService.selectAll(pageable);
+        final List<CarrierListDTO> responses
+                = myCarrierService.selectAll();
 
         return ApiResponse.success(responses);
 

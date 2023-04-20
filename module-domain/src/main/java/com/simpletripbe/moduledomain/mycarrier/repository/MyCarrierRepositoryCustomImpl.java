@@ -1,15 +1,20 @@
 package com.simpletripbe.moduledomain.mycarrier.repository;
 
 import com.querydsl.core.QueryResults;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.simpletripbe.modulecommon.common.util.QueryUtils;
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
 import com.simpletripbe.moduledomain.mycarrier.entity.QMyCarrier;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
+@Repository
+@Transactional(readOnly = true)
 public class MyCarrierRepositoryCustomImpl implements MyCarrierRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
@@ -19,18 +24,16 @@ public class MyCarrierRepositoryCustomImpl implements MyCarrierRepositoryCustom 
     }
 
     @Override
-    public Page<CarrierListDTO> findAllbyPage(Pageable pageable) {
+    public List<MyCarrier> findAllByDbsts() {
 
-        final Sort sort = pageable.getSortOr(Sort.by(Sort.Direction.DESC, "createdAt"));
+        QMyCarrier q = QMyCarrier.myCarrier;
 
-        QueryResults<CarrierListDTO> results = jpaQueryFactory
-                .selectFrom(QMyCarrier)
-                .orderBy(getOrderSpecifier(sort))
-                .limit(pageable.getPageSize())
-                .offset(pageable.getOffset())
-                .fetchResults();
+        List<MyCarrier> results = jpaQueryFactory
+                .selectFrom(q)
+                .where(q.dbsts.eq("A"))
+                .fetch();
 
-        return QueryUtils.toPage(results, pageable);
+        return results;
 
     }
 }

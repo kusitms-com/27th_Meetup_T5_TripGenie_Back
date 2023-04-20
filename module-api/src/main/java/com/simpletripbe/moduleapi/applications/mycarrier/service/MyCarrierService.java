@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,11 +18,9 @@ public class MyCarrierService {
     private final MainCarrierService mainCarrierService;
 
     @Transactional(readOnly = true)
-    public Page<CarrierListDTO> selectAll(
-            final Pageable pageable
-    ) {
+    public List<CarrierListDTO> selectAll() {
         return mainCarrierService
-                .selectAll(pageable);
+                .selectAll();
     }
 
 }
