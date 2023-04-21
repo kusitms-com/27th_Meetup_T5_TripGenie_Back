@@ -6,15 +6,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.web.bind.annotation.RequestBody;
 
 public interface MyCarrierRepository extends JpaRepository<MyCarrier, Long>, MyCarrierRepositoryCustom {
 
     @Modifying
     @Query(value = "update MyCarrier m " +
-            "set m.country = :country,m.image = :image, m.file = :file, m.link = :link" +
-            "where m.id = :id", nativeQuery = true)
-    void updateCarrier(@RequestBody CarrierListDTO carrierListDTO);
+            "set m.country = :#{#carrier.country}," +
+            "m.image = :#{#carrier.image}," +
+            "m.file = :#{#carrier.file}," +
+            "m.link = :#{#carrier.link}" +
+            "where m.id = :#{#carrier.id}", nativeQuery = true)
+    void updateCarrier(@Param("carrier") CarrierListDTO carrierListDTO);
 
     @Modifying
     @Query(value = "update MyCarrier m " +
