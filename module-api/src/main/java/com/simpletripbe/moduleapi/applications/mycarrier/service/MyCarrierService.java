@@ -29,4 +29,24 @@ public class MyCarrierService {
                 .selectDetailAll(country);
     }
 
+    @Transactional(readOnly = true)
+    public void saveOne(CarrierListDTO carrierListDTO) {
+        mainCarrierService.addCarrier(carrierListDTO);
+    }
+
+    @Transactional(readOnly = true)
+    public void editOne(CarrierListDTO carrierListDTO) {
+        mainCarrierService.editCarrier(carrierListDTO);
+    }
+
+    @Transactional(readOnly = true)
+    public void deleteOne(Long id) {
+        mainCarrierService.deleteCarrier(id);
+    }
+
+    @Transactional(readOnly = true)
+    public void saveStamp(CarrierListDTO carrierListDTO) {
+        mainCarrierService.addStamp(carrierListDTO);
+    }
+
 }

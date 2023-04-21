@@ -21,4 +21,12 @@ public interface MyCarrierMapper {
     })
     List<CarrierListDTO> toCarrierDto(List<MyCarrier> myCarrier);
 
+    @Mappings({
+            @Mapping(source = "country", target = "country", ignore = true),
+            @Mapping(source = "image", target = "image", ignore = true),
+            @Mapping(source = "file", target = "file", ignore = true),
+            @Mapping(source = "link", target = "link", ignore = true)
+    })
+    MyCarrier toEntity(CarrierListDTO carrierListDTO);
+
 }

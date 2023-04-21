@@ -3,6 +3,7 @@ package com.simpletripbe.moduleapi.applications.mycarrier.controller;
 import com.simpletripbe.moduleapi.applications.mycarrier.service.MyCarrierService;
 import com.simpletripbe.modulecommon.common.response.ApiResponse;
 import com.simpletripbe.modulecommon.common.response.BaseResponseBody;
+import com.simpletripbe.modulecommon.common.util.EmptyResponse;
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,18 +42,58 @@ public class MyCarrierController {
     /**
      * 캐리어 추가
      */
+    @Operation(summary = "캐리어 추가 api", description = "addCarrier")
+    @PostMapping("addCarrier")
+    public ApiResponse<EmptyResponse> addCarrier(
+            @RequestBody CarrierListDTO carrierListDTO
+    ) {
+
+        myCarrierService.saveOne(carrierListDTO);
+
+        return ApiResponse.success(EmptyResponse.of());
+    }
 
     /**
      * 캐리어 수정
      */
+    @Operation(summary = "캐리어 수정 api", description = "editCarrier")
+    @PutMapping("editCarrier")
+    public ApiResponse<EmptyResponse> editCarrier(
+            @RequestBody CarrierListDTO carrierListDTO
+    ) {
+
+        myCarrierService.editOne(carrierListDTO);
+
+        return ApiResponse.success(EmptyResponse.of());
+    }
 
     /**
-     * 캐리어 삭제
+     * 캐리어 삭제 - soft delete 로 dbsts 만 S 로 변경
      */
+    @Operation(summary = "캐리어 삭제 api", description = "deleteCarrier")
+    @PutMapping("deleteCarrier")
+    public ApiResponse<EmptyResponse> deleteCarrier(
+            @RequestBody Long userId
+    ) {
+
+        myCarrierService.deleteOne(userId);
+
+        return ApiResponse.success(EmptyResponse.of());
+    }
 
     /**
      * 체크표시 선택 시 스탬프 생성
      */
+    @Operation(summary = "스탬프 생성 api", description = "addStamp")
+    @PostMapping("addCarrier")
+    public ApiResponse<EmptyResponse> addStamp(
+            @RequestBody CarrierListDTO carrierListDTO
+    ) {
+
+        myCarrierService.saveStamp(carrierListDTO);
+
+        return ApiResponse.success(EmptyResponse.of());
+    }
 
     /**
      * 상세페이지 - 해당 국가의 전체 목록 조회

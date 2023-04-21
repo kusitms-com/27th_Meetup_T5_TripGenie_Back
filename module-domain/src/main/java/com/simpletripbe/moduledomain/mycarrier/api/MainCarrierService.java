@@ -34,4 +34,29 @@ public class MainCarrierService {
         return result;
     }
 
+    public void addCarrier(CarrierListDTO carrierListDTO) {
+
+        MyCarrier myCarrier = myCarrierMapper.toEntity(carrierListDTO);
+
+        myCarrierRepository.save(myCarrier);
+    }
+
+    public void editCarrier(CarrierListDTO carrierListDTO) {
+
+        myCarrierRepository.updateCarrier(carrierListDTO);
+    }
+
+    public void deleteCarrier(Long id) {
+
+        myCarrierRepository.deleteCarrier(id);
+    }
+
+    public void addStamp(CarrierListDTO carrierListDTO) {
+
+        MyCarrier myCarrier;
+        myCarrier = myCarrierMapper.toEntity(carrierListDTO);
+
+        myCarrierRepository.save(myCarrier);
+    }
+
 }
