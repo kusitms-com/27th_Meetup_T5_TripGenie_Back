@@ -46,4 +46,9 @@ public class MyCarrierService {
         mainCarrierService.addStamp(carrierListDTO);
     }
 
+    @Transactional(readOnly = true)
+    public void saveInfo(CarrierListDTO carrierListDTO) {
+        mainCarrierService.updateDetailInfo(carrierListDTO);
+    }
+
 }

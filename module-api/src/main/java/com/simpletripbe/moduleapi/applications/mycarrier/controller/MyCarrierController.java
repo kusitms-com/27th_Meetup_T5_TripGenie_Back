@@ -108,5 +108,15 @@ public class MyCarrierController {
     /**
      * 상세페이지 - 이미지, 파일, 링크 저장
      */
+    @Operation(summary = "캐리어 추가 api", description = "addDetailInfo")
+    @PostMapping("addDetailInfo")
+    public ApiResponse<EmptyResponse> addDetailInfo(
+            @RequestBody CarrierListDTO carrierListDTO
+    ) {
+
+        myCarrierService.saveInfo(carrierListDTO);
+
+        return ApiResponse.success(EmptyResponse.of());
+    }
 
 }

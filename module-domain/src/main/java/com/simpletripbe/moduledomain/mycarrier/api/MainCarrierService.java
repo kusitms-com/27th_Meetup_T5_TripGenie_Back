@@ -50,10 +50,14 @@ public class MainCarrierService {
 
     public void addStamp(CarrierListDTO carrierListDTO) {
 
-        MyCarrier myCarrier;
-        myCarrier = myCarrierMapper.toEntity(carrierListDTO);
+        MyCarrier myCarrier = myCarrierMapper.toEntity(carrierListDTO);
 
         myCarrierRepository.save(myCarrier);
+    }
+
+    public void updateDetailInfo(CarrierListDTO carrierListDTO) {
+
+        myCarrierRepository.updateCarrier(carrierListDTO);
     }
 
 }
