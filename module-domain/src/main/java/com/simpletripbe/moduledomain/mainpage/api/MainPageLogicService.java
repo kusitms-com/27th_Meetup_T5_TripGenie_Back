@@ -19,7 +19,7 @@ public class MainPageLogicService {
 
     public List<MainPageListDTO> selectAll(OrderType orderType) {
 
-        List<MainPage> entityList = mainPageRepository.findAll();
+        List<MainPage> entityList = mainPageRepository.findBySort(orderType);
 
         List<MainPageListDTO> resultList = mainPageMapper.toDTO(entityList);
 
