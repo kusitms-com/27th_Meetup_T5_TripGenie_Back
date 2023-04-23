@@ -1,7 +1,5 @@
 package com.simpletripbe.moduledomain.mainpage.mapper;
 
-import com.simpletripbe.moduledomain.community.dto.InfoDTO;
-import com.simpletripbe.moduledomain.community.entity.Community;
 import com.simpletripbe.moduledomain.mainpage.dto.MainPageListDTO;
 import com.simpletripbe.moduledomain.mainpage.entity.MainPage;
 import org.mapstruct.*;

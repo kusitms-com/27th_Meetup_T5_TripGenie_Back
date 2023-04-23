@@ -1,7 +1,5 @@
 package com.simpletripbe.moduledomain.mainpage.api;
 
-import com.simpletripbe.moduledomain.community.dto.InfoDTO;
-import com.simpletripbe.moduledomain.community.entity.Community;
 import com.simpletripbe.moduledomain.mainpage.dto.MainPageListDTO;
 import com.simpletripbe.moduledomain.mainpage.dto.OrderType;
 import com.simpletripbe.moduledomain.mainpage.entity.MainPage;

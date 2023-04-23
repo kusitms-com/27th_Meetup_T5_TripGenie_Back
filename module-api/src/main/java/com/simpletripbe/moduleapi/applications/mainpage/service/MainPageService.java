@@ -1,6 +1,5 @@
 package com.simpletripbe.moduleapi.applications.mainpage.service;
 
-import com.simpletripbe.moduledomain.community.dto.InfoDTO;
 import com.simpletripbe.moduledomain.mainpage.api.MainPageLogicService;
 import com.simpletripbe.moduledomain.mainpage.dto.MainPageListDTO;
 import com.simpletripbe.moduledomain.mainpage.dto.OrderType;

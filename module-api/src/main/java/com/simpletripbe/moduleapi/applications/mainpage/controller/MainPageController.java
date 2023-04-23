@@ -2,7 +2,6 @@ package com.simpletripbe.moduleapi.applications.mainpage.controller;
 
 import com.simpletripbe.moduleapi.applications.mainpage.service.MainPageService;
 import com.simpletripbe.modulecommon.common.response.BaseResponseBody;
-import com.simpletripbe.moduledomain.community.dto.InfoDTO;
 import com.simpletripbe.moduledomain.mainpage.dto.MainPageListDTO;
 import com.simpletripbe.moduledomain.mainpage.dto.OrderType;
 import lombok.RequiredArgsConstructor;
