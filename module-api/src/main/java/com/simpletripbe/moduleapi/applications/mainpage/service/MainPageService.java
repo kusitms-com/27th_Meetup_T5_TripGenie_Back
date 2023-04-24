@@ -20,4 +20,10 @@ public class MainPageService {
 
     }
 
+    public List<MainPageListDTO> selectOne(String searchWord) {
+
+        return mainPageLogicService.selectBySearchWord(searchWord);
+
+    }
+
 }

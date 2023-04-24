@@ -9,9 +9,9 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface MainPageRepository extends JpaRepository<MainPage, Long> {
+public interface MainPageRepository extends JpaRepository<MainPage, Long>, MainPageRepositoryCustom {
 
-    @Query(value = "select * from mainpage mainpage where mainpage.continent = :orderType", nativeQuery = true)
-    List<MainPage> findBySort(@Param("orderType") OrderType orderType);
+    @Query(value = "select * from mainpage mainpage where mainpage.country like %:searchWord%", nativeQuery = true)
+    List<MainPage> findBySearchWord(@Param("searchWord") String searchWord);
 
 }

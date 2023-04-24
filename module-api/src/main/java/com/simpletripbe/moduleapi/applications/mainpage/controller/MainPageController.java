@@ -43,5 +43,21 @@ public class MainPageController {
     /**
      * 검색 기능 api
      */
+    @GetMapping("searchWord")
+    public ResponseEntity<BaseResponseBody<List<MainPageListDTO>>> searchWord(
+            @RequestParam String search
+    ) {
+
+        List<MainPageListDTO> list = mainPageService.selectOne(search);
+
+        return new ResponseEntity<BaseResponseBody<List<MainPageListDTO>>>(
+                new BaseResponseBody<List<MainPageListDTO>>(
+                        HttpStatus.OK.value(),
+                        "성공",
+                        list
+                ),
+                HttpStatus.OK
+        );
+    }
 
 }

@@ -19,7 +19,25 @@ public class MainPageLogicService {
 
     public List<MainPageListDTO> selectAll(OrderType orderType) {
 
-        List<MainPage> entityList = mainPageRepository.findBySort(orderType);
+        List<MainPage> entityList = null;
+
+        if (orderType.equals(OrderType.ALL)) {
+            entityList = mainPageRepository.findAll();
+        } else if (orderType.equals(OrderType.CONTINENT)) {
+            entityList = mainPageRepository.findBySort(orderType);
+        } else if (orderType.equals(OrderType.SPELL)) {
+            //TODO -- 가나다 순 정렬 어떻게 할지 고민
+            entityList = mainPageRepository.findBySort(orderType);
+        }
+
+        List<MainPageListDTO> resultList = mainPageMapper.toDTO(entityList);
+
+        return resultList;
+    }
+
+    public List<MainPageListDTO> selectBySearchWord(String searchWord) {
+
+        List<MainPage> entityList = mainPageRepository.findBySearchWord(searchWord);
 
         List<MainPageListDTO> resultList = mainPageMapper.toDTO(entityList);
 
