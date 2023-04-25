@@ -4,6 +4,8 @@ import com.simpletripbe.moduleapi.applications.mainpage.service.MainPageService;
 import com.simpletripbe.modulecommon.common.response.BaseResponseBody;
 import com.simpletripbe.moduledomain.mainpage.dto.MainPageListDTO;
 import com.simpletripbe.moduledomain.mainpage.dto.OrderType;
+import com.simpletripbe.moduledomain.mainpage.dto.dataApi.PermissionRequest;
+import com.simpletripbe.moduledomain.mainpage.dto.dataApi.PermissionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.zip.DataFormatException;
 
 @RestController
 @RequiredArgsConstructor
@@ -58,6 +61,27 @@ public class MainPageController {
                 ),
                 HttpStatus.OK
         );
+    }
+
+    /**
+     * 입국허가요건 - 외부 api 연동
+     */
+    @GetMapping("entryPermitRequirements")
+    public ResponseEntity<BaseResponseBody<PermissionResponse>> entryPermitRequirements(
+            @RequestParam PermissionRequest permissionRequest
+    ) throws DataFormatException {
+
+        PermissionResponse list = mainPageService.selectDatas(permissionRequest);
+
+        return new ResponseEntity<BaseResponseBody<PermissionResponse>>(
+                new BaseResponseBody<PermissionResponse>(
+                        HttpStatus.OK.value(),
+                        "성공",
+                        list
+                ),
+                HttpStatus.OK
+        );
+
     }
 
 }

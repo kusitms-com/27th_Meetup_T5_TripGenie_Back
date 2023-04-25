@@ -3,10 +3,13 @@ package com.simpletripbe.moduleapi.applications.mainpage.service;
 import com.simpletripbe.moduledomain.mainpage.api.MainPageLogicService;
 import com.simpletripbe.moduledomain.mainpage.dto.MainPageListDTO;
 import com.simpletripbe.moduledomain.mainpage.dto.OrderType;
+import com.simpletripbe.moduledomain.mainpage.dto.dataApi.PermissionRequest;
+import com.simpletripbe.moduledomain.mainpage.dto.dataApi.PermissionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.zip.DataFormatException;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,10 @@ public class MainPageService {
 
         return mainPageLogicService.selectBySearchWord(searchWord);
 
+    }
+
+    public PermissionResponse selectDatas(PermissionRequest permissionRequest) throws DataFormatException {
+        return mainPageLogicService.selectEntryPermitRequirements(permissionRequest);
     }
 
 }
