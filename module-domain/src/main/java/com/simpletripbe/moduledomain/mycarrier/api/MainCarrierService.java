@@ -18,7 +18,7 @@ public class MainCarrierService {
 
     public List<String> selectAll() {
 
-        List<String> entityResult = myCarrierRepository.findAllByDbsts();
+        List<String> entityResult = myCarrierRepository.findAllByDbSts();
 
         return entityResult;
     }

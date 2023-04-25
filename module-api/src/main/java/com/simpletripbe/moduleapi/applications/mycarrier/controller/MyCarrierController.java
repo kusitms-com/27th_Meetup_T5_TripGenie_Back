@@ -79,7 +79,7 @@ public class MyCarrierController {
      * 체크표시 선택 시 스탬프 생성
      */
     @Operation(summary = "스탬프 생성 api", description = "addStamp")
-    @PostMapping("addCarrier")
+    @PostMapping("addStamp")
     public ApiResponse<EmptyResponse> addStamp(
             @RequestBody CarrierListDTO carrierListDTO
     ) {

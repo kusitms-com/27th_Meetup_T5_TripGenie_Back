@@ -24,7 +24,7 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
     }
 
     @Override
-    public List<String> findAllByDbsts() {
+    public List<String> findAllByDbSts() {
 
         QMyCarrier q = QMyCarrier.myCarrier;
 

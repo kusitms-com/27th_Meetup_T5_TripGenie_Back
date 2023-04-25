@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface MyCarrierRepositoryCustom {
 
-    List<String> findAllByDbsts();
+    List<String> findAllByDbSts();
+
 
     List<MyCarrier> findAllByCountry(String country);
 
