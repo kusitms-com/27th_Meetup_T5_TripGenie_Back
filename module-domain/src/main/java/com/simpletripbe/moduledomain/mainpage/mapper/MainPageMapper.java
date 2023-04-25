@@ -15,7 +15,9 @@ import java.util.List;
 public interface MainPageMapper {
 
     @Mappings({
-            @Mapping(target = "createDate", ignore = true)
+            @Mapping(target = "continent", ignore = true),
+            @Mapping(target = "country", ignore = true),
+            @Mapping(target = "image", ignore = true),
     })
     List<MainPageListDTO> toDTO(List<MainPage> communityList);
 

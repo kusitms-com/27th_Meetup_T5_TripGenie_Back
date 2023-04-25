@@ -68,8 +68,21 @@ public class MainPageController {
      */
     @GetMapping("entryPermitRequirements")
     public ResponseEntity<BaseResponseBody<PermissionResponse>> entryPermitRequirements(
-            @RequestParam PermissionRequest permissionRequest
+            @RequestParam String serviceKey,
+            @RequestParam String returnType,
+            @RequestParam Integer numOfRows,
+            @RequestParam Integer pageNo,
+            @RequestParam String name,
+            @RequestParam String feature
     ) throws DataFormatException {
+
+        PermissionRequest permissionRequest = new PermissionRequest();
+        permissionRequest.setServiceKey(serviceKey);
+        permissionRequest.setReturnType(returnType);
+        permissionRequest.setNumOfRows(numOfRows);
+        permissionRequest.setPageNo(pageNo);
+        permissionRequest.setCountry_nm(name);
+        permissionRequest.setCountry_iso_alp2(feature);
 
         PermissionResponse list = mainPageService.selectDatas(permissionRequest);
 

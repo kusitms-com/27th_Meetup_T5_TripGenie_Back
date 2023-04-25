@@ -13,8 +13,8 @@ public class PermissionRequest {
 
     private String serviceKey;
     private String returnType;
-    private String numOfRows;
-    private String pageNo;
+    private Integer numOfRows;
+    private Integer pageNo;
     private String country_nm;
     private String country_iso_alp2;
 

@@ -9,11 +9,10 @@ import com.simpletripbe.moduledomain.mainpage.mapper.MainPageMapper;
 import com.simpletripbe.moduledomain.mainpage.repository.MainPageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,9 +26,6 @@ public class MainPageLogicService {
 
     private final MainPageRepository mainPageRepository;
     private final MainPageMapper mainPageMapper;
-
-    // resttemplate 빈등록
-    private final RestTemplate restTemplate;
 
     public List<MainPageListDTO> selectAll(OrderType orderType) {
 
@@ -60,8 +56,13 @@ public class MainPageLogicService {
 
     public PermissionResponse selectEntryPermitRequirements(PermissionRequest permissionRequest) throws DataFormatException {
 
+        RestTemplate restTemplate = new RestTemplate();
+
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+
         final HttpEntity<PermissionRequest> httpEntity
-                = new HttpEntity<>(permissionRequest, new HttpHeaders());
+                = new HttpEntity<>(permissionRequest, headers);
 
         final ResponseEntity<PermissionResponse> responseEntity;
 
