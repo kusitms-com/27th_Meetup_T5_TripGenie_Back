@@ -3,6 +3,7 @@ package com.simpletripbe.moduleapi.applications.mypage.controller;
 import com.simpletripbe.moduleapi.applications.mypage.service.MyPageService;
 import com.simpletripbe.modulecommon.common.response.BaseResponseBody;
 import com.simpletripbe.moduledomain.community.dto.InfoDTO;
+import com.simpletripbe.moduledomain.mypage.dto.MyPageProfileListDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +21,12 @@ public class MyPageController {
     private final MyPageService myPageService;
 
     @GetMapping("/selectAll")
-    public ResponseEntity<BaseResponseBody<List<InfoDTO>>> selectAllList() {
+    public ResponseEntity<BaseResponseBody<List<MyPageProfileListDTO>>> selectAllList() {
 
-        List<InfoDTO> list = myPageService.selectAllList();
+        List<MyPageProfileListDTO> list = myPageService.selectAllList();
 
-        return new ResponseEntity<BaseResponseBody<List<InfoDTO>>>(
-                new BaseResponseBody<List<InfoDTO>>(
+        return new ResponseEntity<BaseResponseBody<List<MyPageProfileListDTO>>>(
+                new BaseResponseBody<List<MyPageProfileListDTO>>(
                         HttpStatus.OK.value(),
                         "성공",
                         list
