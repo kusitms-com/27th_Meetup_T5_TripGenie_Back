@@ -3,6 +3,7 @@ package com.simpletripbe.moduleapi.applications.mypage.service;
 
 import com.simpletripbe.moduledomain.community.dto.InfoDTO;
 import com.simpletripbe.moduledomain.mypage.api.MainMyPageService;
+import com.simpletripbe.moduledomain.mypage.dto.MyPageDocumentListDTO;
 import com.simpletripbe.moduledomain.mypage.dto.MyPageProfileListDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +18,15 @@ public class MyPageService {
 
     private final MainMyPageService mainMyPageService;
 
-    public List<MyPageProfileListDTO> selectAllList() {
+    public MyPageProfileListDTO selectMyProfile(String nickname) {
 
-        return mainMyPageService.selectAll();
+        return mainMyPageService.selectMyProfile(nickname);
+
+    }
+
+    public List<MyPageDocumentListDTO> selectMyDocumentList(String nickname) {
+
+        return mainMyPageService.selectMyDocument(nickname);
 
     }
 

@@ -2,6 +2,7 @@ package com.simpletripbe.moduledomain.mypage.api;
 
 import com.simpletripbe.moduledomain.community.dto.InfoDTO;
 import com.simpletripbe.moduledomain.community.entity.Community;
+import com.simpletripbe.moduledomain.mypage.dto.MyPageDocumentListDTO;
 import com.simpletripbe.moduledomain.mypage.dto.MyPageProfileListDTO;
 import com.simpletripbe.moduledomain.mypage.entity.MyPage;
 import com.simpletripbe.moduledomain.mypage.mapper.MyPageMapper;
@@ -19,11 +20,20 @@ public class MainMyPageService {
     private final MyPageMapper myPageMapper;
     private final MyPageRepository myPageRepository;
 
-    public List<MyPageProfileListDTO> selectAll() {
+    public MyPageProfileListDTO selectMyProfile(String nickname) {
 
-        List<MyPage> entityList = myPageRepository.findAll();
+        MyPage entity = myPageRepository.findProfileByNickname(nickname);
 
-        List<MyPageProfileListDTO> resultList = entityList.stream().map(entity -> myPageMapper.toDTO(entity)).collect(Collectors.toList());
+        MyPageProfileListDTO result = myPageMapper.toProfileDTO(entity);
+
+        return result;
+    }
+
+    public List<MyPageDocumentListDTO> selectMyDocument(String nickname) {
+
+        List<MyPage> entityList = myPageRepository.findDocumentByNickname(nickname);
+
+        List<MyPageDocumentListDTO> resultList = entityList.stream().map(entity -> myPageMapper.toDocumentDTO(entity)).collect(Collectors.toList());
 
         return resultList;
     }

@@ -1,6 +1,7 @@
 package com.simpletripbe.moduledomain.mypage.mapper;
 
 import com.simpletripbe.moduledomain.community.dto.InfoDTO;
+import com.simpletripbe.moduledomain.mypage.dto.MyPageDocumentListDTO;
 import com.simpletripbe.moduledomain.mypage.dto.MyPageProfileListDTO;
 import com.simpletripbe.moduledomain.mypage.entity.MyPage;
 import org.mapstruct.Mapper;
@@ -16,6 +17,8 @@ import org.mapstruct.ReportingPolicy;
 )
 public interface MyPageMapper {
 
-    MyPageProfileListDTO toDTO(MyPage myPage);
+    MyPageProfileListDTO toProfileDTO(MyPage myPage);
+
+    MyPageDocumentListDTO toDocumentDTO(MyPage myPage);
 
 }
