@@ -38,6 +38,7 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
 
     implementation project(':module-common')
+    testImplementation 'com.h2database:h2'
 
     // queryDSL 설정
     implementation "com.querydsl:querydsl-jpa"

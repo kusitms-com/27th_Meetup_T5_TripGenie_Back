@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ public class MainCommunityService {
 
         List<Community> entityList = communityRepository.findAll();
 
-        List<InfoDTO> resultList = communityMapper.toDTO(entityList);
+        List<InfoDTO> resultList = entityList.stream().map(entity -> communityMapper.toDTO(entity)).collect(Collectors.toList());
 
         return resultList;
     }
