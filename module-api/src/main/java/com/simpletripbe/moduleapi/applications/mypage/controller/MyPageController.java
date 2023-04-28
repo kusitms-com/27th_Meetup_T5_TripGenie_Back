@@ -5,6 +5,7 @@ import com.simpletripbe.modulecommon.common.response.BaseResponseBody;
 import com.simpletripbe.moduledomain.community.dto.InfoDTO;
 import com.simpletripbe.moduledomain.mypage.dto.MyPageDocumentListDTO;
 import com.simpletripbe.moduledomain.mypage.dto.MyPageProfileListDTO;
+import com.simpletripbe.moduledomain.mypage.dto.MyPageStampListDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +49,23 @@ public class MyPageController {
 
         return new ResponseEntity<BaseResponseBody<List<MyPageDocumentListDTO>>>(
                 new BaseResponseBody<List<MyPageDocumentListDTO>>(
+                        HttpStatus.OK.value(),
+                        "성공",
+                        list
+                ),
+                HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/selectMyStamp")
+    public ResponseEntity<BaseResponseBody<List<MyPageStampListDTO>>> selectMyStamp(
+            @RequestParam String nickname
+    ) {
+
+        List<MyPageStampListDTO> list = myPageService.selectMyStampList(nickname);
+
+        return new ResponseEntity<BaseResponseBody<List<MyPageStampListDTO>>>(
+                new BaseResponseBody<List<MyPageStampListDTO>>(
                         HttpStatus.OK.value(),
                         "성공",
                         list

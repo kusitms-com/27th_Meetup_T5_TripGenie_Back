@@ -12,4 +12,6 @@ public interface MyPageRepositoryCustom {
 
     List<MyPage> findDocumentByNickname(String nickname);
 
+    List<MyPage> findStampByNickname(String nickname);
+
 }

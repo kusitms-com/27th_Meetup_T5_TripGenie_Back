@@ -4,6 +4,7 @@ import com.simpletripbe.moduledomain.community.dto.InfoDTO;
 import com.simpletripbe.moduledomain.community.entity.Community;
 import com.simpletripbe.moduledomain.mypage.dto.MyPageDocumentListDTO;
 import com.simpletripbe.moduledomain.mypage.dto.MyPageProfileListDTO;
+import com.simpletripbe.moduledomain.mypage.dto.MyPageStampListDTO;
 import com.simpletripbe.moduledomain.mypage.entity.MyPage;
 import com.simpletripbe.moduledomain.mypage.mapper.MyPageMapper;
 import com.simpletripbe.moduledomain.mypage.repository.MyPageRepository;
@@ -34,6 +35,15 @@ public class MainMyPageService {
         List<MyPage> entityList = myPageRepository.findDocumentByNickname(nickname);
 
         List<MyPageDocumentListDTO> resultList = entityList.stream().map(entity -> myPageMapper.toDocumentDTO(entity)).collect(Collectors.toList());
+
+        return resultList;
+    }
+
+    public List<MyPageStampListDTO> selectMyStamp(String nickname) {
+
+        List<MyPage> entityList = myPageRepository.findStampByNickname(nickname);
+
+        List<MyPageStampListDTO> resultList = entityList.stream().map(entity -> myPageMapper.toStampDTO(entity)).collect(Collectors.toList());
 
         return resultList;
     }

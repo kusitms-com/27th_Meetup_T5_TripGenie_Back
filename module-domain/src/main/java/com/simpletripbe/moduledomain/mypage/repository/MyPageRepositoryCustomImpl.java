@@ -31,17 +31,29 @@ public class MyPageRepositoryCustomImpl extends QuerydslRepositorySupport implem
 
         return jpaQueryFactory
                 .selectFrom(m)
-                .where(m.nickname = nickname)
-                .fetch();
+                .where(m.nickname.eq(nickname))
+                .fetchOne();
     }
 
     @Override
     public List<MyPage> findDocumentByNickname(String nickname) {
+
         QMyPage m = QMyPage.myPage;
 
         return jpaQueryFactory
                 .selectFrom(m)
-                .where(m.nickname = nickname)
+                .where(m.nickname.eq(nickname))
+                .fetch();
+    }
+
+    @Override
+    public List<MyPage> findStampByNickname(String nickname) {
+
+        QMyPage m = QMyPage.myPage;
+
+        return jpaQueryFactory
+                .selectFrom(m)
+                .where(m.nickname.eq(nickname))
                 .fetch();
     }
 }
