@@ -17,7 +17,7 @@ public class PermissionResponse {
     private Integer totalCount;
 
     @Data
-    public class DataList {
+    public static class DataList {
         private String country_eng_nm;
         private String country_iso_alp2;
         private String country_nm;

@@ -1,5 +1,6 @@
 package com.simpletripbe.moduledomain.mainpage.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simpletripbe.moduledomain.mainpage.dto.MainPageListDTO;
 import com.simpletripbe.moduledomain.mainpage.dto.OrderType;
 import com.simpletripbe.moduledomain.mainpage.dto.dataApi.PermissionRequest;
@@ -10,12 +11,19 @@ import com.simpletripbe.moduledomain.mainpage.repository.MainPageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
+import org.springframework.http.converter.FormHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.DataFormatException;
 
@@ -24,6 +32,7 @@ import java.util.zip.DataFormatException;
 @RequiredArgsConstructor
 public class MainPageLogicService {
 
+    private final ObjectMapper objectMapper;
     private final MainPageRepository mainPageRepository;
     private final MainPageMapper mainPageMapper;
 
@@ -58,35 +67,42 @@ public class MainPageLogicService {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        final MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("serviceKey", permissionRequest.getServiceKey());
+        params.add("returnType", permissionRequest.getReturnType());
+        params.add("numOfRows", String.valueOf(permissionRequest.getNumOfRows()));
+        params.add("pageNo", String.valueOf(permissionRequest.getPageNo()));
+        params.add("country_nm", permissionRequest.getCountry_nm());
+        params.add("country_iso_alp2", permissionRequest.getCountry_iso_alp2());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
         final HttpEntity<PermissionRequest> httpEntity
                 = new HttpEntity<>(permissionRequest, headers);
 
         final ResponseEntity<PermissionResponse> responseEntity;
 
-        try {
-            responseEntity = restTemplate.exchange(
-                    "https://apis.data.go.kr/1262000/EntranceVisaService2/getEntranceVisaList2",
-                    HttpMethod.GET,
-                    httpEntity,
-                    PermissionResponse.class
-            );
-        } catch (RestClientException e) {
-            // request timeout 등 요청 만들다가 에러
-            // read timeout 요청 보냈는데 답을 못받아서 에러
-            // 응답 받았으나 status code 가 성공이 아님
-            log.error("Failed while sending request to Toast SMS Api. toastSmsRequest: {}", permissionRequest, e);
-            throw new DataFormatException();
-        }
+        String url = UriComponentsBuilder
+                .newInstance()
+                .scheme("https")
+                .host("apis.data.go.kr")
+                .pathSegment("1262000/EntranceVisaService2/getEntranceVisaList2")
+                .queryParams(params)
+                .build().toUriString();
 
-        // 응답 잘 받았고, 내용이 성공
-        // 응답 잘 받았고, 내용이 실패
+        responseEntity = restTemplate.exchange(
+                URI.create(url),
+                HttpMethod.GET,
+                httpEntity,
+                PermissionResponse.class
+        );
+        log.info("responseEntity::" + responseEntity);
+
         final PermissionResponse permissionResponse = responseEntity.getBody();
         if (permissionResponse == null) {
             log.error(
-                    "Failed to send SMS. permissionRequest: " + permissionRequest + ", permissionResponse: " + permissionResponse);
+                    "Failed to send permissionRequest: " + permissionRequest + ", permissionResponse: " + permissionResponse);
         }
         return permissionResponse;
 
