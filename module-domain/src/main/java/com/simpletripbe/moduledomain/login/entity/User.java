@@ -9,11 +9,9 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @Entity(name = "user")
@@ -49,6 +47,11 @@ public class User {
             return Arrays.asList(this.roles.split(","));
         }
         return new ArrayList<>();
+    }
+
+    public User(String email) {
+        this.email = email;
+        this.roles = "ROLE_USER";
     }
 
 }

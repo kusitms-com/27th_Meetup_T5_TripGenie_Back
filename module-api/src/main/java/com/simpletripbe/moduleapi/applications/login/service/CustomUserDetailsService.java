@@ -2,6 +2,7 @@ package com.simpletripbe.moduleapi.applications.login.service;
 
 import com.simpletripbe.moduledomain.login.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -17,6 +18,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
+    @Value("${app.security.credential}")
+    private String credential;
     private final UserRepository userRepository;
 
     @Override
@@ -32,7 +35,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .collect(Collectors.toList());
 
         return new User(user.getEmail(),
-                null,
+                credential,
                 grantedAuthorities);
     }
 }

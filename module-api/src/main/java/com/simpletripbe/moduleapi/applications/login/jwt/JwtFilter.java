@@ -27,7 +27,7 @@ public class JwtFilter extends GenericFilterBean {
 
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         System.out.println(httpServletRequest.getRequestURI());
-        if (!httpServletRequest.getRequestURI().startsWith("/v1/user")) {
+        if (!httpServletRequest.getRequestURI().startsWith("/v1/user/oauth")) {
             String jwt = resolveToken(httpServletRequest);
 
             // 유효성 검증하여 올바른 토큰인 경우
