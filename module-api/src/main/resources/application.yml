@@ -40,7 +40,7 @@ app:
     token:
       url: https://oauth2.googleapis.com/token
     userinfo:
-      url: https://www.googleapis.com/oauth2/vi/userinfo
+      url: https://www.googleapis.com/oauth2/v1/userinfo
 
 # swagger setting
 springdoc:
@@ -53,3 +53,7 @@ springdoc:
   default-produces-media-type: application/json
   paths-to-match:
     - /**
+
+jwt:
+  header: Authorization
+  secret: c2FjYmFnYWppLXNwcmluZy1ib290LXNlY3VyaXR5LWp3dC1zZWNyZXQtdmFsdWUteWltLWd3YWsta2ltLWplb24tNC0xLWplb24tam9uZy1zdXJsLTEK
