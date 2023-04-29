@@ -42,6 +42,8 @@ app:
     userinfo:
       url: https://www.googleapis.com/oauth2/v1/userinfo
 
+  security:
+    credential: ${SECRET_CREDENTIAL}
 # swagger setting
 springdoc:
   swagger-ui:

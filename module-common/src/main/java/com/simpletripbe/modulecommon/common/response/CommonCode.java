@@ -20,6 +20,8 @@ public enum CommonCode {
     NICKNAME_ALREADY_EXIST(200, -1003 , "중복된 닉네임입니다." ),
     INVALID_SOCIAL_LOGIN_TYPE(200, -1004, "알 수 없는 소셜 로그인 형식입니다."),
     OAUTH_LOGIN_FAILED(200, -1005, "Oauth에서 프로필 정보를 가져오는데 실패했습니다."),
+    SIGNUP_REQUIRED(200, -1006, "최초 로그인입니다."),
+    WRONG_SIGNUP(400, -1007, "올바르지 않은 회원가입입니다."),
 
 
     //-2000: MeetUp

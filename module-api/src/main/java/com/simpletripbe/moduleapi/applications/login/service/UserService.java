@@ -64,19 +64,9 @@ public class UserService {
 //        return userRepository.save(newUser);
 //    }
 
-    public User saveUser(SignUpReq signUpReq) {
+    public void tmpSignUp(User user) {
 
-        User user = User.builder()
-                .email(signUpReq.getEmail())
-                .name(signUpReq.getName())
-                .nickname(signUpReq.getNickname())
-                .picture(signUpReq.getPictureUrl())
-                .gender(signUpReq.getGender())
-                .birth(signUpReq.getBirth())
-                .roles("ROLE_USER")
-                .build();
-
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     public User signUp(SignUpReq signUpReq) {
@@ -85,8 +75,28 @@ public class UserService {
             signUpReq.setPictureUrl(DEFAULT_PICTURE_URL);
         }
 
-        return saveUser(signUpReq);
+        Optional<User> userOptional = userRepository.findByEmail(signUpReq.getEmail());
 
+        if (userOptional.isPresent()) {
+            User user = User.builder()
+                    .id(userOptional.get().getId())
+                    .createTime(userOptional.get().getCreateTime())
+                    .email(userOptional.get().getEmail())
+                    .name(signUpReq.getName())
+                    .nickname(signUpReq.getNickname())
+                    .picture(signUpReq.getPictureUrl())
+                    .gender(signUpReq.getGender())
+                    .birth(signUpReq.getBirth())
+                    .roles(userOptional.get().getRoles())
+                    .build();
+
+            String refreshToken = jwtTokenProvider.generateRefreshToken(user);
+            // 리프레시 토큰 저장
+            user.setRefreshToken(refreshToken);
+            return userRepository.save(user);
+        } else {
+            throw new CustomException(CommonCode.WRONG_SIGNUP);
+        }
     }
 
     public String signIn(User user) {
@@ -95,9 +105,9 @@ public class UserService {
         String refreshToken = jwtTokenProvider.generateRefreshToken(user);
 
         // 리프레시 토큰 저장
-        jwtTokenProvider.saveRefreshToken(user, refreshToken);
+        user.setRefreshToken(refreshToken);
+        userRepository.save(user);
 
-        // 인증 정보를 기반으로 jwt 토큰 생성하여 리턴
         return accessToken;
     }
 }

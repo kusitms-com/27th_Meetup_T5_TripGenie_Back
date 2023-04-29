@@ -2,8 +2,6 @@ package com.simpletripbe.moduleapi.applications.login.jwt;
 
 import com.simpletripbe.moduleapi.applications.login.security.InvalidTokenException;
 import com.simpletripbe.moduleapi.applications.login.service.CustomUserDetailsService;
-import com.simpletripbe.modulecommon.common.exception.CustomException;
-import com.simpletripbe.modulecommon.common.response.CommonCode;
 import com.simpletripbe.moduledomain.login.entity.User;
 import com.simpletripbe.moduledomain.login.repository.UserRepository;
 import io.jsonwebtoken.*;
@@ -20,7 +18,6 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.Optional;
 
 @Slf4j
 @Component
@@ -38,9 +35,7 @@ public class JwtTokenProvider implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
-        System.out.println("keyBytes = " + keyBytes);
         this.key = Keys.hmacShaKeyFor(keyBytes);
-        System.out.println("key = " + key);
     }
 
     public String generateAccessToken(User user) {
@@ -92,7 +87,7 @@ public class JwtTokenProvider implements InitializingBean {
     // Authentication 객체 생성
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserEmail(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
     }
 
     // 토큰 파싱
@@ -100,13 +95,4 @@ public class JwtTokenProvider implements InitializingBean {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
     }
 
-    public void saveRefreshToken(User user, String refreshToken) {
-        Optional<User> userOptional = userRepository.findByEmail(user.getEmail());
-        if (userOptional.isPresent()) {
-            userOptional.get().setRefreshToken(refreshToken);
-            userRepository.save(userOptional.get());
-        } else {
-            throw new CustomException(CommonCode.NOT_EXIST_ID);
-        }
-    }
 }
