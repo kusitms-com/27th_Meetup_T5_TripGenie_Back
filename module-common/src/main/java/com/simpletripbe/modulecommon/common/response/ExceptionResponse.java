@@ -6,6 +6,13 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class ExceptionResponse {
-    private Integer resultCode;
+    private int status;
+    private int code; // common code
     private String message;
+
+    public ExceptionResponse(CommonCode commonCode, String message) {
+        this.status = commonCode.getStatus();
+        this.code = commonCode.getCode();
+        this.message = message;
+    }
 }

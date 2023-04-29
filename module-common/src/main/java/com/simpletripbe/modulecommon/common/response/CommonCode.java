@@ -19,14 +19,19 @@ public enum CommonCode {
     USER_ALREADY_EXIST(200, -1002, "해당 아이디가 이미 존재합니다."),
     NICKNAME_ALREADY_EXIST(200, -1003 , "중복된 닉네임입니다." ),
     INVALID_SOCIAL_LOGIN_TYPE(200, -1004, "알 수 없는 소셜 로그인 형식입니다."),
-    OAUTH_LOGIN_FAILED(200, -1005, "Oauth에서 프로필 정보를 가져오는데 실패했습니다.");
-    ;
+    OAUTH_LOGIN_FAILED(200, -1005, "Oauth에서 프로필 정보를 가져오는데 실패했습니다."),
+
 
     //-2000: MeetUp
 
     //-3000: Posts
 
     //-4000: Gateway
+
+    //-5000: JWT
+    // JWT
+    EMPTY_JWT_TOKEN(400, -5000, "JWT 토큰이 없습니다."),
+    INVALID_TOKEN(400, -5001, "유효하지 않은 토큰입니다.");
 
 
 

@@ -7,11 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
 
-    @Query(value = "select * from user user where user.email = :email", nativeQuery = true)
-    UserDTO findByEmail(@Param("email") String email);
+//    @Query(value = "select * from user user where user.email = :email", nativeQuery = true)
+//    UserDTO findByEmail(@Param("email") String email);
+
+    Optional<User> findByEmail(@Param("email") String email);
 
     @Query(value = "select * from user user where user.email = :email", nativeQuery = true)
     List<UserDTO> findAllByEmail(@Param("email") String email);
