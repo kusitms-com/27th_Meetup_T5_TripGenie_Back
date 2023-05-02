@@ -23,6 +23,10 @@ public class MyPage {
     private String email;
     private String birth;
     private String picture;
+    private String record;
+    private String country;
+    private String content;
+    private String dbsts;
     private LocalDateTime createDate;
     private LocalDateTime updDate;
 

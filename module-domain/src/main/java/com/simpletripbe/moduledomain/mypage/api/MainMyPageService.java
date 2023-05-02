@@ -5,6 +5,7 @@ import com.simpletripbe.moduledomain.community.entity.Community;
 import com.simpletripbe.moduledomain.mypage.dto.MyPageDocumentListDTO;
 import com.simpletripbe.moduledomain.mypage.dto.MyPageProfileListDTO;
 import com.simpletripbe.moduledomain.mypage.dto.MyPageStampListDTO;
+import com.simpletripbe.moduledomain.mypage.dto.StampRecordDTO;
 import com.simpletripbe.moduledomain.mypage.entity.MyPage;
 import com.simpletripbe.moduledomain.mypage.mapper.MyPageMapper;
 import com.simpletripbe.moduledomain.mypage.repository.MyPageRepository;
@@ -46,6 +47,29 @@ public class MainMyPageService {
         List<MyPageStampListDTO> resultList = entityList.stream().map(entity -> myPageMapper.toStampDTO(entity)).collect(Collectors.toList());
 
         return resultList;
+    }
+
+    public String selectMyStampRecord(String country) {
+
+        return myPageRepository.selectMyStampRecord(country);
+    }
+
+    public String insertMyStampRecord(StampRecordDTO stampRecordDTO) {
+
+        myPageRepository.insertMyStampRecord(stampRecordDTO);
+        return "SUCCESS";
+    }
+
+    public String updateMyStampRecord(StampRecordDTO stampRecordDTO) {
+
+        myPageRepository.updateMyStampRecord(stampRecordDTO);
+        return "SUCCESS";
+    }
+
+    public String deleteMyStampRecord(String country) {
+
+        myPageRepository.deleteMyStampRecord(country);
+        return "SUCCESS";
     }
 
 }
