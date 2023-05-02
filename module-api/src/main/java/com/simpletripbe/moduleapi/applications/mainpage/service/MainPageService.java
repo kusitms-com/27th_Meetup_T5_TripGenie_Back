@@ -1,5 +1,6 @@
 package com.simpletripbe.moduleapi.applications.mainpage.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.simpletripbe.moduledomain.mainpage.api.MainPageLogicService;
 import com.simpletripbe.moduledomain.mainpage.dto.MainPageListDTO;
 import com.simpletripbe.moduledomain.mainpage.dto.OrderType;

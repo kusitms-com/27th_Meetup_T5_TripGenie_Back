@@ -1,5 +1,6 @@
 package com.simpletripbe.moduledomain.mainpage.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simpletripbe.moduledomain.mainpage.dto.MainPageListDTO;
 import com.simpletripbe.moduledomain.mainpage.dto.OrderType;
@@ -80,6 +81,12 @@ public class MainPageLogicService {
 
         final HttpEntity<PermissionRequest> httpEntity
                 = new HttpEntity<>(permissionRequest, headers);
+        try {
+            String s = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(httpEntity.getBody());
+            log.info(s);
+        } catch (JsonProcessingException e) {
+            throw new IllegalArgumentException("json 파싱 도중 에러 발생");
+        }
 
         final ResponseEntity<PermissionResponse> responseEntity;
 
