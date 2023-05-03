@@ -1,4 +1,4 @@
-package com.batch.modulebatch.job.mybag;
+package com.batch.modulebatch.job.smsalarm;
 
 import com.simpletripbe.moduledomain.batch.api.BatchService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import java.time.format.DateTimeParseException;
 
 @Slf4j
 @RequiredArgsConstructor
-public class MyBagTasklet implements Tasklet {
+public class AutoAlarmEndTasklet implements Tasklet {
 
     private final BatchService batchService;
 
@@ -28,7 +28,7 @@ public class MyBagTasklet implements Tasklet {
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
 
         try {
-            batchService.saveMyBag(LocalDate.parse(endDate));
+            batchService.saveEndAlarm(LocalDate.parse(endDate));
             return RepeatStatus.FINISHED;
         } catch (DateTimeParseException e) {
             throw new InvalidParameterException("날짜 형식이 올바르지 않습니다.(YYYY-MM-DD)");

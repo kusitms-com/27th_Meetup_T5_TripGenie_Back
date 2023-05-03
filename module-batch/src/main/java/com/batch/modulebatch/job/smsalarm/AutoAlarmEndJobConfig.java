@@ -1,4 +1,4 @@
-package com.batch.modulebatch.job.mybag;
+package com.batch.modulebatch.job.smsalarm;
 
 import com.batch.modulebatch.config.BatchConfig;
 import com.simpletripbe.moduledomain.batch.api.BatchService;
@@ -19,13 +19,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 @ConditionalOnProperty(
         value = BatchConfig.SPRING_BATCH_JOB_NAMES,
-        havingValue = MyBagJobConfig.JOB_NAME
+        havingValue = AutoAlarmEndJobConfig.JOB_NAME
 )
 @Configuration
 @RequiredArgsConstructor
-public class MyBagJobConfig {
+public class AutoAlarmEndJobConfig {
 
-    static final String JOB_NAME = "save-my-bag";
+    static final String JOB_NAME = "auto-alarm-save";
     private static final String STEP_NAME = JOB_NAME + "-step";
 
     private final JobBuilderFactory jobBuilderFactory;
@@ -35,26 +35,26 @@ public class MyBagJobConfig {
 
     @Bean
     @Scheduled(cron = "0 0 1 * * *")
-    public Job saveMyBagJob() {
+    public Job saveAutoAlarmJob() {
         return jobBuilderFactory.get(JOB_NAME)
                 .repository(jobRepository)
-                .start(saveMyBagStep())
+                .start(saveAutoAlarmStep())
                 .build();
     }
 
     @Bean
     @JobScope
-    public Step saveMyBagStep() {
+    public Step saveAutoAlarmStep() {
         return stepBuilderFactory.get(STEP_NAME)
-                .tasklet(MyBagTasklet())
+                .tasklet(AutoAlarmTasklet())
                 .transactionManager(new ResourcelessTransactionManager())
                 .build();
     }
 
     @Bean
     @StepScope
-    public Tasklet MyBagTasklet() {
-        return new MyBagTasklet(batchService);
+    public Tasklet AutoAlarmTasklet() {
+        return new AutoAlarmStartTasklet(batchService);
     }
 
 }
