@@ -20,9 +20,8 @@ public interface MyCarrierRepository extends JpaRepository<MyCarrier, Long>, MyC
     void updateCarrier(@Param("carrier") CarrierListDTO carrierListDTO);
 
     @Modifying
-    @Query(value = "UPDATE MyCarrier m " +
-            "SET m.dbsts = 'S'" +
-            "WHERE m.id = :id", nativeQuery = true)
+    @Query(value = "UPDATE my_carrier m " +
+            "SET m.dbsts = 'S' " +
+            "WHERE m.mycarrier_id = :id", nativeQuery = true)
     void deleteCarrier(@Param("id") Long id);
-
 }

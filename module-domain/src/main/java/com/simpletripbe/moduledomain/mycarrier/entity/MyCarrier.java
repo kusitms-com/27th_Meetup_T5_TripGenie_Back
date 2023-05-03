@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity(name = "mycarrier")
+@Entity
 @Data
 @NoArgsConstructor
 public class MyCarrier {
