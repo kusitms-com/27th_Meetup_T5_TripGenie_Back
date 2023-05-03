@@ -1,12 +1,10 @@
 package com.simpletripbe.moduledomain.batch.api;
 
 import com.simpletripbe.moduledomain.batch.repository.BatchRepository;
-import com.simpletripbe.moduledomain.community.entity.Community;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
