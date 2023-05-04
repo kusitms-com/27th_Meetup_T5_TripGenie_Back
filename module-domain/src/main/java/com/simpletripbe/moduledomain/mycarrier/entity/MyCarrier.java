@@ -1,14 +1,17 @@
 package com.simpletripbe.moduledomain.mycarrier.entity;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Data
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class MyCarrier {
 
     @Id
@@ -19,7 +22,7 @@ public class MyCarrier {
     private String image;
     private String file;
     private String link;
-    private Date createDate;
+    private LocalDateTime createDate;
     private String dbsts;
 
 }
