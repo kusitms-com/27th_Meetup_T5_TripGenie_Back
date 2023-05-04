@@ -22,6 +22,7 @@ repositories {
 dependencies {
 	implementation project(':module-domain')
 	implementation project(':module-common')
+	implementation project(':module-batch')
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.data:spring-data-jpa:2.7.10'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
