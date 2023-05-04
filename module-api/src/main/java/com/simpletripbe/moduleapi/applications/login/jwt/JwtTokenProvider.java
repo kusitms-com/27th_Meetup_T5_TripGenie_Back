@@ -2,8 +2,10 @@ package com.simpletripbe.moduleapi.applications.login.jwt;
 
 import com.simpletripbe.moduleapi.applications.login.security.InvalidTokenException;
 import com.simpletripbe.moduleapi.applications.login.service.CustomUserDetailsService;
+import com.simpletripbe.moduleapi.applications.login.service.RedisService;
+import com.simpletripbe.modulecommon.common.exception.CustomException;
+import com.simpletripbe.modulecommon.common.response.CommonCode;
 import com.simpletripbe.moduledomain.login.entity.User;
-import com.simpletripbe.moduledomain.login.repository.UserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -18,19 +20,22 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Objects;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider implements InitializingBean {
-    private final UserRepository userRepository;
 
     @Value("${jwt.secret}")
     private String secret;
-    private Long ACCESS_TOKEN_EXPIRE_LENGTH = 1000L*60*30; // 30분
-    private Long REFRESH_TOKEN_EXPIRE_LENGTH = 1000L*60*60*24*100; // 100일
+    @Value("${jwt.live.atk}")
+    private Long ACCESS_TOKEN_EXPIRE_LENGTH;
+    @Value("${jwt.live.rtk}")
+    private Long REFRESH_TOKEN_EXPIRE_LENGTH;
     private Key key;
     private final CustomUserDetailsService userDetailsService;
+    private final RedisService redisService;
 
     @Override
     public void afterPropertiesSet() {
@@ -93,6 +98,19 @@ public class JwtTokenProvider implements InitializingBean {
     // 토큰 파싱
     private String getUserEmail(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+    }
+
+    // AccessToken 재발급
+    public String reissueAtk(String refreshToken) {
+        String email = this.getUserEmail(refreshToken);
+        String rtkInRedis = redisService.getValues(email);
+        if (Objects.isNull(rtkInRedis)) {
+            throw new CustomException(CommonCode.EXPIRED_REFRESH_TOKEN);
+        } else if (!rtkInRedis.equals(refreshToken)) {
+            throw new CustomException(CommonCode.INVALID_REFRESH_TOKEN);
+        } else {
+            return generateAccessToken(new User(email));
+        }
     }
 
 }

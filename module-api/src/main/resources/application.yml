@@ -22,6 +22,10 @@ spring:
     jdbc:
       initialize-schema: always
 
+  redis:
+    host: localhost
+    port: 6379
+
 logging:
   level:
     sql: info
@@ -44,6 +48,7 @@ app:
 
   security:
     credential: ${SECRET_CREDENTIAL}
+
 # swagger setting
 springdoc:
   swagger-ui:
@@ -59,3 +64,6 @@ springdoc:
 jwt:
   header: Authorization
   secret: c2FjYmFnYWppLXNwcmluZy1ib290LXNlY3VyaXR5LWp3dC1zZWNyZXQtdmFsdWUteWltLWd3YWsta2ltLWplb24tNC0xLWplb24tam9uZy1zdXJsLTEK
+  live:
+    atk: 1800000 # 60 * 30 * 1000
+    rtk: 2592000000 # 60 * 60 * 24 * 30 * 1000
