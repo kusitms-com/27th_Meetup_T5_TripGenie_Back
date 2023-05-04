@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,7 +22,7 @@ public class SignUpReq {
     @NotBlank
     private String gender;
     @NotBlank
-    private String birth;
+    private LocalDate birth;
     @Email
     @NotBlank
     private String email;

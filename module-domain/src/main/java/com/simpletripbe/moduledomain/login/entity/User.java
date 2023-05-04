@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,10 +32,9 @@ public class User {
     private String nickname;
     private String picture;
     private String gender;
-    private String birth;
+    private LocalDate birth;
 
     private String roles; // ROLE_USER, ROLE_ADMIN
-    private String refreshToken;
 
     @CreationTimestamp
     private LocalDateTime createTime;

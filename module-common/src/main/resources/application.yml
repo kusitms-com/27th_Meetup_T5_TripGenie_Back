@@ -9,3 +9,8 @@ springdoc:
   default-produces-media-type: application/json
   paths-to-match:
     - /**
+
+spring:
+  redis:
+    host: localhost
+    port: 6379
