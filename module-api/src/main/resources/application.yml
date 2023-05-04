@@ -23,8 +23,8 @@ spring:
       initialize-schema: always
 
   redis:
-    host: localhost
-    port: 6379
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
 
 logging:
   level:
@@ -33,16 +33,6 @@ logging:
 # oauth settings
 app:
   google:
-    url: https://accounts.google.com/o/oauth2/v2/auth
-    callback:
-      url: ${GOOGLE_CALLBACK_URL}
-    client:
-      id: ${GOOGLE_CLIENT_ID}
-      secret: ${GOOGLE_CLIENT_SECRET}
-    auth:
-      scope: profile,email
-    token:
-      url: https://oauth2.googleapis.com/token
     userinfo:
       url: https://www.googleapis.com/oauth2/v1/userinfo
 
@@ -63,7 +53,7 @@ springdoc:
 
 jwt:
   header: Authorization
-  secret: c2FjYmFnYWppLXNwcmluZy1ib290LXNlY3VyaXR5LWp3dC1zZWNyZXQtdmFsdWUteWltLWd3YWsta2ltLWplb24tNC0xLWplb24tam9uZy1zdXJsLTEK
+  secret: ${JWT_SECRET}
   live:
     atk: 1800000 # 60 * 30 * 1000
     rtk: 2592000000 # 60 * 60 * 24 * 30 * 1000
