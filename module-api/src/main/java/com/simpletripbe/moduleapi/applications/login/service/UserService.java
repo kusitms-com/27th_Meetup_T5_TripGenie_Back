@@ -49,7 +49,6 @@ public class UserService {
             if (userOptional.get().getNickname() == null) {
                 User user = User.builder()
                         .id(userOptional.get().getId())
-                        .createTime(userOptional.get().getCreateTime())
                         .email(userOptional.get().getEmail())
                         .name(signUpReq.getName())
                         .nickname(signUpReq.getNickname())

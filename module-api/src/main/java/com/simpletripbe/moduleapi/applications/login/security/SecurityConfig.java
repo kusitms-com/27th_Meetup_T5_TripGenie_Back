@@ -69,7 +69,8 @@ public class SecurityConfig {
                         "/error",
                         "/favicon.ico",
                         "/swagger-ui/**",
-                        "/swagger-resources/**"
+                        "/swagger-resources/**",
+                        "/api-docs/**"
                 );
             }
         };
