@@ -22,6 +22,10 @@ spring:
     jdbc:
       initialize-schema: always
 
+  redis:
+    host: localhost
+    port: 6379
+
 logging:
   level:
     sql: info
@@ -40,7 +44,10 @@ app:
     token:
       url: https://oauth2.googleapis.com/token
     userinfo:
-      url: https://www.googleapis.com/oauth2/vi/userinfo
+      url: https://www.googleapis.com/oauth2/v1/userinfo
+
+  security:
+    credential: ${SECRET_CREDENTIAL}
 
 # swagger setting
 springdoc:
@@ -53,3 +60,10 @@ springdoc:
   default-produces-media-type: application/json
   paths-to-match:
     - /**
+
+jwt:
+  header: Authorization
+  secret: c2FjYmFnYWppLXNwcmluZy1ib290LXNlY3VyaXR5LWp3dC1zZWNyZXQtdmFsdWUteWltLWd3YWsta2ltLWplb24tNC0xLWplb24tam9uZy1zdXJsLTEK
+  live:
+    atk: 1800000 # 60 * 30 * 1000
+    rtk: 2592000000 # 60 * 60 * 24 * 30 * 1000
