@@ -1,13 +1,13 @@
 package com.simpletripbe.moduledomain;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication
+@ComponentScan("com.simpletripbe.moduledomain")
+@EntityScan("com.simpletripbe.moduledomain")
+@EnableJpaRepositories("com.simpletripbe.moduledomain")
+@AutoConfiguration
 public class ModuleDomainApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(ModuleDomainApplication.class, args);
-    }
-
 }

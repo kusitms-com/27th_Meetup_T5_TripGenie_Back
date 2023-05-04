@@ -5,12 +5,9 @@ import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
 import com.simpletripbe.moduledomain.mycarrier.mapper.MyCarrierMapper;
 import com.simpletripbe.moduledomain.mycarrier.repository.MyCarrierRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,12 +16,48 @@ public class MainCarrierService {
     private final MyCarrierRepository myCarrierRepository;
     private final MyCarrierMapper myCarrierMapper;
 
-    public List<CarrierListDTO> selectAll() {
+    public List<String> selectAll() {
 
-        List<MyCarrier> entityResult = myCarrierRepository.findAllByDbsts();
+        List<String> entityResult = myCarrierRepository.findAllByDbSts();
+
+        return entityResult;
+    }
+
+    public List<CarrierListDTO> selectDetailAll(String country) {
+
+        List<MyCarrier> entityResult = myCarrierRepository.findAllByCountry(country);
         List<CarrierListDTO> result = myCarrierMapper.toCarrierDto(entityResult);
 
         return result;
+    }
+
+    public void addCarrier(CarrierListDTO carrierListDTO) {
+
+        MyCarrier myCarrier = myCarrierMapper.toEntity(carrierListDTO);
+
+        myCarrierRepository.save(myCarrier);
+    }
+
+    public void editCarrier(CarrierListDTO carrierListDTO) {
+
+        myCarrierRepository.updateCarrier(carrierListDTO);
+    }
+
+    public void deleteCarrier(Long id) {
+
+        myCarrierRepository.deleteCarrier(id);
+    }
+
+    public void addStamp(CarrierListDTO carrierListDTO) {
+
+        MyCarrier myCarrier = myCarrierMapper.toEntity(carrierListDTO);
+
+        myCarrierRepository.save(myCarrier);
+    }
+
+    public void updateDetailInfo(CarrierListDTO carrierListDTO) {
+
+        myCarrierRepository.updateCarrier(carrierListDTO);
     }
 
 }
