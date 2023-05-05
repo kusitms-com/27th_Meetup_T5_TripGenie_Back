@@ -14,7 +14,8 @@ public class Alarm {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "alarm_id")
     private Long id;
-    private String content;
+    private String message;
     private LocalDateTime createDate;
+    private LocalDateTime updDate;
 
 }

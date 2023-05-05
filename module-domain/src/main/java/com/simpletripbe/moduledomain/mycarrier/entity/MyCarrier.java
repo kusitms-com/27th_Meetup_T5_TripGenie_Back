@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -22,6 +23,8 @@ public class MyCarrier {
     private String image;
     private String file;
     private String link;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private LocalDateTime createDate;
     private String dbsts;
 
