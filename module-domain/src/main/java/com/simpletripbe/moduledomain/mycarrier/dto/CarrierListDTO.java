@@ -2,6 +2,8 @@ package com.simpletripbe.moduledomain.mycarrier.dto;
 
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -13,5 +15,7 @@ public class CarrierListDTO {
     private String image;
     private String file;
     private String link;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
 }

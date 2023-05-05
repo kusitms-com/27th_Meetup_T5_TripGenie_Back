@@ -35,26 +35,23 @@ public class MyBagJobConfig {
 
     @Bean
     @Scheduled(cron = "0 0 1 * * *")
-    public Job saveMyBagJob() {
+    public Job saveMyBagJob(
+            MyBagTasklet tasklet
+    ) {
         return jobBuilderFactory.get(JOB_NAME)
                 .repository(jobRepository)
-                .start(saveMyBagStep())
+                .start(saveMyBagStep(tasklet))
                 .build();
     }
 
     @Bean
-    @JobScope
-    public Step saveMyBagStep() {
+    public Step saveMyBagStep(
+            MyBagTasklet tasklet
+    ) {
         return stepBuilderFactory.get(STEP_NAME)
-                .tasklet(MyBagTasklet())
+                .tasklet(tasklet)
                 .transactionManager(new ResourcelessTransactionManager())
                 .build();
-    }
-
-    @Bean
-    @StepScope
-    public Tasklet MyBagTasklet() {
-        return new MyBagTasklet(batchService);
     }
 
 }
