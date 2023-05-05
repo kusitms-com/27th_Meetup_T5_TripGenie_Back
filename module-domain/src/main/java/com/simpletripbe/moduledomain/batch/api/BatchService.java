@@ -1,5 +1,6 @@
 package com.simpletripbe.moduledomain.batch.api;
 
+import com.simpletripbe.moduledomain.batch.dto.AlarmSendDTO;
 import com.simpletripbe.moduledomain.batch.dto.MyBagSaveDTO;
 import com.simpletripbe.moduledomain.batch.repository.BatchRepository;
 import com.simpletripbe.moduledomain.mycarrier.repository.MyCarrierRepository;
@@ -14,7 +15,7 @@ public class BatchService {
 
     private final MyCarrierRepository myCarrierRepository;
 
-    public void saveStartAlarm(LocalDate endDate) {
+    public void saveStartAlarm(AlarmSendDTO alarmSendDTO) {
 
         //TODO -- endDate로 조회하고, 리스트 뽑아온 후 저장하는 로직 구현 필요
 
@@ -27,7 +28,7 @@ public class BatchService {
 
     }
 
-    public void saveEndAlarm(LocalDate endDate) {
+    public void saveEndAlarm(AlarmSendDTO alarmSendDTO) {
 
         //TODO -- endDate로 조회하고, 리스트 뽑아온 후 저장하는 로직 구현 필요
 

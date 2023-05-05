@@ -27,14 +27,11 @@ public class MyBagJobConfig {
 
     static final String JOB_NAME = "save-my-bag";
     private static final String STEP_NAME = JOB_NAME + "-step";
-
     private final JobBuilderFactory jobBuilderFactory;
     private final JobRepository jobRepository;
     private final StepBuilderFactory stepBuilderFactory;
-    private final BatchService batchService;
 
     @Bean
-    @Scheduled(cron = "0 0 1 * * *")
     public Job saveMyBagJob(
             MyBagTasklet tasklet
     ) {

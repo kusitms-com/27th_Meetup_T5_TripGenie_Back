@@ -15,46 +15,39 @@ import org.springframework.batch.support.transaction.ResourcelessTransactionMana
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.Scheduled;
 
 @ConditionalOnProperty(
         value = BatchConfig.SPRING_BATCH_JOB_NAMES,
-        havingValue = AutoAlarmStartJobConfig.JOB_NAME
+        havingValue = AutoAlarmJobConfig.JOB_NAME
 )
 @Configuration
 @RequiredArgsConstructor
-public class AutoAlarmStartJobConfig {
+public class AutoAlarmJobConfig {
 
     static final String JOB_NAME = "auto-alarm-save";
     private static final String STEP_NAME = JOB_NAME + "-step";
-
     private final JobBuilderFactory jobBuilderFactory;
     private final JobRepository jobRepository;
     private final StepBuilderFactory stepBuilderFactory;
-    private final BatchService batchService;
 
     @Bean
-    @Scheduled(cron = "0 0 1 * * *")
-    public Job saveAutoAlarmJob() {
+    public Job saveAutoAlarmJob(
+            AutoAlarmTasklet autoAlarmTasklet
+    ) {
         return jobBuilderFactory.get(JOB_NAME)
                 .repository(jobRepository)
-                .start(saveAutoAlarmStep())
+                .start(saveAutoAlarmStep(autoAlarmTasklet))
                 .build();
     }
 
     @Bean
-    @JobScope
-    public Step saveAutoAlarmStep() {
+    public Step saveAutoAlarmStep(
+            AutoAlarmTasklet autoAlarmTasklet
+    ) {
         return stepBuilderFactory.get(STEP_NAME)
-                .tasklet(AutoAlarmTasklet())
+                .tasklet(autoAlarmTasklet)
                 .transactionManager(new ResourcelessTransactionManager())
                 .build();
-    }
-
-    @Bean
-    @StepScope
-    public Tasklet AutoAlarmTasklet() {
-        return new AutoAlarmStartTasklet(batchService);
     }
 
 }
