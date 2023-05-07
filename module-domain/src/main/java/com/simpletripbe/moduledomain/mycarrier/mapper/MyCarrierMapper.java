@@ -1,5 +1,6 @@
 package com.simpletripbe.moduledomain.mycarrier.mapper;
 
+import com.simpletripbe.moduledomain.batch.dto.MyBagSaveDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
 import org.mapstruct.*;
@@ -29,5 +30,10 @@ public interface MyCarrierMapper {
             @Mapping(source = "link", target = "link", ignore = true)
     })
     MyCarrier toEntity(CarrierListDTO carrierListDTO);
+
+    @Mappings({
+            @Mapping(source = "country", target = "country", ignore = true)
+    })
+    MyCarrier toMyBagEntity(MyBagSaveDTO myBagSaveDTO);
 
 }

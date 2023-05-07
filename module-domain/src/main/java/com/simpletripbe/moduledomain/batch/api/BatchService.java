@@ -1,32 +1,43 @@
 package com.simpletripbe.moduledomain.batch.api;
 
-import com.simpletripbe.moduledomain.batch.repository.BatchRepository;
+import com.simpletripbe.moduledomain.batch.dto.AlarmSendDTO;
+import com.simpletripbe.moduledomain.batch.dto.MyBagSaveDTO;
+import com.simpletripbe.moduledomain.batch.entity.Alarm;
+import com.simpletripbe.moduledomain.batch.mapper.AlarmMapper;
+import com.simpletripbe.moduledomain.batch.repository.AlarmRepository;
+import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
+import com.simpletripbe.moduledomain.mycarrier.mapper.MyCarrierMapper;
+import com.simpletripbe.moduledomain.mycarrier.repository.MyCarrierRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
 public class BatchService {
 
-    private final BatchRepository batchRepository;
+    private final MyCarrierRepository myCarrierRepository;
+    private final MyCarrierMapper myCarrierMapper;
+    private final AlarmRepository alarmRepository;
+    private final AlarmMapper alarmMapper;
 
-    public void saveStartAlarm(LocalDate endDate) {
+    public void saveStartAlarm(AlarmSendDTO alarmSendDTO) {
 
-        //TODO -- endDate로 조회하고, 리스트 뽑아온 후 저장하는 로직 구현 필요
-
-    }
-
-    public void saveMyBag(LocalDate endDate) {
-
-        //TODO -- endDate로 조회하고, 리스트 뽑아온 후 저장하는 로직 구현 필요
+        Alarm alarm = alarmMapper.toEntity(alarmSendDTO);
+        alarmRepository.save(alarm);
 
     }
 
-    public void saveEndAlarm(LocalDate endDate) {
+    public void saveMyBag(MyBagSaveDTO dto) {
 
-        //TODO -- endDate로 조회하고, 리스트 뽑아온 후 저장하는 로직 구현 필요
+        MyCarrier myCarrier = myCarrierMapper.toMyBagEntity(dto);
+        myCarrierRepository.save(myCarrier);
+
+    }
+
+    public void saveEndAlarm(AlarmSendDTO alarmSendDTO) {
+
+        Alarm alarm = alarmMapper.toEntity(alarmSendDTO);
+        alarmRepository.save(alarm);
 
     }
 

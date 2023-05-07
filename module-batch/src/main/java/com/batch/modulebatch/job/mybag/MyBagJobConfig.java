@@ -27,34 +27,28 @@ public class MyBagJobConfig {
 
     static final String JOB_NAME = "save-my-bag";
     private static final String STEP_NAME = JOB_NAME + "-step";
-
     private final JobBuilderFactory jobBuilderFactory;
     private final JobRepository jobRepository;
     private final StepBuilderFactory stepBuilderFactory;
-    private final BatchService batchService;
 
     @Bean
-    @Scheduled(cron = "0 0 1 * * *")
-    public Job saveMyBagJob() {
+    public Job saveMyBagJob(
+            MyBagTasklet tasklet
+    ) {
         return jobBuilderFactory.get(JOB_NAME)
                 .repository(jobRepository)
-                .start(saveMyBagStep())
+                .start(saveMyBagStep(tasklet))
                 .build();
     }
 
     @Bean
-    @JobScope
-    public Step saveMyBagStep() {
+    public Step saveMyBagStep(
+            MyBagTasklet tasklet
+    ) {
         return stepBuilderFactory.get(STEP_NAME)
-                .tasklet(MyBagTasklet())
+                .tasklet(tasklet)
                 .transactionManager(new ResourcelessTransactionManager())
                 .build();
-    }
-
-    @Bean
-    @StepScope
-    public Tasklet MyBagTasklet() {
-        return new MyBagTasklet(batchService);
     }
 
 }
