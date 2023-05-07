@@ -31,7 +31,7 @@ public class MyBagJobConfig {
     private final JobRepository jobRepository;
     private final StepBuilderFactory stepBuilderFactory;
 
-    @Bean
+    @Bean("myBagJob")
     public Job saveMyBagJob(
             MyBagTasklet tasklet
     ) {
@@ -41,7 +41,7 @@ public class MyBagJobConfig {
                 .build();
     }
 
-    @Bean
+    @Bean("myBagStep")
     public Step saveMyBagStep(
             MyBagTasklet tasklet
     ) {
