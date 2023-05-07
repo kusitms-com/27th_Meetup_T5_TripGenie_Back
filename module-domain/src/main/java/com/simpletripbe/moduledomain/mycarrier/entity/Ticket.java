@@ -1,34 +1,31 @@
 package com.simpletripbe.moduledomain.mycarrier.entity;
 
-import com.simpletripbe.moduledomain.login.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MyCarrier {
+public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "mycarrier_id")
+    @Column(name = "ticket_id")
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User userId;
-    private String name;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private String deleteYn;
-    private CarrierType type;
-    private LocalDateTime creDate;
+    @JoinColumn(name = "carrier_id")
+    private MyCarrier carrierId;
+    private String ticket_url;
+    private String image_url;
+    private TicketType type;
+    private String title;
+    private Integer sequence;
+    private LocalDateTime createDate;
     private LocalDateTime updDate;
 
 }

@@ -1,0 +1,28 @@
+package com.simpletripbe.moduledomain.mycarrier.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class CarrierCountry {
+
+    @Id
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "carrier_id")
+    private MyCarrier id;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "country_name")
+    private Country name;
+
+    private LocalDateTime createDate;
+    private LocalDateTime updDate;
+
+}
