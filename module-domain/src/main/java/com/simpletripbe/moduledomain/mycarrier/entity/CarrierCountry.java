@@ -14,9 +14,12 @@ import java.time.LocalDateTime;
 public class CarrierCountry {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "carrierCountry_id")
+    private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "carrier_id")
-    private MyCarrier id;
+    private MyCarrier carrierId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "country_name")

@@ -1,8 +1,7 @@
 package com.simpletripbe.moduledomain.mycarrier.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
-import com.simpletripbe.moduledomain.mycarrier.entity.QMyCarrier;
+import com.simpletripbe.moduledomain.mycarrier.entity.*;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,14 +23,16 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
     }
 
     @Override
-    public List<String> findAllByDbSts() {
+    public List<Country> findAllByDbSts() {
 
         QMyCarrier q = QMyCarrier.myCarrier;
+        QCarrierCountry c = QCarrierCountry.carrierCountry;
 
-        List<String> results = jpaQueryFactory
-                .select(q.country).distinct()
-                .from(q)
-                .where(q.dbsts.eq("A"))
+        List<Country> results = jpaQueryFactory
+                .select(c.name).distinct()
+                .from(c)
+                .leftJoin(q)
+                .where(q.deleteYn.eq("N"))
                 .fetch();
 
         return results;
@@ -39,15 +40,17 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
     }
 
     @Override
-    public List<MyCarrier> findAllByCountry(String country) {
+    public List<CarrierCountry> findAllByCountry(String country) {
 
         QMyCarrier q = QMyCarrier.myCarrier;
+        QCarrierCountry c = QCarrierCountry.carrierCountry;
 
-        List<MyCarrier> results = jpaQueryFactory
-                .selectFrom(q)
+        List<CarrierCountry> results = jpaQueryFactory
+                .selectFrom(c)
+                .leftJoin(q)
                 .distinct()
                 .where(
-                        q.dbsts.eq("A").and(q.country.eq(country))
+                        q.deleteYn.eq("N").and(q.name.eq(country))
                 )
                 .fetch();
 

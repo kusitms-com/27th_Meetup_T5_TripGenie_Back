@@ -4,6 +4,7 @@ import com.simpletripbe.moduleapi.applications.mycarrier.service.MyCarrierServic
 import com.simpletripbe.modulecommon.common.response.ApiResponse;
 import com.simpletripbe.modulecommon.common.util.EmptyResponse;
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
+import com.simpletripbe.moduledomain.mycarrier.entity.Country;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +25,9 @@ public class MyCarrierController {
      */
     @Operation(summary = "컈리어 전체 목록 조회 api", description = "selectAll")
     @GetMapping("selectAll")
-    public ApiResponse<List<String>> selectAll() {
+    public ApiResponse<List<Country>> selectAll() {
 
-        final List<String> responses
+        final List<Country> responses
                 = myCarrierService.selectAll();
 
         return ApiResponse.success(responses);

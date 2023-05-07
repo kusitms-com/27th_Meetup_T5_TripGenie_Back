@@ -2,6 +2,7 @@ package com.simpletripbe.moduleapi.applications.mycarrier.service;
 
 import com.simpletripbe.moduledomain.mycarrier.api.MainCarrierService;
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
+import com.simpletripbe.moduledomain.mycarrier.entity.Country;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +16,7 @@ public class MyCarrierService {
     private final MainCarrierService mainCarrierService;
 
     @Transactional(readOnly = true)
-    public List<String> selectAll() {
+    public List<Country> selectAll() {
         return mainCarrierService
                 .selectAll();
     }
