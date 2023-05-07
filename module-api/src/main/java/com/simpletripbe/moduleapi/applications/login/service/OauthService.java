@@ -1,7 +1,7 @@
 package com.simpletripbe.moduleapi.applications.login.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.simpletripbe.moduleapi.applications.login.dto.GetSocialOAuthRes;
+import com.simpletripbe.moduleapi.applications.login.dto.SocialOAuthDTO;
 import com.simpletripbe.moduleapi.applications.login.dto.GoogleUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +13,12 @@ public class OauthService {
 
     private final GoogleOauth googleOauth;
 
-    public GetSocialOAuthRes socialLogin(String accessToken) throws JsonProcessingException {
+    public SocialOAuthDTO socialLogin(String accessToken) throws JsonProcessingException {
 
-        GetSocialOAuthRes result;
+        SocialOAuthDTO result;
         ResponseEntity<String> userInfoResponse = googleOauth.requestUserInfo(accessToken);
         GoogleUser googleUser = googleOauth.getUserInfo(userInfoResponse);
-        result = new GetSocialOAuthRes(googleUser.getEmail(), googleUser.getName(), googleUser.getPicture());
+        result = new SocialOAuthDTO(googleUser.getEmail(), googleUser.getName(), googleUser.getPicture());
         return result;
     }
 }

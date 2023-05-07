@@ -8,12 +8,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class GetSocialOAuthRes {
+public class SocialOAuthDTO {
     String email;
     String userName;
     String pictureUrl;
 
-    public GetSocialOAuthRes(UserDTO user) {
+    public SocialOAuthDTO(UserDTO user) {
         this.email = user.getEmail();
         this.userName = user.getName();
         this.pictureUrl = user.getPictureUrl();
