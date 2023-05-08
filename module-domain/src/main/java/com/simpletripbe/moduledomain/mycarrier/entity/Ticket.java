@@ -20,14 +20,12 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "carrier_id")
     private MyCarrier carrierId;
-    @Column(name = "ticket_url")
     private String ticketUrl;
-    @Column(name = "image_url")
     private String imageUrl;
     private TicketType type;
     private String title;
     private Integer sequence;
-    private LocalDateTime createDate;
+    private LocalDateTime creDate;
     private LocalDateTime updDate;
 
 }

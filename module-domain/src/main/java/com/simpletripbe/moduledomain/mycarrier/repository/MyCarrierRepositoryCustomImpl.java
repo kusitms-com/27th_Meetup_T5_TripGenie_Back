@@ -53,7 +53,7 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
         QMyCarrier q = QMyCarrier.myCarrier;
 
         List<MyBagTicketDTO> results = jpaQueryFactory
-                .select(constructor(MyBagTicketDTO.class, t.type, t.ticket_url, t.image_url, t.title, t.sequence, q.endDate))
+                .select(constructor(MyBagTicketDTO.class, t.type, t.ticketUrl, t.imageUrl, t.title, t.sequence, q.endDate))
                 .from(t)
                 .leftJoin(t.carrierId, q)
                 .fetch();

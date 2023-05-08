@@ -25,7 +25,7 @@ public class CarrierCountry {
     @JoinColumn(name = "country_name")
     private Country name;
 
-    private LocalDateTime createDate;
+    private LocalDateTime creDate;
     private LocalDateTime updDate;
 
 }

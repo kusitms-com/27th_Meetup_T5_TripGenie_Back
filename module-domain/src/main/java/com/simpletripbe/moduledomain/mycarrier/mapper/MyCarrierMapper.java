@@ -31,7 +31,7 @@ public interface MyCarrierMapper {
             @Mapping(source = "email", target = "email", ignore = true),
             @Mapping(source = "startDate", target = "startDate", ignore = true),
             @Mapping(source = "endDate", target = "endDate", ignore = true),
-            @Mapping(target = "deleteYn", expression = "N"),
+            @Mapping(target = "deleteYn", expression = "java(\"N\")"),
             @Mapping(target = "creDate", expression = "java(java.time.LocalDateTime.now())")
     })
     MyCarrier toCarrierEntity(CarrierListDTO carrierListDTO);
