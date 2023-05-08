@@ -26,6 +26,7 @@ public class MyCarrier {
     private String name;
     private LocalDate startDate;
     private LocalDate endDate;
+    private String email;
     private String deleteYn;
     private CarrierType type;
     private LocalDateTime creDate;

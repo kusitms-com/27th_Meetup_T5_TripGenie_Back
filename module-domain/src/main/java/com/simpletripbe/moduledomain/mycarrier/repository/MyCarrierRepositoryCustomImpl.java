@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @Transactional(readOnly = true)
@@ -23,7 +24,7 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
     }
 
     @Override
-    public List<Country> findAllByDbSts() {
+    public List<String> findAllByEmail(String email) {
 
         QMyCarrier q = QMyCarrier.myCarrier;
         QCarrierCountry c = QCarrierCountry.carrierCountry;
@@ -31,26 +32,26 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
         List<Country> results = jpaQueryFactory
                 .select(c.name).distinct()
                 .from(c)
-                .leftJoin(q)
-                .where(q.deleteYn.eq("N"))
+                .leftJoin(c.carrierId,q)
+                .where(q.deleteYn.eq("N").and(q.email.eq(email)))
                 .fetch();
 
-        return results;
+        return results.stream().map(Country::getName).collect(Collectors.toList());
 
     }
 
     @Override
-    public List<CarrierCountry> findAllByCountry(String country) {
+    public List<Ticket> findTicketByEmail(String email) {
 
         QMyCarrier q = QMyCarrier.myCarrier;
-        QCarrierCountry c = QCarrierCountry.carrierCountry;
+        QTicket t = QTicket.ticket;
 
-        List<CarrierCountry> results = jpaQueryFactory
-                .selectFrom(c)
-                .leftJoin(q)
+        List<Ticket> results = jpaQueryFactory
+                .selectFrom(t)
+                .leftJoin(t.carrierId, q)
                 .distinct()
                 .where(
-                        q.deleteYn.eq("N").and(q.name.eq(country))
+                        q.deleteYn.eq("N").and(q.email.eq(email))
                 )
                 .fetch();
 

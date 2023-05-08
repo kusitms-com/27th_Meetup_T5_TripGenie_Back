@@ -12,9 +12,8 @@ import java.time.LocalDate;
 public class CarrierListDTO {
 
     private String country;
-    private String image;
-    private String file;
-    private String link;
+    private String name;
+    private String email;
     private LocalDate startDate;
     private LocalDate endDate;
 

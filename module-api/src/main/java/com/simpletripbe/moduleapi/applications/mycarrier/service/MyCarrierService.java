@@ -2,6 +2,7 @@ package com.simpletripbe.moduleapi.applications.mycarrier.service;
 
 import com.simpletripbe.moduledomain.mycarrier.api.MainCarrierService;
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.TicketTypeDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.Country;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,15 +17,15 @@ public class MyCarrierService {
     private final MainCarrierService mainCarrierService;
 
     @Transactional(readOnly = true)
-    public List<Country> selectAll() {
+    public List<String> selectAll(String email) {
         return mainCarrierService
-                .selectAll();
+                .selectAll(email);
     }
 
     @Transactional(readOnly = true)
-    public List<CarrierListDTO> selectDetailAll(String country) {
+    public List<TicketTypeDTO> selectTicketAll(String email) {
         return mainCarrierService
-                .selectDetailAll(country);
+                .selectDetailAll(email);
     }
 
     @Transactional(readOnly = true)
@@ -38,8 +39,8 @@ public class MyCarrierService {
     }
 
     @Transactional(readOnly = true)
-    public void deleteOne(Long id) {
-        mainCarrierService.deleteCarrier(id);
+    public void deleteOne(String email) {
+        mainCarrierService.deleteCarrier(email);
     }
 
     @Transactional(readOnly = true)
@@ -48,8 +49,8 @@ public class MyCarrierService {
     }
 
     @Transactional(readOnly = true)
-    public void saveInfo(CarrierListDTO carrierListDTO) {
-        mainCarrierService.updateDetailInfo(carrierListDTO);
+    public void saveInfo(TicketTypeDTO ticketTypeDTO) {
+        mainCarrierService.saveTicketInfo(ticketTypeDTO);
     }
 
 }

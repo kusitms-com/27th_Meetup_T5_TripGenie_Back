@@ -1,5 +1,7 @@
 package com.batch.modulebatch.job.smsalarm;
 
+import com.simpletripbe.moduleapi.applications.login.jwt.JwtFilter;
+import com.simpletripbe.moduleapi.applications.login.jwt.JwtTokenProvider;
 import com.simpletripbe.moduledomain.batch.api.BatchService;
 import com.simpletripbe.moduledomain.batch.dto.AlarmSendDTO;
 import com.simpletripbe.moduledomain.mycarrier.api.MainCarrierService;
@@ -14,6 +16,7 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.InvalidParameterException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;

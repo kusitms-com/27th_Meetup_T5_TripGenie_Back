@@ -13,18 +13,18 @@ public interface MyCarrierRepository extends JpaRepository<MyCarrier, Long>, MyC
 
     @Modifying
     @Query(value = "UPDATE MyCarrier m " +
-            "SET m.country = :#{#carrier.country}," +
-            "m.image = :#{#carrier.image}," +
-            "m.file = :#{#carrier.file}," +
-            "m.link = :#{#carrier.link}" +
-            "WHERE m.id = :#{#carrier.id}", nativeQuery = true)
+            "SET m.name = :#{#carrier.name}," +
+            "m.email = :#{#carrier.email}," +
+            "m.startDate = :#{#carrier.startDate}," +
+            "m.endDate = :#{#carrier.endDate}" +
+            "WHERE m.email = :#{#carrier.email}", nativeQuery = true)
     void updateCarrier(@Param("carrier") CarrierListDTO carrierListDTO);
 
     @Modifying
-    @Query(value = "UPDATE my_carrier m " +
-            "SET m.dbsts = 'S' " +
-            "WHERE m.mycarrier_id = :id", nativeQuery = true)
-    void deleteCarrier(@Param("id") Long id);
+    @Query(value = "UPDATE MyCarrier m " +
+            "SET m.deleteYn = 'Y' " +
+            "WHERE m.email = :email", nativeQuery = true)
+    void deleteCarrier(@Param("email") String email);
 
     @Query(value = "select tm.content from TicketMemo tm " +
             "left outer join Ticket tc on tm.ticketId = tc.id " +

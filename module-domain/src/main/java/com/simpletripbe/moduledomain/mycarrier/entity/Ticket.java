@@ -20,8 +20,10 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "carrier_id")
     private MyCarrier carrierId;
-    private String ticket_url;
-    private String image_url;
+    @Column(name = "ticket_url")
+    private String ticketUrl;
+    @Column(name = "image_url")
+    private String imageUrl;
     private TicketType type;
     private String title;
     private Integer sequence;

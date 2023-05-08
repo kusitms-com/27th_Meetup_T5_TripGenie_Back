@@ -16,10 +16,14 @@ public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "country_name")
-    private Long name;
+    public String name;
     private String continent;
     private String image;
     private LocalDateTime createDate;
     private LocalDateTime updDate;
+
+    public String getName() {
+        return this.name;
+    }
 
 }
