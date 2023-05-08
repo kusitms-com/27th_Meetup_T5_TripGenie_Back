@@ -96,7 +96,7 @@ public class JwtTokenProvider implements InitializingBean {
     }
 
     // 토큰 파싱
-    private String getUserEmail(String token) {
+    public String getUserEmail(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
     }
 

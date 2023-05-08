@@ -1,5 +1,7 @@
 package com.simpletripbe.moduledomain.batch.entity;
 
+import com.simpletripbe.moduledomain.login.entity.User;
+import com.simpletripbe.moduledomain.mycarrier.entity.Country;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,8 +16,11 @@ public class Alarm {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "alarm_id")
     private Long id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User userId;
     private String message;
-    private LocalDateTime createDate;
+    private LocalDateTime creDate;
     private LocalDateTime updDate;
 
 }

@@ -5,9 +5,8 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class AlarmSendDTO {
+public class TicketListDTO {
 
-    private String message;
     private String name;
     private LocalDate startDate;
     private LocalDate endDate;

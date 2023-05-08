@@ -30,7 +30,7 @@ public class AutoAlarmJobConfig {
     private final JobRepository jobRepository;
     private final StepBuilderFactory stepBuilderFactory;
 
-    @Bean
+    @Bean("autoAlarmJob")
     public Job saveAutoAlarmJob(
             AutoAlarmTasklet autoAlarmTasklet
     ) {
@@ -40,7 +40,7 @@ public class AutoAlarmJobConfig {
                 .build();
     }
 
-    @Bean
+    @Bean("autoAlarmStep")
     public Step saveAutoAlarmStep(
             AutoAlarmTasklet autoAlarmTasklet
     ) {

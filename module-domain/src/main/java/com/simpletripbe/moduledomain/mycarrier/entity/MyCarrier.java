@@ -1,8 +1,10 @@
 package com.simpletripbe.moduledomain.mycarrier.entity;
 
+import com.simpletripbe.moduledomain.login.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -19,13 +21,24 @@ public class MyCarrier {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mycarrier_id")
     private Long id;
-    private String country;
-    private String image;
-    private String file;
-    private String link;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User userId;
+    private String name;
     private LocalDate startDate;
     private LocalDate endDate;
-    private LocalDateTime createDate;
-    private String dbsts;
+    private String email;
+    private String deleteYn;
+    private CarrierType type;
+    private LocalDateTime creDate;
+    private LocalDateTime updDate;
+
+    public LocalDate getStartDate() {
+        return this.startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return this.endDate;
+    }
 
 }

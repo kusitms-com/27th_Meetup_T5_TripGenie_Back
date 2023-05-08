@@ -2,8 +2,12 @@ package com.batch.modulebatch.job.mybag;
 
 import com.simpletripbe.moduledomain.batch.api.BatchService;
 import com.simpletripbe.moduledomain.batch.dto.MyBagSaveDTO;
+import com.simpletripbe.moduledomain.batch.dto.MyBagTicketDTO;
+import com.simpletripbe.moduledomain.batch.dto.TicketListDTO;
 import com.simpletripbe.moduledomain.mycarrier.api.MainCarrierService;
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.TicketTypeDTO;
+import com.simpletripbe.moduledomain.mycarrier.entity.CarrierType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.StepContribution;
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.InvalidParameterException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
@@ -29,23 +34,20 @@ public class MyBagTasklet implements Tasklet {
     private final BatchService batchService;
     private final MainCarrierService mainCarrierService;
 
-    @Value("#{jobParameters['country']}")
-    private String country;
-
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
 
         try {
 
-            List<CarrierListDTO> result = mainCarrierService.selectDetailAll(country);
+            List<MyBagTicketDTO> ticketList = mainCarrierService.selectTicketList();
 
-            for (int i=0; i<result.size(); i++) {
+            for (int i=0; i<ticketList.size(); i++) {
 
-                if(LocalDate.now().isAfter(result.get(i).getEndDate())) {
+                if(LocalDate.now().isAfter(ticketList.get(i).getEndDate())) {
 
                     MyBagSaveDTO dto = new MyBagSaveDTO();
-                    dto.setCountry(result.get(i).getCountry());
-                    dto.setEndDate(result.get(i).getEndDate());
+                    dto.setType(CarrierType.STORAGE);
+                    dto.setUpdDate(LocalDateTime.now());
 
                     batchService.saveMyBag(dto);
 

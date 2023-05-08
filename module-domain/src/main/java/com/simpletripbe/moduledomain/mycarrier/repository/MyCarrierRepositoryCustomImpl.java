@@ -1,14 +1,20 @@
 package com.simpletripbe.moduledomain.mycarrier.repository;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
-import com.simpletripbe.moduledomain.mycarrier.entity.QMyCarrier;
+import com.simpletripbe.moduledomain.batch.dto.MyBagTicketDTO;
+import com.simpletripbe.moduledomain.batch.dto.TicketListDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.TicketTypeDTO;
+import com.simpletripbe.moduledomain.mycarrier.entity.*;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.querydsl.core.types.Projections.constructor;
 
 @Repository
 @Transactional(readOnly = true)
@@ -24,14 +30,32 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
     }
 
     @Override
-    public List<String> findAllByDbSts() {
+    public List<String> findAllByEmail(String email) {
 
         QMyCarrier q = QMyCarrier.myCarrier;
+        QCarrierCountry c = QCarrierCountry.carrierCountry;
 
-        List<String> results = jpaQueryFactory
-                .select(q.country).distinct()
-                .from(q)
-                .where(q.dbsts.eq("A"))
+        List<Country> results = jpaQueryFactory
+                .select(c.name).distinct()
+                .from(c)
+                .leftJoin(c.carrierId,q)
+                .where(q.deleteYn.eq("N").and(q.email.eq(email)))
+                .fetch();
+
+        return results.stream().map(Country::getName).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<MyBagTicketDTO> selectTicketList() {
+
+        QTicket t = QTicket.ticket;
+        QMyCarrier q = QMyCarrier.myCarrier;
+
+        List<MyBagTicketDTO> results = jpaQueryFactory
+                .select(constructor(MyBagTicketDTO.class, t.type, t.ticketUrl, t.imageUrl, t.title, t.sequence, q.endDate))
+                .from(t)
+                .leftJoin(t.carrierId, q)
                 .fetch();
 
         return results;
@@ -39,15 +63,31 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
     }
 
     @Override
-    public List<MyCarrier> findAllByCountry(String country) {
+    public List<TicketListDTO> selectCarrierList() {
 
         QMyCarrier q = QMyCarrier.myCarrier;
 
-        List<MyCarrier> results = jpaQueryFactory
-                .selectFrom(q)
+        List<TicketListDTO> results = jpaQueryFactory
+                .select(constructor(TicketListDTO.class, q.startDate, q.endDate, q.name))
+                .from(q)
+                .fetch();
+
+        return results;
+
+    }
+
+    @Override
+    public List<Ticket> findTicketByEmail(String email) {
+
+        QMyCarrier q = QMyCarrier.myCarrier;
+        QTicket t = QTicket.ticket;
+
+        List<Ticket> results = jpaQueryFactory
+                .selectFrom(t)
+                .leftJoin(t.carrierId, q)
                 .distinct()
                 .where(
-                        q.dbsts.eq("A").and(q.country.eq(country))
+                        q.deleteYn.eq("N").and(q.email.eq(email))
                 )
                 .fetch();
 

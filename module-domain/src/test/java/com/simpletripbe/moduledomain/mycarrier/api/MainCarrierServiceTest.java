@@ -1,6 +1,5 @@
 package com.simpletripbe.moduledomain.mycarrier.api;
 
-import com.simpletripbe.moduledomain.ModuleDomainApplication;
 import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
 import com.simpletripbe.moduledomain.mycarrier.repository.MyCarrierRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -12,9 +11,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = ModuleDomainApplication.class)
-public class MainCarrierServiceTest {
+@SpringBootTest
+class MainCarrierServiceTest {
 
     @Autowired
     MainCarrierService mainCarrierService;
@@ -22,8 +22,8 @@ public class MainCarrierServiceTest {
     MyCarrierRepository myCarrierRepository;
 
     @Test
-    @DisplayName(("전체 국가 리스트 조회 TEST"))
-    public void selectAll() {
+    @DisplayName("전체 목록 조회 TEST")
+    void selectAll() {
 
         //given
         MyCarrier content = MyCarrier.builder()
@@ -47,6 +47,14 @@ public class MainCarrierServiceTest {
     }
 
     @Test
+    void selectCarrierList() {
+    }
+
+    @Test
+    void selectTicketList() {
+    }
+
+    @Test
     void selectDetailAll() {
     }
 
@@ -67,6 +75,6 @@ public class MainCarrierServiceTest {
     }
 
     @Test
-    void updateDetailInfo() {
+    void saveTicketInfo() {
     }
 }
