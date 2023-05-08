@@ -53,6 +53,8 @@ public interface MyCarrierMapper {
     Ticket toTicketEntity(TicketTypeDTO ticketTypeDTO);
 
     @Mappings({
+            @Mapping(source = "type", target = "type", ignore = true),
+            @Mapping(source = "updDate", target = "updDate", ignore = true)
     })
     MyCarrier toMyBagEntity(MyBagSaveDTO myBagSaveDTO);
 

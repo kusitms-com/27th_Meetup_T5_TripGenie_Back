@@ -1,5 +1,7 @@
 package com.simpletripbe.moduledomain.mycarrier.api;
 
+import com.simpletripbe.moduledomain.batch.dto.MyBagTicketDTO;
+import com.simpletripbe.moduledomain.batch.dto.TicketListDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketTypeDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.CarrierCountry;
@@ -13,6 +15,8 @@ import com.simpletripbe.moduledomain.mycarrier.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Tuple;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -27,6 +31,20 @@ public class MainCarrierService {
     public List<String> selectAll(String email) {
 
         List<String> entityResult = myCarrierRepository.findAllByEmail(email);
+
+        return entityResult;
+    }
+
+    public List<TicketListDTO> selectCarrierList() {
+
+        List<TicketListDTO> entityResult = myCarrierRepository.selectCarrierList();
+
+        return entityResult;
+    }
+
+    public List<MyBagTicketDTO> selectTicketList() {
+
+        List<MyBagTicketDTO> entityResult = myCarrierRepository.selectTicketList();
 
         return entityResult;
     }

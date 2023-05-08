@@ -4,6 +4,7 @@ import com.simpletripbe.moduledomain.login.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -31,5 +32,13 @@ public class MyCarrier {
     private CarrierType type;
     private LocalDateTime creDate;
     private LocalDateTime updDate;
+
+    public LocalDate getStartDate() {
+        return this.startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return this.endDate;
+    }
 
 }

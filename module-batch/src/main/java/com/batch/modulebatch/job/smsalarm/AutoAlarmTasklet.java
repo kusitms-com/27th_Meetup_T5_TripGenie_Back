@@ -1,9 +1,8 @@
 package com.batch.modulebatch.job.smsalarm;
 
-import com.simpletripbe.moduleapi.applications.login.jwt.JwtFilter;
-import com.simpletripbe.moduleapi.applications.login.jwt.JwtTokenProvider;
 import com.simpletripbe.moduledomain.batch.api.BatchService;
 import com.simpletripbe.moduledomain.batch.dto.AlarmSendDTO;
+import com.simpletripbe.moduledomain.batch.dto.TicketListDTO;
 import com.simpletripbe.moduledomain.mycarrier.api.MainCarrierService;
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
 import lombok.RequiredArgsConstructor;
@@ -31,33 +30,32 @@ public class AutoAlarmTasklet implements Tasklet {
     private final BatchService batchService;
     private final MainCarrierService mainCarrierService;
 
-    @Value("#{jobParameters['country']}")
-    private String country;
-
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
 
         try {
 
-            List<CarrierListDTO> result = mainCarrierService.selectDetailAll(country);
+            List<TicketListDTO> ticketList = mainCarrierService.selectCarrierList();
 
-            for (int i=0; i<result.size(); i++) {
+            for (int i=0; i<ticketList.size(); i++) {
 
-                if(LocalDate.now().isBefore(result.get(i).getStartDate())) {
+                if(LocalDate.now().isBefore(ticketList.get(i).getStartDate())) {
 
                     AlarmSendDTO dto = new AlarmSendDTO();
                     dto.setMessage("여행이 시작되었습니다!");
-                    dto.setStartDate(result.get(i).getStartDate());
-                    dto.setEndDate(result.get(i).getEndDate());
+                    dto.setName(ticketList.get(i).getName());
+                    dto.setStartDate(ticketList.get(i).getStartDate());
+                    dto.setEndDate(ticketList.get(i).getEndDate());
 
                     batchService.saveStartAlarm(dto);
 
-                } else if(LocalDate.now().isAfter(result.get(i).getEndDate())) {
+                } else if(LocalDate.now().isAfter(ticketList.get(i).getEndDate())) {
 
                     AlarmSendDTO dto = new AlarmSendDTO();
                     dto.setMessage("여행이 종료되었습니다!");
-                    dto.setStartDate(result.get(i).getStartDate());
-                    dto.setEndDate(result.get(i).getEndDate());
+                    dto.setName(ticketList.get(i).getName());
+                    dto.setStartDate(ticketList.get(i).getStartDate());
+                    dto.setEndDate(ticketList.get(i).getEndDate());
 
                     batchService.saveEndAlarm(dto);
 

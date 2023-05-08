@@ -1,6 +1,10 @@
 package com.simpletripbe.moduledomain.mycarrier.repository;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.simpletripbe.moduledomain.batch.dto.MyBagTicketDTO;
+import com.simpletripbe.moduledomain.batch.dto.TicketListDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.TicketTypeDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.*;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
@@ -9,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.querydsl.core.types.Projections.constructor;
 
 @Repository
 @Transactional(readOnly = true)
@@ -37,6 +43,36 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
                 .fetch();
 
         return results.stream().map(Country::getName).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<MyBagTicketDTO> selectTicketList() {
+
+        QTicket t = QTicket.ticket;
+        QMyCarrier q = QMyCarrier.myCarrier;
+
+        List<MyBagTicketDTO> results = jpaQueryFactory
+                .select(constructor(MyBagTicketDTO.class, t.type, t.ticket_url, t.image_url, t.title, t.sequence, q.endDate))
+                .from(t)
+                .leftJoin(t.carrierId, q)
+                .fetch();
+
+        return results;
+
+    }
+
+    @Override
+    public List<TicketListDTO> selectCarrierList() {
+
+        QMyCarrier q = QMyCarrier.myCarrier;
+
+        List<TicketListDTO> results = jpaQueryFactory
+                .select(constructor(TicketListDTO.class, q.startDate, q.endDate, q.name))
+                .from(q)
+                .fetch();
+
+        return results;
 
     }
 
