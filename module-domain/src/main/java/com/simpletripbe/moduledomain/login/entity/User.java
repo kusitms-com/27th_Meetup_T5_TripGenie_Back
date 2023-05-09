@@ -20,9 +20,8 @@ import java.util.List;
 public class User extends BaseTimeEntity {
 
     @Id
-    @Column(name = "user_id", unique = true)
-    private Long id;
     private String email;
+
     private String name;
     private String nickname;
     private String picture;

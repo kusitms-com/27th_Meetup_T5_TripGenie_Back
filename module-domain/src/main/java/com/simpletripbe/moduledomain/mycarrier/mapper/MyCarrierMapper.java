@@ -28,17 +28,17 @@ public interface MyCarrierMapper {
 
     @Mappings({
             @Mapping(source = "name", target = "name", ignore = true),
-            @Mapping(source = "email", target = "email", ignore = true),
+            @Mapping(source = "email", target = "user.email", ignore = true),
             @Mapping(source = "startDate", target = "startDate", ignore = true),
             @Mapping(source = "endDate", target = "endDate", ignore = true),
             @Mapping(target = "deleteYn", expression = "java(\"N\")"),
-            @Mapping(target = "creDate", expression = "java(java.time.LocalDateTime.now())")
+//            @Mapping(target = "creDate", expression = "java(java.time.LocalDateTime.now())")
     })
     MyCarrier toCarrierEntity(CarrierListDTO carrierListDTO);
 
     @Mappings({
             @Mapping(source = "country", target = "country", ignore = true),
-            @Mapping(target = "creDate", expression = "java(java.time.LocalDateTime.now())")
+//            @Mapping(target = "creDate", expression = "java(java.time.LocalDateTime.now())")
     })
     CarrierCountry toCarrierCountryEntity(CarrierListDTO carrierListDTO);
 
@@ -48,13 +48,13 @@ public interface MyCarrierMapper {
             @Mapping(source = "imageUrl", target = "imageUrl", ignore = true),
             @Mapping(source = "title", target = "title", ignore = true),
             @Mapping(source = "sequence", target = "sequence", ignore = true),
-            @Mapping(target = "creDate", expression = "java(java.time.LocalDateTime.now())")
+//            @Mapping(target = "creDate", expression = "java(java.time.LocalDateTime.now())")
     })
     Ticket toTicketEntity(TicketTypeDTO ticketTypeDTO);
 
     @Mappings({
             @Mapping(source = "type", target = "type", ignore = true),
-            @Mapping(source = "updDate", target = "updDate", ignore = true)
+//            @Mapping(source = "updDate", target = "updDate", ignore = true)
     })
     MyCarrier toMyBagEntity(MyBagSaveDTO myBagSaveDTO);
 
