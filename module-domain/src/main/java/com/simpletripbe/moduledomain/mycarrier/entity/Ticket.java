@@ -1,30 +1,34 @@
 package com.simpletripbe.moduledomain.mycarrier.entity;
 
+import com.simpletripbe.moduledomain.basetime.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Ticket {
+public class Ticket extends BaseTimeEntity {
 
     @Id
-    @Column(name = "ticket_id", unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ticket_id")
     private Long id;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "carrier_id", referencedColumnName = "carrier_id")
-    private MyCarrier carrierId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "carrier_id")
+    private MyCarrier myCarrier;
+
     private String ticketUrl;
-    private String imageUrl;
+
+    @Enumerated(value = EnumType.STRING)
     private TicketType type;
+
     private String title;
+    private String imageUrl;
     private Integer sequence;
-    private LocalDateTime creDate;
-    private LocalDateTime updDate;
 
 }

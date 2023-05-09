@@ -1,36 +1,38 @@
 package com.simpletripbe.moduledomain.mycarrier.entity;
 
+import com.simpletripbe.moduledomain.basetime.BaseTimeEntity;
 import com.simpletripbe.moduledomain.login.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import org.springframework.cglib.core.Local;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MyCarrier {
+public class MyCarrier extends BaseTimeEntity {
 
     @Id
-    @Column(name = "carrier_id", unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "carrier_id")
     private Long id;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private User userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "email")
+    private User user;
+
     private String name;
+
     private LocalDate startDate;
     private LocalDate endDate;
-    private String email;
+
     private String deleteYn;
+
+    @Enumerated(value = EnumType.STRING)
     private CarrierType type;
-    private LocalDateTime creDate;
-    private LocalDateTime updDate;
 
     public LocalDate getStartDate() {
         return this.startDate;
