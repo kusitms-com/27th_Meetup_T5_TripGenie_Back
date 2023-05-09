@@ -1,31 +1,29 @@
 package com.simpletripbe.moduledomain.mycarrier.entity;
 
+import com.simpletripbe.moduledomain.basetime.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CarrierCountry {
+public class CarrierCountry extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "carrierCountry_id")
+    @Column(name = "carrier_country_id")
     private Long id;
-    @ManyToOne(fetch = FetchType.EAGER)
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "carrier_id")
-    private MyCarrier carrierId;
+    private MyCarrier myCarrier;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_name")
-    private Country name;
-
-    private LocalDateTime creDate;
-    private LocalDateTime updDate;
+    private Country country;
 
 }

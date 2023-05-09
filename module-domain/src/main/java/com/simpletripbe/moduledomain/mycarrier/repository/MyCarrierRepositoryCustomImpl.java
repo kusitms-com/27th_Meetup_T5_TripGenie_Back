@@ -1,10 +1,8 @@
 package com.simpletripbe.moduledomain.mycarrier.repository;
 
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.simpletripbe.moduledomain.batch.dto.MyBagTicketDTO;
 import com.simpletripbe.moduledomain.batch.dto.TicketListDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketTypeDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.*;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
@@ -36,10 +34,10 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
         QCarrierCountry c = QCarrierCountry.carrierCountry;
 
         List<Country> results = jpaQueryFactory
-                .select(c.name).distinct()
+                .select(c.country).distinct()
                 .from(c)
-                .leftJoin(c.carrierId,q)
-                .where(q.deleteYn.eq("N").and(q.email.eq(email)))
+                .leftJoin(c.myCarrier,q)
+                .where(q.deleteYn.eq("N").and(q.user.email.eq(email)))
                 .fetch();
 
         return results.stream().map(Country::getName).collect(Collectors.toList());
@@ -55,7 +53,7 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
         List<MyBagTicketDTO> results = jpaQueryFactory
                 .select(constructor(MyBagTicketDTO.class, t.type, t.ticketUrl, t.imageUrl, t.title, t.sequence, q.endDate))
                 .from(t)
-                .leftJoin(t.carrierId, q)
+                .leftJoin(t.myCarrier, q)
                 .fetch();
 
         return results;
@@ -84,10 +82,10 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
 
         List<Ticket> results = jpaQueryFactory
                 .selectFrom(t)
-                .leftJoin(t.carrierId, q)
+                .leftJoin(t.myCarrier, q)
                 .distinct()
                 .where(
-                        q.deleteYn.eq("N").and(q.email.eq(email))
+                        q.deleteYn.eq("N").and(q.user.email.eq(email))
                 )
                 .fetch();
 

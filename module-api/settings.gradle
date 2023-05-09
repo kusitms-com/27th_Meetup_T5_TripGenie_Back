@@ -1,3 +1,4 @@
 rootProject.name = 'simpleTripBE'
+include 'module-batch'
 include 'module-domain'
 include 'module-common'

@@ -12,7 +12,15 @@ public class MyBagTicketDTO {
     private String ticketUrl;
     private String imageUrl;
     private String title;
-    private String sequence;
+    private Integer sequence;
     private LocalDate endDate;
 
+    public MyBagTicketDTO(TicketType type, String ticketUrl, String imageUrl, String title, Integer sequence, LocalDate endDate) {
+        this.type = type;
+        this.ticketUrl = ticketUrl;
+        this.imageUrl = imageUrl;
+        this.title = title;
+        this.sequence = sequence;
+        this.endDate = endDate;
+    }
 }

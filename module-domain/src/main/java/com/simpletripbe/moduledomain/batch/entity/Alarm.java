@@ -1,26 +1,25 @@
 package com.simpletripbe.moduledomain.batch.entity;
 
+import com.simpletripbe.moduledomain.basetime.BaseTimeEntity;
 import com.simpletripbe.moduledomain.login.entity.User;
-import com.simpletripbe.moduledomain.mycarrier.entity.Country;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
 @NoArgsConstructor
-public class Alarm {
+public class Alarm extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "alarm_id")
     private Long id;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "email")
+    private User user;
+
     private String message;
-    private LocalDateTime creDate;
-    private LocalDateTime updDate;
 
 }

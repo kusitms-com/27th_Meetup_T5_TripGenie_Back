@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
@@ -17,12 +16,12 @@ public class TicketMemo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "memo_id")
     private Long id;
-    @OneToOne(fetch = FetchType.EAGER)
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ticket_id")
-    private Ticket ticketId;
+    private Ticket ticket;
+
     private String content;
     private String image_url;
-    private LocalDateTime createDate;
-    private LocalDateTime updDate;
 
 }
