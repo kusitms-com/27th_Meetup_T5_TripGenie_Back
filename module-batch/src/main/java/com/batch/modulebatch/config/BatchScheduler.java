@@ -14,9 +14,6 @@ public class BatchScheduler {
     @Autowired
     private JobLauncherController jobLauncherController;
 
-    @Autowired
-    private Job myJob;
-
     @Scheduled(cron = "0 0 1 * * ?")
     public void runBatchJob() throws Exception {
         JobParameters jobParameters = new JobParametersBuilder()
