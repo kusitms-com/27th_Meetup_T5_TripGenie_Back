@@ -5,10 +5,7 @@ import com.simpletripbe.moduledomain.batch.api.BatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.JobScope;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.configuration.annotation.*;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
@@ -16,10 +13,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@ConditionalOnProperty(
-        value = BatchConfig.SPRING_BATCH_JOB_NAMES,
-        havingValue = AutoAlarmJobConfig.JOB_NAME
-)
+@EnableBatchProcessing
 @Configuration
 @RequiredArgsConstructor
 public class AutoAlarmJobConfig {

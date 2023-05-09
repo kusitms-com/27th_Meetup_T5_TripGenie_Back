@@ -1,5 +1,6 @@
 package com.batch.modulebatch.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,19 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("job")
 public class JobLauncherController {
 
-    @Autowired
-    private JobLauncher jobLauncher;
+    private final JobLauncher jobLauncher;
 
-    @Autowired
     @Qualifier("myBagJob")
-    private Job myBagJob;
+    private final Job myBagJob;
 
-    @Autowired
     @Qualifier("autoAlarmJob")
-    private Job autoAlarmJob;
+    private final Job autoAlarmJob;
 
     @PostMapping("/batch/start")
     public String startJob(@RequestBody JobParameters jobParameters) throws Exception {
