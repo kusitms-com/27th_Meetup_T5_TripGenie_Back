@@ -36,7 +36,7 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
         QCarrierCountry c = QCarrierCountry.carrierCountry;
 
         List<Country> results = jpaQueryFactory
-                .select(c.name).distinct()
+                .select(c.country).distinct()
                 .from(c)
                 .leftJoin(c.carrierId,q)
                 .where(q.deleteYn.eq("N").and(q.email.eq(email)))

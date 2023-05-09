@@ -15,10 +15,12 @@ public class Alarm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "alarm_id")
-    private Long id;
+    private Long alarmId;
+
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User userId;
+
     private String message;
     private LocalDateTime creDate;
     private LocalDateTime updDate;

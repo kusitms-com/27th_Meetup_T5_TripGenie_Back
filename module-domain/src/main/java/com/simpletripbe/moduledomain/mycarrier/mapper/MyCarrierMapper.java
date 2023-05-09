@@ -37,7 +37,7 @@ public interface MyCarrierMapper {
     MyCarrier toCarrierEntity(CarrierListDTO carrierListDTO);
 
     @Mappings({
-            @Mapping(source = "country", target = "name", ignore = true),
+            @Mapping(source = "country", target = "country", ignore = true),
             @Mapping(target = "creDate", expression = "java(java.time.LocalDateTime.now())")
     })
     CarrierCountry toCarrierCountryEntity(CarrierListDTO carrierListDTO);

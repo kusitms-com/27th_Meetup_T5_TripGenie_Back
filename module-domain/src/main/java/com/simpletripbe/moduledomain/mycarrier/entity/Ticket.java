@@ -14,11 +14,10 @@ import java.time.LocalDateTime;
 public class Ticket {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ticket_id")
+    @Column(name = "ticket_id", unique = true)
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "carrier_id")
+    @JoinColumn(name = "carrier_id", referencedColumnName = "carrier_id")
     private MyCarrier carrierId;
     private String ticketUrl;
     private String imageUrl;

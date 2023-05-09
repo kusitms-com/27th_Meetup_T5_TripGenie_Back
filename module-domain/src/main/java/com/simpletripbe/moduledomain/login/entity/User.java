@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Entity(name = "user")
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,8 +20,7 @@ import java.util.List;
 public class User extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "user_id", unique = true)
     private Long id;
     private String email;
     private String name;

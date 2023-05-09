@@ -18,11 +18,10 @@ import java.util.Date;
 public class MyCarrier {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "mycarrier_id")
+    @Column(name = "carrier_id", unique = true)
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User userId;
     private String name;
     private LocalDate startDate;
