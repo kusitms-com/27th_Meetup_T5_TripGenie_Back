@@ -13,7 +13,10 @@ import org.mapstruct.*;
 public interface AlarmMapper {
 
     @Mappings({
-            @Mapping(source = "message", target = "message", ignore = true),
+            @Mapping(source = "message", target = "message"),
+            @Mapping(source = "name", target = "user.email"),
+            @Mapping(source = "startDate", target = "startDate"),
+            @Mapping(source = "endDate", target = "endDate")
     })
     Alarm toEntity(AlarmSendDTO alarmSendDTO);
 

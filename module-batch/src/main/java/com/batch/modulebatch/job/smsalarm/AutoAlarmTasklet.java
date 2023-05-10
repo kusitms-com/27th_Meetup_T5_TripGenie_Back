@@ -48,6 +48,7 @@ public class AutoAlarmTasklet implements Tasklet {
                     dto.setEndDate(ticketList.get(i).getEndDate());
 
                     batchService.saveStartAlarm(dto);
+                    return RepeatStatus.FINISHED;
 
                 } else if(LocalDate.now().isAfter(ticketList.get(i).getEndDate())) {
 
@@ -58,16 +59,17 @@ public class AutoAlarmTasklet implements Tasklet {
                     dto.setEndDate(ticketList.get(i).getEndDate());
 
                     batchService.saveEndAlarm(dto);
+                    return RepeatStatus.FINISHED;
 
                 }
 
             }
 
-            return RepeatStatus.FINISHED;
         } catch (DateTimeParseException e) {
             throw new InvalidParameterException("날짜 형식이 올바르지 않습니다.(YYYY-MM-DD)");
         }
 
+        return RepeatStatus.FINISHED;
     }
 
 }

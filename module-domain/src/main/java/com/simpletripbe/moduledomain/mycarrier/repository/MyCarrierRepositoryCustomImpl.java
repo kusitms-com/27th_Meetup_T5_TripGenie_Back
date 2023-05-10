@@ -1,6 +1,7 @@
 package com.simpletripbe.moduledomain.mycarrier.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.simpletripbe.moduledomain.batch.dto.MyBagSaveDTO;
 import com.simpletripbe.moduledomain.batch.dto.MyBagTicketDTO;
 import com.simpletripbe.moduledomain.batch.dto.TicketListDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.*;
@@ -57,6 +58,17 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
                 .fetch();
 
         return results;
+
+    }
+
+    @Override
+    public void updateToMyBag(MyBagSaveDTO dto) {
+
+        QMyCarrier q = QMyCarrier.myCarrier;
+
+        jpaQueryFactory.update(q)
+                .set(q.type, dto.getType())
+                .execute();
 
     }
 
