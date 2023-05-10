@@ -14,9 +14,7 @@ public interface AlarmMapper {
 
     @Mappings({
             @Mapping(source = "message", target = "message"),
-            @Mapping(source = "name", target = "user.email"),
-            @Mapping(source = "startDate", target = "startDate"),
-            @Mapping(source = "endDate", target = "endDate")
+//            @Mapping(source = "name", target = "user.email"),
     })
     Alarm toEntity(AlarmSendDTO alarmSendDTO);
 

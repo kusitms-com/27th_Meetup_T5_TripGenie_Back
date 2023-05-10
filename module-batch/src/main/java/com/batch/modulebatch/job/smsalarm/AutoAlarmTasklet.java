@@ -36,6 +36,7 @@ public class AutoAlarmTasklet implements Tasklet {
         try {
 
             List<TicketListDTO> ticketList = mainCarrierService.selectCarrierList();
+            boolean isAlarmCreated = false;
 
             for (int i=0; i<ticketList.size(); i++) {
 
@@ -48,7 +49,7 @@ public class AutoAlarmTasklet implements Tasklet {
                     dto.setEndDate(ticketList.get(i).getEndDate());
 
                     batchService.saveStartAlarm(dto);
-                    return RepeatStatus.FINISHED;
+                    isAlarmCreated = true;
 
                 } else if(LocalDate.now().isAfter(ticketList.get(i).getEndDate())) {
 
@@ -59,17 +60,20 @@ public class AutoAlarmTasklet implements Tasklet {
                     dto.setEndDate(ticketList.get(i).getEndDate());
 
                     batchService.saveEndAlarm(dto);
-                    return RepeatStatus.FINISHED;
+                    isAlarmCreated = true;
 
                 }
 
             }
 
+            if (isAlarmCreated) {
+                return RepeatStatus.FINISHED;
+            } else {
+                return RepeatStatus.CONTINUABLE;
+            }
+
         } catch (DateTimeParseException e) {
             throw new InvalidParameterException("날짜 형식이 올바르지 않습니다.(YYYY-MM-DD)");
         }
-
-        return RepeatStatus.FINISHED;
     }
-
 }
