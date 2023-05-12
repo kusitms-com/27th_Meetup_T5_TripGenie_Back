@@ -22,15 +22,16 @@ public class BatchService {
 
     public void saveStartAlarm(AlarmSendDTO alarmSendDTO) {
 
-        Alarm alarm = alarmMapper.toEntity(alarmSendDTO);
+//        Alarm alarm = alarmMapper.toEntity(alarmSendDTO);
+        Alarm alarm = new Alarm();
+        alarm.setMessage(alarmSendDTO.getMessage());
         alarmRepository.save(alarm);
 
     }
 
     public void saveMyBag(MyBagSaveDTO dto) {
 
-        MyCarrier myCarrier = myCarrierMapper.toMyBagEntity(dto);
-        myCarrierRepository.save(myCarrier);
+        myCarrierRepository.updateToMyBag(dto);
 
     }
 

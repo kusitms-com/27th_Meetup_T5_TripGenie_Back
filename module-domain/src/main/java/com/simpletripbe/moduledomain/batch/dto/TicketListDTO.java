@@ -11,4 +11,11 @@ public class TicketListDTO {
     private LocalDate startDate;
     private LocalDate endDate;
 
+    // 생성자 추가
+    public TicketListDTO(LocalDate startDate, LocalDate endDate, String name) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.name = name;
+    }
+
 }
