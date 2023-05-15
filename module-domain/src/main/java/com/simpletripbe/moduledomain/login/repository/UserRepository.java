@@ -1,25 +1,8 @@
 package com.simpletripbe.moduledomain.login.repository;
 
-import com.simpletripbe.moduledomain.login.dto.UserDTO;
 import com.simpletripbe.moduledomain.login.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
-
-//    @Query(value = "select * from user user where user.email = :email", nativeQuery = true)
-//    UserDTO findByEmail(@Param("email") String email);
-
-    Optional<User> findByEmail(@Param("email") String email);
-
-    @Query(value = "select * from user user where user.email = :email", nativeQuery = true)
-    List<UserDTO> findAllByEmail(@Param("email") String email);
-
-    @Query(value = "select * from user user where user.nickname = :nickname", nativeQuery = true)
-    List<UserDTO> findAllByNickname(@Param("nickname") String nickname);
+public interface UserRepository extends JpaRepository<User, String> {
 
 }
