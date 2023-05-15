@@ -1,4 +1,4 @@
-package com.simpletripbe.moduleapi.applications.login.security;
+package com.simpletripbe.modulecommon.common.exception.jwt;
 
 import com.simpletripbe.modulecommon.common.response.CommonCode;
 

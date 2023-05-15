@@ -1,6 +1,6 @@
 package com.simpletripbe.moduleapi.applications.login.jwt;
 
-import com.simpletripbe.moduleapi.applications.login.security.EmptyJwtTokenException;
+import com.simpletripbe.modulecommon.common.exception.jwt.EmptyJwtTokenException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;

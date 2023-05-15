@@ -23,7 +23,7 @@ public enum CommonCode {
     USER_ALREADY_EXIST(400, -1006, "해당 아이디가 이미 존재합니다."),
     EMPTY_NICKNAME(400, -1007, "닉네임이 존재하지 않습니다."),
     WRONG_SIGNUP(400, -1008, "올바르지 않은 회원가입입니다."),
-    INVALID_GOOGLE_ACCESS_TOKEN(400, -1009, "유효하지 않은 구글 액세스 토큰입니다."),
+    INVALID_GOOGLE_ID_TOKEN(400, -1009, "유효하지 않은 구글 아이디 토큰입니다."),
 
 
     //-2000: MeetUp

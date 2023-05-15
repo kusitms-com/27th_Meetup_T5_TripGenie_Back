@@ -1,8 +1,7 @@
 package com.simpletripbe.moduleapi.applications.login.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.simpletripbe.moduleapi.applications.login.dto.SocialOAuthDTO;
-import com.simpletripbe.moduleapi.applications.login.dto.GoogleUser;
+import com.simpletripbe.moduledomain.login.dto.SocialOAuthDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,12 +12,13 @@ public class OauthService {
 
     private final GoogleOauth googleOauth;
 
+    /**
+     * 소셜 로그인 정보를 받아오는 메서드
+     */
     public SocialOAuthDTO socialLogin(String accessToken) throws JsonProcessingException {
 
-        SocialOAuthDTO result;
         ResponseEntity<String> userInfoResponse = googleOauth.requestUserInfo(accessToken);
-        GoogleUser googleUser = googleOauth.getUserInfo(userInfoResponse);
-        result = new SocialOAuthDTO(googleUser.getEmail(), googleUser.getName(), googleUser.getPicture());
+        SocialOAuthDTO result = googleOauth.getUserInfo(userInfoResponse);
         return result;
     }
 }

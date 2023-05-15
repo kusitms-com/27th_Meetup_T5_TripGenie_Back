@@ -1,6 +1,6 @@
 package com.simpletripbe.moduleapi.applications.login.jwt;
 
-import com.simpletripbe.moduleapi.applications.login.security.InvalidTokenException;
+import com.simpletripbe.modulecommon.common.exception.jwt.InvalidTokenException;
 import com.simpletripbe.moduleapi.applications.login.service.CustomUserDetailsService;
 import com.simpletripbe.moduleapi.applications.login.service.RedisService;
 import com.simpletripbe.modulecommon.common.exception.CustomException;
@@ -37,20 +37,33 @@ public class JwtTokenProvider implements InitializingBean {
     private final CustomUserDetailsService userDetailsService;
     private final RedisService redisService;
 
+    /**
+     * 서명을 위한 key 값 설정
+     */
     @Override
     public void afterPropertiesSet() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
+
+    /**
+     * 액세스 토큰 생성 메서드
+     */
     public String generateAccessToken(User user) {
         return generateToken(user, ACCESS_TOKEN_EXPIRE_LENGTH);
     }
+
+    /**
+     * 리프레시 토큰 생성 메서드
+     */
     public String generateRefreshToken(User user) {
         return generateToken(user, REFRESH_TOKEN_EXPIRE_LENGTH);
     }
 
-    // 토큰 생성
+    /**
+     * 토큰 생성하는 메서드
+     */
     public String generateToken(User user, long tokenExpireLength) {
 
         // payload에 들어갈 정보
@@ -69,7 +82,9 @@ public class JwtTokenProvider implements InitializingBean {
                 .compact();
     }
 
-    // 토큰 유효성 검증
+    /**
+     * 토큰 유효성 검증하는 메서드
+     */
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
@@ -89,21 +104,31 @@ public class JwtTokenProvider implements InitializingBean {
         }
     }
 
-    // Authentication 객체 생성
+    /**
+     * Authentication 객체 생성하는 메서드
+     */
     public Authentication getAuthentication(String token) {
+
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserEmail(token));
         return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
     }
 
-    // 토큰 파싱
+    /**
+     * 토큰 파싱해서 email 가져오는 메서드
+     */
     public String getUserEmail(String token) {
+
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
     }
 
-    // AccessToken 재발급
+    /**
+     * 액세스 토큰 재발급하는 메서드
+     */
     public String reissueAtk(String refreshToken) {
+
         String email = this.getUserEmail(refreshToken);
         String rtkInRedis = redisService.getValues(email);
+
         if (Objects.isNull(rtkInRedis)) {
             throw new CustomException(CommonCode.EXPIRED_REFRESH_TOKEN);
         } else if (!rtkInRedis.equals(refreshToken)) {

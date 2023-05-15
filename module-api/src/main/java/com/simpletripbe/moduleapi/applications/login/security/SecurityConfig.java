@@ -1,8 +1,8 @@
 package com.simpletripbe.moduleapi.applications.login.security;
 
-import com.simpletripbe.moduleapi.applications.login.jwt.JwtAccessDeniedHandler;
-import com.simpletripbe.moduleapi.applications.login.jwt.JwtAuthenticationEntryPoint;
 import com.simpletripbe.moduleapi.applications.login.jwt.JwtSecurityConfig;
+import com.simpletripbe.modulecommon.common.exception.jwt.JwtAccessDeniedHandler;
+import com.simpletripbe.modulecommon.common.exception.jwt.JwtAuthenticationEntryPoint;
 import com.simpletripbe.moduleapi.applications.login.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

@@ -1,10 +1,11 @@
 package com.simpletripbe.moduleapi.applications.login.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.simpletripbe.moduleapi.applications.login.dto.TokenRes;
-import com.simpletripbe.moduleapi.applications.login.dto.UserInfoRes;
-import com.simpletripbe.moduleapi.applications.login.dto.SignUpReq;
-import com.simpletripbe.moduleapi.applications.login.dto.SocialOAuthDTO;
+import com.simpletripbe.moduledomain.login.dto.TokenRes;
+import com.simpletripbe.moduledomain.login.dto.UserInfoRes;
+import com.simpletripbe.moduledomain.login.dto.SignUpReq;
+import com.simpletripbe.moduledomain.login.dto.SocialOAuthDTO;
 import com.simpletripbe.moduleapi.applications.login.jwt.JwtTokenProvider;
 import com.simpletripbe.modulecommon.common.exception.CustomException;
 import com.simpletripbe.modulecommon.common.response.CommonCode;
@@ -14,6 +15,7 @@ import com.simpletripbe.moduledomain.login.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.util.Map;
@@ -30,8 +32,13 @@ public class UserService {
     private final String DEFAULT_PICTURE_URL = "https://toppng.com//public/uploads/preview/user-account-management-logo-user-icon-11562867145a56rus2zwu.png";
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisService redisService;
+    private final OauthService oauthService;
     private ObjectMapper objectMapper = new ObjectMapper();
 
+    /**
+     * 회원가입 서비스 로직
+     */
+    @Transactional
     public CommonResponse signUp(SignUpReq signUpReq) {
 
         // 닉네임이 없는 경우 예외 처리
@@ -44,7 +51,7 @@ public class UserService {
             signUpReq.setPictureUrl(DEFAULT_PICTURE_URL);
         }
 
-        Optional<User> userOptional = userRepository.findByEmail(signUpReq.getEmail());
+        Optional<User> userOptional = userRepository.findById(signUpReq.getEmail());
 
         if (userOptional.isPresent()) {
             if (userOptional.get().getNickname() == null) {
@@ -66,10 +73,7 @@ public class UserService {
                 // 리프레시 토큰 저장
                 redisService.setValues(user.getEmail(), refreshToken, Duration.ofMillis(REFRESH_TOKEN_EXPIRE_LENGTH));
 
-                TokenRes tokenRes = TokenRes.builder()
-                        .accessToken(accessToken)
-                        .refreshToken(refreshToken)
-                        .build();
+                TokenRes tokenRes = new TokenRes(accessToken, refreshToken);
 
                 Map result = objectMapper.convertValue(tokenRes, Map.class);
 
@@ -82,7 +86,15 @@ public class UserService {
         }
     }
 
-    public CommonResponse signIn(Optional<User> userOptional, SocialOAuthDTO socialOAuthDTO) {
+    /**
+     * 로그인 서비스 로직
+     */
+    @Transactional
+    public CommonResponse signIn(String idToken) throws JsonProcessingException {
+
+        SocialOAuthDTO socialOAuthDTO = oauthService.socialLogin(idToken);
+
+        Optional<User> userOptional = userRepository.findById(socialOAuthDTO.getEmail());
 
         if (userOptional.isPresent()) {
 
@@ -90,15 +102,9 @@ public class UserService {
 
             // 필수 정보가 입력되지 않은 경우 -> 즉, 회원가입이 제대로 처리되지 않은 경우
             if (user.getNickname() == null) {
+
                 String accessToken = jwtTokenProvider.generateAccessToken(user);
-
-                UserInfoRes userInfoRes = UserInfoRes.builder()
-                        .email(socialOAuthDTO.getEmail())
-                        .userName(socialOAuthDTO.getUserName())
-                        .pictureUrl(socialOAuthDTO.getPictureUrl())
-                        .accessToken(accessToken)
-                        .build();
-
+                UserInfoRes userInfoRes = new UserInfoRes(socialOAuthDTO, accessToken);
                 Map result = objectMapper.convertValue(userInfoRes, Map.class);
 
                 return new CommonResponse(true, CommonCode.SIGNUP_REQUIRED, result);
@@ -110,14 +116,7 @@ public class UserService {
                 // 리프레시 토큰 저장
                 redisService.setValues(user.getEmail(), refreshToken, Duration.ofMillis(REFRESH_TOKEN_EXPIRE_LENGTH));
 
-                UserInfoRes userInfoRes = UserInfoRes.builder()
-                        .email(socialOAuthDTO.getEmail())
-                        .userName(socialOAuthDTO.getUserName())
-                        .pictureUrl(socialOAuthDTO.getPictureUrl())
-                        .accessToken(accessToken)
-                        .refreshToken(refreshToken)
-                        .build();
-
+                UserInfoRes userInfoRes = new UserInfoRes(socialOAuthDTO, accessToken, refreshToken);
                 Map result = objectMapper.convertValue(userInfoRes, Map.class);
 
                 return new CommonResponse(true, CommonCode.OAUTH_CHECK_SUCCESS, result);
@@ -130,20 +129,17 @@ public class UserService {
             userRepository.save(user);
 
             String accessToken = jwtTokenProvider.generateAccessToken(user);
-
-            UserInfoRes userInfoRes = UserInfoRes.builder()
-                    .email(socialOAuthDTO.getEmail())
-                    .userName(socialOAuthDTO.getUserName())
-                    .pictureUrl(socialOAuthDTO.getPictureUrl())
-                    .accessToken(accessToken)
-                    .build();
-
+            UserInfoRes userInfoRes = new UserInfoRes(socialOAuthDTO, accessToken);
             Map result = objectMapper.convertValue(userInfoRes, Map.class);
 
             return new CommonResponse(true, CommonCode.FIRST_TIME_LOGIN, result);
         }
     }
 
+    /**
+     * 로그아웃 서비스 로직
+     */
+    @Transactional
     public CommonResponse logout(String email) {
 
         String rtkInRedis = redisService.getValues(email);
@@ -156,14 +152,14 @@ public class UserService {
         return new CommonResponse(true, CommonCode.LOGOUT_SUCCESS);
     }
 
+    /**
+     * 토큰 재발급 서비스 로직
+     */
+    @Transactional
     public CommonResponse reissue(String refreshToken) {
 
         String accessToken = jwtTokenProvider.reissueAtk(refreshToken);
-
-        TokenRes tokenRes = TokenRes.builder()
-                .accessToken(accessToken)
-                .build();
-
+        TokenRes tokenRes = new TokenRes(accessToken);
         Map result = objectMapper.convertValue(tokenRes, Map.class);
 
         return new CommonResponse(true, CommonCode.REISSUE_SUCCESS, result);

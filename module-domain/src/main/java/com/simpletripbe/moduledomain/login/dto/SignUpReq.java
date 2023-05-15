@@ -1,4 +1,4 @@
-package com.simpletripbe.moduleapi.applications.login.dto;
+package com.simpletripbe.moduledomain.login.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,16 +14,18 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class SignUpReq {
-    @NotBlank
-    private String name;
-    @NotBlank
-    private String nickname;
-    private String pictureUrl;
-    @NotBlank
-    private String gender;
-    @NotBlank
-    private LocalDate birth;
-    @Email
-    @NotBlank
+
+    @NotBlank(message = "이메일은 필수 입력 값입니다.")
+    @Email(message = "이메일 형식에 맞지 않습니다.")
     private String email;
+
+    @NotBlank(message = "이름은 필수 입력 값입니다.")
+    private String name;
+
+    @NotBlank(message = "닉네임은 필수 입력 값입니다.")
+    private String nickname;
+
+    private String pictureUrl;
+    private String gender;
+    private LocalDate birth;
 }
