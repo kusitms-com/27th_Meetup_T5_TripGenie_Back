@@ -32,48 +32,45 @@ public class AutoAlarmTasklet implements Tasklet {
 
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
+        List<TicketListDTO> ticketList = (List<TicketListDTO>) chunkContext.getStepContext().getStepExecution().getJobExecution()
+                .getExecutionContext().get("ticketList");
+        boolean isAlarmCreated = false;
 
-        try {
+        if (ticketList == null) {
+            ticketList = mainCarrierService.selectCarrierList();
+            chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext()
+                    .put("ticketList", ticketList);
+        }
 
-            List<TicketListDTO> ticketList = mainCarrierService.selectCarrierList();
-            boolean isAlarmCreated = false;
+        for (int i = 0; i < ticketList.size(); i++) {
+            if (LocalDate.now().isBefore(ticketList.get(i).getStartDate())) {
+                AlarmSendDTO dto = new AlarmSendDTO();
+                dto.setMessage("여행이 시작되었습니다!");
+                dto.setName(ticketList.get(i).getName());
+                dto.setStartDate(ticketList.get(i).getStartDate());
+                dto.setEndDate(ticketList.get(i).getEndDate());
+                dto.setEmail(ticketList.get(i).getUser());
 
-            for (int i=0; i<ticketList.size(); i++) {
+                batchService.saveStartAlarm(dto);
+                isAlarmCreated = true;
+            } else if (LocalDate.now().isAfter(ticketList.get(i).getEndDate())) {
+                AlarmSendDTO dto = new AlarmSendDTO();
+                dto.setMessage("여행이 종료되었습니다!");
+                dto.setName(ticketList.get(i).getName());
+                dto.setStartDate(ticketList.get(i).getStartDate());
+                dto.setEndDate(ticketList.get(i).getEndDate());
+                dto.setEmail(ticketList.get(i).getUser());
 
-                if(LocalDate.now().isBefore(ticketList.get(i).getStartDate())) {
-
-                    AlarmSendDTO dto = new AlarmSendDTO();
-                    dto.setMessage("여행이 시작되었습니다!");
-                    dto.setName(ticketList.get(i).getName());
-                    dto.setStartDate(ticketList.get(i).getStartDate());
-                    dto.setEndDate(ticketList.get(i).getEndDate());
-
-                    batchService.saveStartAlarm(dto);
-                    isAlarmCreated = true;
-
-                } else if(LocalDate.now().isAfter(ticketList.get(i).getEndDate())) {
-
-                    AlarmSendDTO dto = new AlarmSendDTO();
-                    dto.setMessage("여행이 종료되었습니다!");
-                    dto.setName(ticketList.get(i).getName());
-                    dto.setStartDate(ticketList.get(i).getStartDate());
-                    dto.setEndDate(ticketList.get(i).getEndDate());
-
-                    batchService.saveEndAlarm(dto);
-                    isAlarmCreated = true;
-
-                }
-
+                batchService.saveEndAlarm(dto);
+                isAlarmCreated = true;
             }
+        }
 
-            if (isAlarmCreated) {
-                return RepeatStatus.FINISHED;
-            } else {
-                return RepeatStatus.CONTINUABLE;
-            }
-
-        } catch (DateTimeParseException e) {
-            throw new InvalidParameterException("날짜 형식이 올바르지 않습니다.(YYYY-MM-DD)");
+        if (isAlarmCreated) {
+            return RepeatStatus.FINISHED;
+        } else {
+            return RepeatStatus.CONTINUABLE;
         }
     }
+
 }

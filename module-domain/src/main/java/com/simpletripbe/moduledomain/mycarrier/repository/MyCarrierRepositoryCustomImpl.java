@@ -78,7 +78,7 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
         QMyCarrier q = QMyCarrier.myCarrier;
 
         List<TicketListDTO> results = jpaQueryFactory
-                .select(constructor(TicketListDTO.class, q.startDate, q.endDate, q.name))
+                .select(constructor(TicketListDTO.class, q.startDate, q.endDate, q.name, q.user))
                 .from(q)
                 .fetch();
 
