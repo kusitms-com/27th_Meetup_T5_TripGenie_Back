@@ -3,10 +3,11 @@ package com.simpletripbe.moduleapi.applications.mycarrier.controller;
 import com.simpletripbe.moduleapi.applications.login.jwt.JwtFilter;
 import com.simpletripbe.moduleapi.applications.login.jwt.JwtTokenProvider;
 import com.simpletripbe.moduleapi.applications.mycarrier.service.MyCarrierService;
+import com.simpletripbe.modulecommon.common.annotation.AuthUser;
 import com.simpletripbe.modulecommon.common.response.ApiResponse;
 import com.simpletripbe.modulecommon.common.util.EmptyResponse;
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketTypeDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.TicketDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketUrlDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -116,21 +117,16 @@ public class MyCarrierController {
     }
 
     /**
-     * 상세페이지 - 전체 티켓 조회
+     * 상세페이지 - 티켓 조회
      */
-    @Operation(summary = "전체 티켓 목록 조회 api", description = "selectTicketAll")
+    @Operation(summary = "티켓 목록 조회 api", description = "selectTicketAll")
     @GetMapping("selectTicketAll")
-    public ApiResponse<List<TicketTypeDTO>> selectTicketAll(
-            HttpServletRequest request
+    public ApiResponse<List<TicketDTO>> selectTicketAll(
+            @AuthUser String email,
+            @RequestParam("id") Long carrierId
     ) {
 
-        String refreshToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
-        String email = jwtTokenProvider.getUserEmail(refreshToken);
-
-        final List<TicketTypeDTO> responses
-                = myCarrierService.selectTicketAll(email);
-
-        return ApiResponse.success(responses);
+        return ApiResponse.success(myCarrierService.selectTicketAll(email, carrierId));
 
     }
 
@@ -140,10 +136,11 @@ public class MyCarrierController {
     @Operation(summary = "티켓 url 추가 api", description = "addTicketInfo")
     @PostMapping("addTicketURL")
     public ApiResponse<TicketUrlDTO> addTicketInfo(
+            @AuthUser String email,
             @RequestBody TicketUrlDTO ticketUrlDTO
     ) {
 
-        return ApiResponse.success(myCarrierService.saveUrl(ticketUrlDTO));
+        return ApiResponse.success(myCarrierService.saveUrl(email, ticketUrlDTO));
 
     }
 
@@ -153,11 +150,12 @@ public class MyCarrierController {
     @Operation(summary = "티켓 파일 추가 api", description = "addTicketFile")
     @PostMapping("addTicketFile")
     public ApiResponse<TicketUrlDTO> addTicketFile(
+            @AuthUser String email,
             @RequestPart(value = "dto") TicketUrlDTO ticketUrlDTO,
             @RequestPart(value = "file") MultipartFile multipartFile
     ) throws FileUploadException {
 
-        return ApiResponse.success(myCarrierService.saveFile(ticketUrlDTO, multipartFile));
+        return ApiResponse.success(myCarrierService.saveFile(email, ticketUrlDTO, multipartFile));
 
     }
 

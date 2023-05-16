@@ -2,7 +2,7 @@ package com.simpletripbe.moduleapi.applications.mycarrier.service;
 
 import com.simpletripbe.moduledomain.mycarrier.api.MainCarrierService;
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketTypeDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.TicketDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketUrlDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
@@ -22,12 +22,6 @@ public class MyCarrierService {
     public List<String> selectAll(String email) {
         return mainCarrierService
                 .selectAll(email);
-    }
-
-    @Transactional(readOnly = true)
-    public List<TicketTypeDTO> selectTicketAll(String email) {
-        return mainCarrierService
-                .selectDetailAll(email);
     }
 
     @Transactional(readOnly = true)
@@ -51,14 +45,19 @@ public class MyCarrierService {
     }
 
     @Transactional
-    public TicketUrlDTO saveUrl(TicketUrlDTO ticketUrlDTO) {
-        return mainCarrierService.saveTicketUrl(ticketUrlDTO);
+    public TicketUrlDTO saveUrl(String email, TicketUrlDTO ticketUrlDTO) {
+        return mainCarrierService.saveTicketUrl(email, ticketUrlDTO);
     }
 
     @Transactional
-    public TicketUrlDTO saveFile(TicketUrlDTO ticketUrlDTO, MultipartFile multipartFile) throws FileUploadException {
-        return mainCarrierService.saveTicketFile(ticketUrlDTO, multipartFile);
+    public TicketUrlDTO saveFile(String email, TicketUrlDTO ticketUrlDTO, MultipartFile multipartFile) throws FileUploadException {
+        return mainCarrierService.saveTicketFile(email, ticketUrlDTO, multipartFile);
     }
 
+    @Transactional
+    public List<TicketDTO> selectTicketAll(String email, Long carrierId) {
+        return mainCarrierService
+                .selectTicketAll(email, carrierId);
+    }
 
 }

@@ -4,6 +4,7 @@ import com.simpletripbe.moduledomain.basetime.BaseTimeEntity;
 import com.simpletripbe.moduledomain.login.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Builder
 public class MyCarrier extends BaseTimeEntity {
 
