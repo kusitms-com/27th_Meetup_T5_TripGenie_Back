@@ -1,8 +1,7 @@
-package com.simpletripbe.moduledomain.community.entity;
+package com.simpletripbe.moduledomain.mypage.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,13 +11,23 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Community {
+public class MyPage {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "community_id")
     private Long id;
+    private String name;
+    private String gender;
+    private String nickname;
+    private String email;
+    private String birth;
+    private String picture;
+    private String record;
+    private String country;
     private String content;
+    private String dbsts;
     private LocalDateTime createDate;
+    private LocalDateTime updDate;
 
 }
-
