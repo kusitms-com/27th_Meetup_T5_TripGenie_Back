@@ -135,7 +135,7 @@ public class MyCarrierController {
      */
     @Operation(summary = "티켓 url 추가 api", description = "addTicketInfo")
     @PostMapping("addTicketURL")
-    public ApiResponse<TicketUrlDTO> addTicketInfo(
+    public ApiResponse<List<TicketDTO>> addTicketInfo(
             @AuthUser String email,
             @RequestBody TicketUrlDTO ticketUrlDTO
     ) {
@@ -149,7 +149,7 @@ public class MyCarrierController {
      */
     @Operation(summary = "티켓 파일 추가 api", description = "addTicketFile")
     @PostMapping("addTicketFile")
-    public ApiResponse<TicketUrlDTO> addTicketFile(
+    public ApiResponse<List<TicketDTO>> addTicketFile(
             @AuthUser String email,
             @RequestPart(value = "dto") TicketUrlDTO ticketUrlDTO,
             @RequestPart(value = "file") MultipartFile multipartFile

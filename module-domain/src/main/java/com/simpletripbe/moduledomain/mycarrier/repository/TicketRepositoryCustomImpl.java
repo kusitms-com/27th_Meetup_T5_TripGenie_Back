@@ -13,7 +13,7 @@ public class TicketRepositoryCustomImpl implements TicketRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
     @Override
-    public List<Ticket> findAllByCarrierIdOrderByCreatedDateDesc(Long carrierId) {
+    public List<Ticket> findAllByCarrierIdOrderBySequenceAsc(Long carrierId) {
 
         QTicket qt = QTicket.ticket;
 
@@ -21,7 +21,7 @@ public class TicketRepositoryCustomImpl implements TicketRepositoryCustom {
                 .select(qt)
                 .from(qt)
                 .where(qt.myCarrier.id.eq(carrierId))
-                .orderBy(qt.createdDate.asc())
+                .orderBy(qt.sequence.asc())
                 .fetch();
 
         return results;

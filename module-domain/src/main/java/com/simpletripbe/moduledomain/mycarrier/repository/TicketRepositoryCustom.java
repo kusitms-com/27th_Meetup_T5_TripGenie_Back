@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface TicketRepositoryCustom {
 
-    List<Ticket> findAllByCarrierIdOrderByCreatedDateDesc(Long carrierId);
+    List<Ticket> findAllByCarrierIdOrderBySequenceAsc(Long carrierId);
 }

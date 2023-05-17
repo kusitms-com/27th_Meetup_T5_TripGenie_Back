@@ -45,16 +45,15 @@ public class MyCarrierService {
     }
 
     @Transactional
-    public TicketUrlDTO saveUrl(String email, TicketUrlDTO ticketUrlDTO) {
+    public List<TicketDTO> saveUrl(String email, TicketUrlDTO ticketUrlDTO) {
         return mainCarrierService.saveTicketUrl(email, ticketUrlDTO);
     }
 
     @Transactional
-    public TicketUrlDTO saveFile(String email, TicketUrlDTO ticketUrlDTO, MultipartFile multipartFile) throws FileUploadException {
+    public List<TicketDTO> saveFile(String email, TicketUrlDTO ticketUrlDTO, MultipartFile multipartFile) throws FileUploadException {
         return mainCarrierService.saveTicketFile(email, ticketUrlDTO, multipartFile);
     }
 
-    @Transactional
     public List<TicketDTO> selectTicketAll(String email, Long carrierId) {
         return mainCarrierService
                 .selectTicketAll(email, carrierId);

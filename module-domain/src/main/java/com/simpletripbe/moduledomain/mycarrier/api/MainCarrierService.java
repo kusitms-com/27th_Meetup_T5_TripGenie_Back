@@ -4,10 +4,7 @@ import com.simpletripbe.modulecommon.common.exception.CustomException;
 import com.simpletripbe.modulecommon.common.response.CommonCode;
 import com.simpletripbe.moduledomain.batch.dto.MyBagTicketDTO;
 import com.simpletripbe.moduledomain.batch.dto.TicketListDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketTypeDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketUrlDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.*;
 import com.simpletripbe.moduledomain.mycarrier.entity.CarrierCountry;
 import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
 import com.simpletripbe.moduledomain.mycarrier.entity.Ticket;
@@ -90,58 +87,51 @@ public class MainCarrierService {
     }
 
     @Transactional
-    public TicketUrlDTO saveTicketUrl(String email, TicketUrlDTO ticketUrlDTO) {
+    public List<TicketDTO> saveTicketUrl(String email, TicketUrlDTO ticketUrlDTO) {
 
-        Optional<MyCarrier> myCarrierOptional = myCarrierRepository.findById(ticketUrlDTO.getId());
+        MyCarrier myCarrier = checkValidCarrierId(email, ticketUrlDTO.getId());
 
-        // 존재하지 않는 캐리어 예외처리
-        if (myCarrierOptional.isEmpty()) {
-            throw new CustomException(CommonCode.NONEXISTENT_CARRIER);
-        }
-
-        // 사용자의 캐리어가 아닌 경우 예외처리
-        if (!myCarrierOptional.get().getUser().getEmail().equals(email)) {
-            throw new CustomException(CommonCode.INVALID_CARRIER_ACCESS);
-        }
-
-        ticketUrlDTO.setMapper(myCarrierOptional.get(), ticketUrlDTO.getUrl());
+        ticketUrlDTO.setMapper(myCarrier, ticketUrlDTO.getUrl(), myCarrier.getTickets().size() + 1);
 
         Ticket ticket = myCarrierMapper.toTicketEntity(ticketUrlDTO);
 
         ticketRepository.save(ticket);
 
-        return new TicketUrlDTO(ticketUrlDTO.getUrl(), ticketUrlDTO.getTitle());
+        return selectTicketAll(email, ticketUrlDTO.getId());
     }
 
     @Transactional
-    public TicketUrlDTO saveTicketFile(String email, TicketUrlDTO ticketUrlDTO, MultipartFile multipartFile) throws FileUploadException {
+    public List<TicketDTO> saveTicketFile(String email, TicketUrlDTO ticketUrlDTO, MultipartFile multipartFile) throws FileUploadException {
 
-        Optional<MyCarrier> myCarrierOptional = myCarrierRepository.findById(ticketUrlDTO.getId());
-
-        // 존재하지 않는 캐리어 예외처리
-        if (myCarrierOptional.isEmpty()) {
-            throw new CustomException(CommonCode.NONEXISTENT_CARRIER);
-        }
-
-        // 사용자의 캐리어가 아닌 경우 예외처리
-        if (!myCarrierOptional.get().getUser().getEmail().equals(email)) {
-            throw new CustomException(CommonCode.INVALID_CARRIER_ACCESS);
-        }
+        MyCarrier myCarrier = checkValidCarrierId(email, ticketUrlDTO.getId());
 
         String url = awsS3Service.uploadFile(multipartFile);
 
-        ticketUrlDTO.setMapper(myCarrierOptional.get(), multipartFile.getOriginalFilename(), url);
+        ticketUrlDTO.setMapper(myCarrier, multipartFile.getOriginalFilename(), url, myCarrier.getTickets().size() + 1);
 
         Ticket ticket = myCarrierMapper.toTicketEntity(ticketUrlDTO);
 
         ticketRepository.save(ticket);
 
-        return new TicketUrlDTO(url, ticketUrlDTO.getTitle());
+        return selectTicketAll(email, ticketUrlDTO.getId());
 
     }
 
-    @Transactional
     public List<TicketDTO> selectTicketAll(String email, Long carrierId) {
+
+        checkValidCarrierId(email, carrierId);
+
+        List<Ticket> tickets = ticketRepository.findAllByCarrierIdOrderBySequenceAsc(carrierId);
+
+        List<TicketDTO> result = myCarrierMapper.toTicketDTO(tickets);
+
+        return result;
+    }
+
+    /**
+     * 전달받은 캐리어 ID가 올바른지 확인하는 메서드
+     */
+    private MyCarrier checkValidCarrierId(String email, Long carrierId) {
 
         Optional<MyCarrier> myCarrierOptional = myCarrierRepository.findById(carrierId);
 
@@ -150,15 +140,14 @@ public class MainCarrierService {
             throw new CustomException(CommonCode.NONEXISTENT_CARRIER);
         }
 
+        MyCarrier myCarrier = myCarrierOptional.get();
+
         // 사용자의 캐리어가 아닌 경우 예외처리
-        if (!myCarrierOptional.get().getUser().getEmail().equals(email)) {
+        if (!myCarrier.getUser().getEmail().equals(email)) {
             throw new CustomException(CommonCode.INVALID_CARRIER_ACCESS);
         }
 
-        List<Ticket> tickets = ticketRepository.findAllByCarrierIdOrderByCreatedDateDesc(carrierId);
-
-        List<TicketDTO> result = myCarrierMapper.toTicketDTO(tickets);
-
-        return result;
+        return myCarrier;
     }
+
 }

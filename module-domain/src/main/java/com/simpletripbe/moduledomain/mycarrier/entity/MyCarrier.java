@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -35,6 +37,10 @@ public class MyCarrier extends BaseTimeEntity {
 
     @Enumerated(value = EnumType.STRING)
     private CarrierType type;
+
+    @OneToMany(mappedBy = "myCarrier")
+    private List<Ticket> tickets = new ArrayList<>();
+
 
     public LocalDate getStartDate() {
         return this.startDate;

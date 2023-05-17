@@ -50,6 +50,7 @@ public interface MyCarrierMapper {
             @Mapping(source = "url", target = "ticketUrl"),
             @Mapping(source = "myCarrier", target = "myCarrier"),
             @Mapping(source = "title", target = "title"),
+            @Mapping(source = "sequence", target = "sequence"),
             @Mapping(source = "id", target = "id", ignore = true)
     })
     Ticket toTicketEntity(TicketUrlDTO ticketUrlDTO);
