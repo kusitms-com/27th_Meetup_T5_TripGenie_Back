@@ -22,6 +22,6 @@ public class TicketMemo {
     private Ticket ticket;
 
     private String content;
-    private String image_url;
+    private String imageUrl;
 
 }

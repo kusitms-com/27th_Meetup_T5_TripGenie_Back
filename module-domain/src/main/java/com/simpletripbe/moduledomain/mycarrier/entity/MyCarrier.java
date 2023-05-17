@@ -4,14 +4,18 @@ import com.simpletripbe.moduledomain.basetime.BaseTimeEntity;
 import com.simpletripbe.moduledomain.login.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Builder
 public class MyCarrier extends BaseTimeEntity {
 
@@ -33,6 +37,9 @@ public class MyCarrier extends BaseTimeEntity {
 
     @Enumerated(value = EnumType.STRING)
     private CarrierType type;
+
+    @OneToMany(mappedBy = "myCarrier")
+    private List<Ticket> tickets = new ArrayList<>();
 
     public LocalDate getStartDate() {
         return this.startDate;

@@ -1,7 +1,7 @@
 package com.simpletripbe.moduleapi.applications.mycarrier.service;
 
 import com.simpletripbe.moduledomain.mycarrier.api.MainTicketService;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketRecordDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.TicketMemoDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,29 +13,19 @@ public class TicketRecordService {
 
     private final MainTicketService mainTicketService;
 
-    public String selectRecord(String ticket) {
-
-        return mainTicketService.selectMyTicketRecord(ticket);
-
+    public void insertTicketMemo(String email, TicketMemoDTO ticketMemoDTO) {
+        mainTicketService.insertTicketMemo(email, ticketMemoDTO);
     }
 
-    public String insertRecord(TicketRecordDTO ticketRecordDTO) {
-
-        return mainTicketService.insertMyStampRecord(ticketRecordDTO);
-
+    public void selectTicketMemo(String email, Long carrierId, Long ticketId) {
+        mainTicketService.selectTicketMemo(email, carrierId, ticketId);
     }
 
-    public String updateRecord(TicketRecordDTO ticketRecordDTO) {
-
-        return mainTicketService.updateMyStampRecord(ticketRecordDTO);
-
+    public void updateTicketMemo(String email, TicketMemoDTO ticketMemoDTO) {
+        mainTicketService.updateTicketMemo(email, ticketMemoDTO);
     }
 
-    public String deleteRecord(String country) {
-
-        return mainTicketService.deleteMyStampRecord(country);
-
+    public void deleteTicketMemo(String email, Long carrierId, Long ticketId) {
+        mainTicketService.deleteTicketMemo(email, carrierId, ticketId);
     }
-
-
 }
