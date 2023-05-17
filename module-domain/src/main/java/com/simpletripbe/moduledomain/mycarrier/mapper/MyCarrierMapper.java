@@ -2,6 +2,7 @@ package com.simpletripbe.moduledomain.mycarrier.mapper;
 
 import com.simpletripbe.moduledomain.batch.dto.MyBagSaveDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.TicketDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketTypeDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketUrlDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.CarrierCountry;
@@ -25,7 +26,7 @@ public interface MyCarrierMapper {
             @Mapping(source = "startDate", target = "startDate", ignore = true),
             @Mapping(source = "endDate", target = "endDate", ignore = true)
     })
-    List<TicketTypeDTO> toTicketDto(List<Ticket> tickets);
+    List<TicketTypeDTO> toTicketTypeDto(List<Ticket> tickets);
 
     @Mappings({
             @Mapping(source = "name", target = "name", ignore = true),
@@ -49,6 +50,7 @@ public interface MyCarrierMapper {
             @Mapping(source = "url", target = "ticketUrl"),
             @Mapping(source = "myCarrier", target = "myCarrier"),
             @Mapping(source = "title", target = "title"),
+            @Mapping(source = "sequence", target = "sequence"),
             @Mapping(source = "id", target = "id", ignore = true)
     })
     Ticket toTicketEntity(TicketUrlDTO ticketUrlDTO);
@@ -59,4 +61,10 @@ public interface MyCarrierMapper {
     })
     MyCarrier toMyBagEntity(MyBagSaveDTO myBagSaveDTO);
 
+    @Mappings({
+            @Mapping(source = "id", target = "id"),
+            @Mapping(source = "title", target = "title"),
+            @Mapping(source = "ticketUrl", target = "ticketUrl")
+    })
+    List<TicketDTO> toTicketDTO(List<Ticket> tickets);
 }

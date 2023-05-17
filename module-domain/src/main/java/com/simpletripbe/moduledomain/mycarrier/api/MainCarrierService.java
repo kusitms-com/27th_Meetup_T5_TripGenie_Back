@@ -4,9 +4,7 @@ import com.simpletripbe.modulecommon.common.exception.CustomException;
 import com.simpletripbe.modulecommon.common.response.CommonCode;
 import com.simpletripbe.moduledomain.batch.dto.MyBagTicketDTO;
 import com.simpletripbe.moduledomain.batch.dto.TicketListDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketTypeDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketUrlDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.*;
 import com.simpletripbe.moduledomain.mycarrier.entity.CarrierCountry;
 import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
 import com.simpletripbe.moduledomain.mycarrier.entity.Ticket;
@@ -22,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -57,7 +57,7 @@ public class MainCarrierService {
     public List<TicketTypeDTO> selectDetailAll(String email) {
 
         List<Ticket> entityResult = myCarrierRepository.findTicketByEmail(email);
-        List<TicketTypeDTO> result = myCarrierMapper.toTicketDto(entityResult);
+        List<TicketTypeDTO> result = myCarrierMapper.toTicketTypeDto(entityResult);
 
         return result;
     }
@@ -89,40 +89,135 @@ public class MainCarrierService {
     }
 
     @Transactional
-    public TicketUrlDTO saveTicketUrl(TicketUrlDTO ticketUrlDTO) {
+    public List<TicketDTO> saveTicketUrl(String email, TicketUrlDTO ticketUrlDTO) {
 
-        Optional<MyCarrier> myCarrierOptional = myCarrierRepository.findById(ticketUrlDTO.getId());
-        if (myCarrierOptional.isEmpty()) {
-            throw new CustomException(CommonCode.NONEXISTENT_CARRIER);
-        }
+        MyCarrier myCarrier = checkValidCarrierId(email, ticketUrlDTO.getId());
 
-        ticketUrlDTO.setMapper(myCarrierOptional.get(), ticketUrlDTO.getUrl());
+        ticketUrlDTO.setMapper(myCarrier, ticketUrlDTO.getUrl(), myCarrier.getTickets().size() + 1);
 
         Ticket ticket = myCarrierMapper.toTicketEntity(ticketUrlDTO);
 
         ticketRepository.save(ticket);
 
-        return new TicketUrlDTO(ticketUrlDTO.getUrl(), ticketUrlDTO.getTitle());
+        return selectTicketAll(email, ticketUrlDTO.getId());
     }
 
     @Transactional
-    public TicketUrlDTO saveTicketFile(TicketUrlDTO ticketUrlDTO, MultipartFile multipartFile) throws FileUploadException {
+    public List<TicketDTO> saveTicketFile(String email, TicketUrlDTO ticketUrlDTO, MultipartFile multipartFile) throws FileUploadException {
 
-        Optional<MyCarrier> myCarrierOptional = myCarrierRepository.findById(ticketUrlDTO.getId());
-        if (myCarrierOptional.isEmpty()) {
-            throw new CustomException(CommonCode.NONEXISTENT_CARRIER);
-        }
+        MyCarrier myCarrier = checkValidCarrierId(email, ticketUrlDTO.getId());
 
         String url = awsS3Service.uploadFile(multipartFile);
 
-        ticketUrlDTO.setMapper(myCarrierOptional.get(), multipartFile.getOriginalFilename(), url);
+        ticketUrlDTO.setMapper(myCarrier, multipartFile.getOriginalFilename(), url, myCarrier.getTickets().size() + 1);
 
         Ticket ticket = myCarrierMapper.toTicketEntity(ticketUrlDTO);
 
         ticketRepository.save(ticket);
 
-        return new TicketUrlDTO(url, ticketUrlDTO.getTitle());
+        return selectTicketAll(email, ticketUrlDTO.getId());
 
     }
 
+    public List<TicketDTO> selectTicketAll(String email, Long carrierId) {
+
+        checkValidCarrierId(email, carrierId);
+
+        List<Ticket> tickets = ticketRepository.findAllByCarrierIdOrderBySequenceAsc(carrierId);
+
+        List<TicketDTO> result = myCarrierMapper.toTicketDTO(tickets);
+
+        return result;
+    }
+
+    @Transactional
+    public void updateTicketOrder(String email, TicketEditListDTO ticketEditListDTO) {
+
+        MyCarrier myCarrier = checkValidCarrierId(email, ticketEditListDTO.getCarrierId());
+
+        checkValidTicketList(myCarrier, ticketEditListDTO.getTicketEditDTOList());
+
+        ticketRepository.updateTicketSequence(ticketEditListDTO.getTicketEditDTOList());
+
+    }
+
+    @Transactional
+    public void updateTicketTitle(String email, TicketEditDTO ticketEditDTO) {
+
+        MyCarrier myCarrier = checkValidCarrierId(email, ticketEditDTO.getCarrierId());
+
+        checkValidTicketId(myCarrier, ticketEditDTO.getTicketId());
+
+        ticketRepository.updateTicketTitle(ticketEditDTO);
+
+    }
+
+    @Transactional
+    public void deleteTicket(String email, Long carrierId, Long ticketId) {
+
+        MyCarrier myCarrier = checkValidCarrierId(email, carrierId);
+
+        checkValidTicketId(myCarrier, ticketId);
+
+        ticketRepository.deleteById(ticketId);
+
+    }
+
+    /**
+     * 전달받은 캐리어 ID가 올바른지 확인하는 메서드
+     */
+    private MyCarrier checkValidCarrierId(String email, Long carrierId) {
+
+        Optional<MyCarrier> myCarrierOptional = myCarrierRepository.findById(carrierId);
+
+        // 존재하지 않는 캐리어 예외처리
+        if (myCarrierOptional.isEmpty()) {
+            throw new CustomException(CommonCode.NONEXISTENT_CARRIER);
+        }
+
+        MyCarrier myCarrier = myCarrierOptional.get();
+
+        // 사용자의 캐리어가 아닌 경우 예외처리
+        if (!myCarrier.getUser().getEmail().equals(email)) {
+            throw new CustomException(CommonCode.INVALID_CARRIER_ACCESS);
+        }
+
+        return myCarrier;
+    }
+
+    /**
+     * 전달받은 티켓 리스트들이 캐리어에 존재하는지 확인하는 메서드
+     */
+    private void checkValidTicketList(MyCarrier myCarrier, List<TicketEditDTO> ticketEditDTOList) {
+
+        List<Ticket> tickets = myCarrier.getTickets();
+
+        Set<Long> ticketIdSet = tickets.stream()
+                .map(Ticket::getId)
+                .collect(Collectors.toSet());
+
+        boolean existTicket = ticketEditDTOList.stream()
+                .map(t -> t.getTicketId())
+                .allMatch(ticketIdSet::contains);
+
+        if (!existTicket) {
+            throw new CustomException(CommonCode.NONEXISTENT_TICKET);
+        }
+    }
+
+    /**
+     * 전달받은 티켓이 캐리어에 존재하는지 확인하는 메서드
+     */
+    private void checkValidTicketId(MyCarrier myCarrier, Long ticketId) {
+
+        List<Ticket> tickets = myCarrier.getTickets();
+
+        Set<Long> ticketIdSet = tickets.stream()
+                .map(Ticket::getId)
+                .collect(Collectors.toSet());
+
+        if (!ticketIdSet.contains(ticketId)) {
+            throw new CustomException(CommonCode.NONEXISTENT_TICKET);
+        }
+    }
 }

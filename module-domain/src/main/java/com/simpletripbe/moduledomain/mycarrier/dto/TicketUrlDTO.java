@@ -17,20 +17,18 @@ public class TicketUrlDTO {
 
     private MyCarrier myCarrier;
     private String title;
+    private Integer sequence;
 
-    public void setMapper(MyCarrier myCarrier, String title) {
+    public void setMapper(MyCarrier myCarrier, String title, Integer sequence) {
         this.myCarrier = myCarrier;
         this.title = title;
+        this.sequence = sequence;
     }
 
-    public void setMapper(MyCarrier myCarrier, String title, String url) {
+    public void setMapper(MyCarrier myCarrier, String title, String url, Integer sequence) {
         this.myCarrier = myCarrier;
         this.title = title;
         this.url = url;
-    }
-
-    public TicketUrlDTO(String url, String title) {
-        this.url = url;
-        this.title = title;
+        this.sequence = sequence;
     }
 }
