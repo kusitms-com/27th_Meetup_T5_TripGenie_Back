@@ -66,4 +66,9 @@ public class MyCarrierService {
     public void updateTicketTitle(String email, TicketEditDTO ticketEditDTO) {
         mainCarrierService.updateTicketTitle(email, ticketEditDTO);
     }
+
+    @Transactional
+    public void deleteTicket(String email, Long carrierId, Long ticketId) {
+        mainCarrierService.deleteTicket(email, carrierId, ticketId);
+    }
 }

@@ -146,9 +146,20 @@ public class MainCarrierService {
 
         MyCarrier myCarrier = checkValidCarrierId(email, ticketEditDTO.getCarrierId());
 
-        checkValidTicketId(myCarrier, ticketEditDTO);
+        checkValidTicketId(myCarrier, ticketEditDTO.getTicketId());
 
         ticketRepository.updateTicketTitle(ticketEditDTO);
+
+    }
+
+    @Transactional
+    public void deleteTicket(String email, Long carrierId, Long ticketId) {
+
+        MyCarrier myCarrier = checkValidCarrierId(email, carrierId);
+
+        checkValidTicketId(myCarrier, ticketId);
+
+        ticketRepository.deleteById(ticketId);
 
     }
 
@@ -197,7 +208,7 @@ public class MainCarrierService {
     /**
      * 전달받은 티켓이 캐리어에 존재하는지 확인하는 메서드
      */
-    private void checkValidTicketId(MyCarrier myCarrier, TicketEditDTO ticketEditDTO) {
+    private void checkValidTicketId(MyCarrier myCarrier, Long ticketId) {
 
         List<Ticket> tickets = myCarrier.getTickets();
 
@@ -205,9 +216,8 @@ public class MainCarrierService {
                 .map(Ticket::getId)
                 .collect(Collectors.toSet());
 
-        if (!ticketIdSet.contains(ticketEditDTO.getTicketId())) {
+        if (!ticketIdSet.contains(ticketId)) {
             throw new CustomException(CommonCode.NONEXISTENT_TICKET);
         }
-
     }
 }

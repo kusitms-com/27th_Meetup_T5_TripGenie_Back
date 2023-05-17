@@ -189,4 +189,19 @@ public class MyCarrierController {
 
     }
 
+    /**
+     * 티켓 삭제
+     */
+    @Operation(summary = "티켓 삭제 api", description = "deleteTicket")
+    @DeleteMapping("delete/{carrierId}/ticket")
+    public ApiResponse<EmptyResponse> deleteTicket(
+            @AuthUser String email,
+            @PathVariable Long carrierId,
+            @RequestParam("id") Long ticketId
+    ) {
+
+        myCarrierService.deleteTicket(email, carrierId, ticketId);
+
+        return ApiResponse.success(EmptyResponse.of());
+    }
 }
