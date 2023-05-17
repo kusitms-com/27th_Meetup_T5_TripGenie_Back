@@ -27,6 +27,7 @@ public class User extends BaseTimeEntity {
     private String picture;
     private String gender;
     private LocalDate birth;
+    private Integer cash;
 
     private String roles; // ROLE_USER, ROLE_ADMIN
 
