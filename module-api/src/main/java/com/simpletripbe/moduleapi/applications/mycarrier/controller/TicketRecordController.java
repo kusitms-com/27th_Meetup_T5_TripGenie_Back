@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "TicketRecordController", description = "티켓 기록 컨트롤러")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/ticket/memo")
+@RequestMapping(value = "/v1/ticket/memo")
 public class TicketRecordController {
 
     private final TicketRecordService ticketRecordService;
@@ -70,7 +70,7 @@ public class TicketRecordController {
      * 티켓 메모 삭제
      */
     @Operation(summary = "나의 티켓 기록 삭제 api", description = "deleteTicketMemo")
-    @DeleteMapping("")
+    @DeleteMapping("{carrierId}")
     public ApiResponse<EmptyResponse> deleteTicketMemo(
             @AuthUser String email,
             @PathVariable Long carrierId,

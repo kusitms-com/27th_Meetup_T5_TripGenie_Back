@@ -44,6 +44,13 @@ public class MainTicketService {
 
         Ticket ticket = checkValidTicketId(myCarrier, ticketMemoDTO.getTicketId());
 
+        Optional<TicketMemo> ticketMemoOptional = ticketMemoRepository.findByTicketId(ticket.getId());
+
+        // 이미 티켓 메모가 존재하는 경우 예외처리
+        if (ticketMemoOptional.isPresent()) {
+            throw new CustomException(CommonCode.TICKET_MEMO_ALREADY_EXIST);
+        }
+
         if (multipartFile.isEmpty()) {
             ticketMemoDTO.setMapper(ticket, null);
         } else {
@@ -97,24 +104,25 @@ public class MainTicketService {
         }
 
         TicketMemo ticketMemo = ticketMemoOptional.get();
-        // 티켓 메모의 이미지가 존재하는 경우에
-        if (ticketMemo.getImageUrl() != null) {
-            // 이미지를 수정한다면
-            if (!multipartFile.isEmpty()) {
-                // 기존 이미지 삭제하고
+
+        // 티켓 메모의 이미지를 수정하는 경우
+        if (!multipartFile.isEmpty()) {
+            // 기존에 이미지가 존재했다면
+            if (ticketMemo.getImageUrl() != null) {
+                // 해당 이미지 삭제
                 awsS3Service.deleteFile(ticketMemo.getImageUrl().replace(s3Url, ""));
-                // 새로운 이미지 업로드
-                url = awsS3Service.uploadFile(multipartFile);
-            } else {
+            }
+            url = awsS3Service.uploadFile(multipartFile);
+        } else {
+            if (ticketMemo.getImageUrl() != null) {
                 url = ticketMemo.getImageUrl();
             }
         }
 
         ticketMemoDTO.setMapper(ticket, url, ticketMemo.getId());
-
         ticketMemoRepository.updateTicketMemo(ticketMemoDTO);
 
-        return new TicketMemoRes(ticketMemo.getImageUrl());
+        return new TicketMemoRes(url);
 
     }
 

@@ -1,5 +1,6 @@
 package com.simpletripbe.moduledomain.mycarrier.entity;
 
+import com.simpletripbe.moduledomain.basetime.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Builder
-public class TicketMemo {
+public class TicketMemo extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

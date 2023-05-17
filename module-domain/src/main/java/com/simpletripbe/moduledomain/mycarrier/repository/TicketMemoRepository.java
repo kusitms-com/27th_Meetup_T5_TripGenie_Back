@@ -14,6 +14,6 @@ public interface TicketMemoRepository extends JpaRepository<TicketMemo, Long> {
     Optional<TicketMemo> findByTicketId(Long ticketId);
 
     @Modifying
-    @Query(value = "update TicketMemo tm set tm.content = :#{#ticketMemo.content}, tm.image_url = :#{#ticketMemo.imageUrl} where tm.id = :#{#ticketMemo.ticketMemoId}", nativeQuery = true)
+    @Query(value = "update ticket_memo tm set tm.content = :#{#ticketMemo.content}, tm.image_url = :#{#ticketMemo.imageUrl}, tm.modified_date = CURRENT_TIMESTAMP where tm.memo_id = :#{#ticketMemo.ticketMemoId}", nativeQuery = true)
     void updateTicketMemo(@Param("ticketMemo") TicketMemoDTO ticketMemo);
 }
