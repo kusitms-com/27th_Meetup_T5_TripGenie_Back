@@ -1,10 +1,7 @@
 package com.simpletripbe.moduleapi.applications.mycarrier.service;
 
 import com.simpletripbe.moduledomain.mycarrier.api.MainCarrierService;
-import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketOrderListDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketUrlDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.stereotype.Service;
@@ -61,7 +58,12 @@ public class MyCarrierService {
     }
 
     @Transactional
-    public void updateTicketOrder(List<TicketOrderListDTO> ticketOrderListDTOS) {
-        mainCarrierService.updateTicketOrder(ticketOrderListDTOS);
+    public void updateTicketOrder(String email, TicketEditListDTO ticketEditListDTO) {
+        mainCarrierService.updateTicketOrder(email, ticketEditListDTO);
+    }
+
+    @Transactional
+    public void updateTicketTitle(String email, TicketEditDTO ticketEditDTO) {
+        mainCarrierService.updateTicketTitle(email, ticketEditDTO);
     }
 }

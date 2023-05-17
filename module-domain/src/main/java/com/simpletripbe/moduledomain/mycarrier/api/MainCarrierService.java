@@ -20,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -129,9 +131,24 @@ public class MainCarrierService {
     }
 
     @Transactional
-    public void updateTicketOrder(List<TicketOrderListDTO> ticketOrderListDTOS) {
+    public void updateTicketOrder(String email, TicketEditListDTO ticketEditListDTO) {
 
-        ticketRepository.updateTicketSequence(ticketOrderListDTOS);
+        MyCarrier myCarrier = checkValidCarrierId(email, ticketEditListDTO.getCarrierId());
+
+        checkValidTicketList(myCarrier, ticketEditListDTO.getTicketEditDTOList());
+
+        ticketRepository.updateTicketSequence(ticketEditListDTO.getTicketEditDTOList());
+
+    }
+
+    @Transactional
+    public void updateTicketTitle(String email, TicketEditDTO ticketEditDTO) {
+
+        MyCarrier myCarrier = checkValidCarrierId(email, ticketEditDTO.getCarrierId());
+
+        checkValidTicketId(myCarrier, ticketEditDTO);
+
+        ticketRepository.updateTicketTitle(ticketEditDTO);
 
     }
 
@@ -157,4 +174,40 @@ public class MainCarrierService {
         return myCarrier;
     }
 
+    /**
+     * 전달받은 티켓 리스트들이 캐리어에 존재하는지 확인하는 메서드
+     */
+    private void checkValidTicketList(MyCarrier myCarrier, List<TicketEditDTO> ticketEditDTOList) {
+
+        List<Ticket> tickets = myCarrier.getTickets();
+
+        Set<Long> ticketIdSet = tickets.stream()
+                .map(Ticket::getId)
+                .collect(Collectors.toSet());
+
+        boolean existTicket = ticketEditDTOList.stream()
+                .map(t -> t.getTicketId())
+                .allMatch(ticketIdSet::contains);
+
+        if (!existTicket) {
+            throw new CustomException(CommonCode.NONEXISTENT_TICKET);
+        }
+    }
+
+    /**
+     * 전달받은 티켓이 캐리어에 존재하는지 확인하는 메서드
+     */
+    private void checkValidTicketId(MyCarrier myCarrier, TicketEditDTO ticketEditDTO) {
+
+        List<Ticket> tickets = myCarrier.getTickets();
+
+        Set<Long> ticketIdSet = tickets.stream()
+                .map(Ticket::getId)
+                .collect(Collectors.toSet());
+
+        if (!ticketIdSet.contains(ticketEditDTO.getTicketId())) {
+            throw new CustomException(CommonCode.NONEXISTENT_TICKET);
+        }
+
+    }
 }

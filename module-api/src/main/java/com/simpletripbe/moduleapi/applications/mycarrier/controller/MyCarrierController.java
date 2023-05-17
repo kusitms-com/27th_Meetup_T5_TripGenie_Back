@@ -6,10 +6,7 @@ import com.simpletripbe.moduleapi.applications.mycarrier.service.MyCarrierServic
 import com.simpletripbe.modulecommon.common.annotation.AuthUser;
 import com.simpletripbe.modulecommon.common.response.ApiResponse;
 import com.simpletripbe.modulecommon.common.util.EmptyResponse;
-import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketOrderListDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketUrlDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -135,7 +132,7 @@ public class MyCarrierController {
      * 상세 페이지 - 티켓 링크 저장
      */
     @Operation(summary = "티켓 url 추가 api", description = "addTicketInfo")
-    @PostMapping("addTicketURL")
+    @PostMapping("addTicket/url")
     public ApiResponse<List<TicketDTO>> addTicketInfo(
             @AuthUser String email,
             @RequestBody TicketUrlDTO ticketUrlDTO
@@ -149,7 +146,7 @@ public class MyCarrierController {
      * 상세 페이지 - 티켓 이미지, 파일 저장
      */
     @Operation(summary = "티켓 파일 추가 api", description = "addTicketFile")
-    @PostMapping("addTicketFile")
+    @PostMapping("addTicket/file")
     public ApiResponse<List<TicketDTO>> addTicketFile(
             @AuthUser String email,
             @RequestPart(value = "dto") TicketUrlDTO ticketUrlDTO,
@@ -164,12 +161,29 @@ public class MyCarrierController {
      * 편집 - 티켓 순서 변경
      */
     @Operation(summary = "티켓 순서 변경 api", description = "updateTicketOrder")
-    @PutMapping("updateTicketOrder")
+    @PutMapping("updateTicket/order")
     public ApiResponse<EmptyResponse> updateTicketOrder(
-            @RequestBody List<TicketOrderListDTO> ticketOrderListDTOS
+            @AuthUser String email,
+            @RequestBody TicketEditListDTO ticketEditListDTO
     ) {
 
-        myCarrierService.updateTicketOrder(ticketOrderListDTOS);
+        myCarrierService.updateTicketOrder(email, ticketEditListDTO);
+
+        return ApiResponse.success(EmptyResponse.of());
+
+    }
+
+    /**
+     * 편집 - 티켓 이름 변경
+     */
+    @Operation(summary = "티켓 순서 변경 api", description = "updateTicketOrder")
+    @PutMapping("updateTicket/title")
+    public ApiResponse<EmptyResponse> updateTicketTitle(
+            @AuthUser String email,
+            @RequestBody TicketEditDTO ticketEditDTO
+    ) {
+
+        myCarrierService.updateTicketTitle(email, ticketEditDTO);
 
         return ApiResponse.success(EmptyResponse.of());
 

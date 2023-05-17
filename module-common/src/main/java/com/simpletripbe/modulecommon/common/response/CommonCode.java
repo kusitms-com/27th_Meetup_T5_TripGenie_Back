@@ -29,6 +29,7 @@ public enum CommonCode {
     //-2000: MeetUp
     NONEXISTENT_CARRIER(400, -2000, "존재하지 않는 캐리어입니다."),
     INVALID_CARRIER_ACCESS(400, -2001, "사용자의 캐리어가 아닙니다."),
+    NONEXISTENT_TICKET(400, -2002, "주어진 캐리어에 존재하지 않는 티켓입니다."),
     //-3000: Posts
     WRONG_FILE_FORMAT(400, -3000, "잘못된 형식의 파일입니다."),
     FILE_UPLOAD_FAIL(400, -3001, "파일 업로드에 실패했습니다"),

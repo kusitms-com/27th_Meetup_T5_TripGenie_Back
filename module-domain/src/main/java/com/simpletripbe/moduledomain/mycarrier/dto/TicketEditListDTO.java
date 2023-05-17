@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-public class TicketOrderListDTO {
+public class TicketEditListDTO {
 
-    private Long id;
-    private Integer sequence;
+    private Long carrierId;
+    private List<TicketEditDTO> ticketEditDTOList;
 
 }
