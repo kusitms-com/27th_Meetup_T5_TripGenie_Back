@@ -2,6 +2,7 @@ package com.simpletripbe.moduleapi.applications.mycarrier.service;
 
 import com.simpletripbe.moduledomain.mycarrier.api.MainTicketService;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketMemoDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.TicketMemoRes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,8 @@ public class TicketRecordService {
         mainTicketService.insertTicketMemo(email, ticketMemoDTO);
     }
 
-    public void selectTicketMemo(String email, Long carrierId, Long ticketId) {
-        mainTicketService.selectTicketMemo(email, carrierId, ticketId);
+    public TicketMemoRes selectTicketMemo(String email, Long carrierId, Long ticketId) {
+        return mainTicketService.selectTicketMemo(email, carrierId, ticketId);
     }
 
     public void updateTicketMemo(String email, TicketMemoDTO ticketMemoDTO) {

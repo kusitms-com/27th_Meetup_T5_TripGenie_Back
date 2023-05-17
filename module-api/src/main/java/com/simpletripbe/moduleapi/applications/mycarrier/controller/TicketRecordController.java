@@ -5,6 +5,7 @@ import com.simpletripbe.modulecommon.common.annotation.AuthUser;
 import com.simpletripbe.modulecommon.common.response.ApiResponse;
 import com.simpletripbe.modulecommon.common.util.EmptyResponse;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketMemoDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.TicketMemoRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -32,15 +33,14 @@ public class TicketRecordController {
 
     @Operation(summary = "나의 티켓 기록 조회 api", description = "selectTicketMemo")
     @GetMapping("{carrierId}")
-    public ApiResponse<EmptyResponse> selectTicketMemo(
+    public ApiResponse<TicketMemoRes> selectTicketMemo(
             @AuthUser String email,
             @PathVariable Long carrierId,
             @RequestParam("id") Long ticketId
     ) {
 
-        ticketRecordService.selectTicketMemo(email, carrierId, ticketId);
+        return ApiResponse.success(ticketRecordService.selectTicketMemo(email, carrierId, ticketId));
 
-        return ApiResponse.success(EmptyResponse.of());
     }
 
     @Operation(summary = "나의 티켓 기록 수정 api", description = "updateTicketMemo")

@@ -1,6 +1,7 @@
 package com.simpletripbe.moduledomain.mycarrier.mapper;
 
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketMemoDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.TicketMemoRes;
 import com.simpletripbe.moduledomain.mycarrier.entity.TicketMemo;
 import org.mapstruct.*;
 
@@ -19,4 +20,9 @@ public interface TicketMemoMapper {
     })
     TicketMemo toTicketMemoEntity(TicketMemoDTO ticketMemoDTO);
 
+    @Mappings({
+            @Mapping(source = "imageUrl", target = "imageUrl"),
+            @Mapping(source = "content", target = "content")
+    })
+    TicketMemoRes toTicketMemoRes(TicketMemo ticketMemo);
 }

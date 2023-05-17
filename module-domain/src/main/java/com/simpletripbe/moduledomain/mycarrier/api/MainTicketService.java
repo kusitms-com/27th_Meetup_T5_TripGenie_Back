@@ -3,6 +3,7 @@ package com.simpletripbe.moduledomain.mycarrier.api;
 import com.simpletripbe.modulecommon.common.exception.CustomException;
 import com.simpletripbe.modulecommon.common.response.CommonCode;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketMemoDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.TicketMemoRes;
 import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
 import com.simpletripbe.moduledomain.mycarrier.entity.Ticket;
 import com.simpletripbe.moduledomain.mycarrier.entity.TicketMemo;
@@ -25,6 +26,11 @@ public class MainTicketService {
 
     public void insertTicketMemo(String email, TicketMemoDTO ticketMemoDTO) {
 
+        // 내용과 이미지 모두 null인 경우 예외처리
+        if (ticketMemoDTO.getContent() == null && ticketMemoDTO.getImageUrl() == null) {
+            throw new CustomException(CommonCode.EMPTY_CONTENT);
+        }
+
         MyCarrier myCarrier = checkValidCarrierId(email, ticketMemoDTO.getCarrierId());
 
         Ticket ticket = checkValidTicketId(myCarrier, ticketMemoDTO.getTicketId());
@@ -37,8 +43,19 @@ public class MainTicketService {
 
     }
 
-    public void selectTicketMemo(String email, Long carrierId, Long ticketId) {
+    public TicketMemoRes selectTicketMemo(String email, Long carrierId, Long ticketId) {
 
+        MyCarrier myCarrier = checkValidCarrierId(email, carrierId);
+
+        checkValidTicketId(myCarrier, ticketId);
+
+        Optional<TicketMemo> ticketMemoOptional = ticketMemoRepository.findByTicketId(ticketId);
+
+        if (ticketMemoOptional.isPresent()) {
+            return ticketMemoMapper.toTicketMemoRes(ticketMemoOptional.get());
+        } else {
+            return new TicketMemoRes();
+        }
 
     }
 
