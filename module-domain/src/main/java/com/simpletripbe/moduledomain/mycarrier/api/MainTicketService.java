@@ -121,6 +121,25 @@ public class MainTicketService {
     @Transactional
     public void deleteTicketMemo(String email, Long carrierId, Long ticketId) {
 
+        MyCarrier myCarrier = checkValidCarrierId(email, carrierId);
+
+        checkValidTicketId(myCarrier, ticketId);
+
+        Optional<TicketMemo> ticketMemoOptional = ticketMemoRepository.findByTicketId(ticketId);
+
+        if (ticketMemoOptional.isEmpty()) {
+            throw new CustomException(CommonCode.NONEXISTENT_TICKET_MEMO);
+        }
+
+        TicketMemo ticketMemo = ticketMemoOptional.get();
+
+        // 이미지가 존재하는 경우 S3 이미지 삭제
+        if (ticketMemo.getImageUrl() != null) {
+            awsS3Service.deleteFile(ticketMemoOptional.get().getImageUrl().replace(s3Url, ""));
+        }
+
+        ticketMemoRepository.delete(ticketMemo);
+
     }
 
     /**
