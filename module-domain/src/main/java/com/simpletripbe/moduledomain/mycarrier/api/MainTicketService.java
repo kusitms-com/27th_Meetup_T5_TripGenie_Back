@@ -11,7 +11,11 @@ import com.simpletripbe.moduledomain.mycarrier.mapper.TicketMemoMapper;
 import com.simpletripbe.moduledomain.mycarrier.repository.MyCarrierRepository;
 import com.simpletripbe.moduledomain.mycarrier.repository.TicketMemoRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,14 +24,19 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MainTicketService {
 
+    @Value("${cloud.aws.s3.url}")
+    private String s3Url;
     private final MyCarrierRepository myCarrierRepository;
     private final TicketMemoRepository ticketMemoRepository;
     private final TicketMemoMapper ticketMemoMapper;
+    private final AwsS3Service awsS3Service;
 
-    public void insertTicketMemo(String email, TicketMemoDTO ticketMemoDTO) {
+
+    @Transactional
+    public TicketMemoRes insertTicketMemo(String email, TicketMemoDTO ticketMemoDTO, MultipartFile multipartFile) throws FileUploadException {
 
         // 내용과 이미지 모두 null인 경우 예외처리
-        if (ticketMemoDTO.getContent() == null && ticketMemoDTO.getImageUrl() == null) {
+        if (ticketMemoDTO.getContent() == null && multipartFile.isEmpty()) {
             throw new CustomException(CommonCode.EMPTY_CONTENT);
         }
 
@@ -35,11 +44,18 @@ public class MainTicketService {
 
         Ticket ticket = checkValidTicketId(myCarrier, ticketMemoDTO.getTicketId());
 
-        ticketMemoDTO.setMapper(ticket);
+        if (multipartFile.isEmpty()) {
+            ticketMemoDTO.setMapper(ticket, null);
+        } else {
+            String url = awsS3Service.uploadFile(multipartFile);
+            ticketMemoDTO.setMapper(ticket, url);
+        }
 
         TicketMemo ticketMemo = ticketMemoMapper.toTicketMemoEntity(ticketMemoDTO);
 
         ticketMemoRepository.save(ticketMemo);
+
+        return new TicketMemoRes(ticketMemo.getImageUrl());
 
     }
 
@@ -59,11 +75,50 @@ public class MainTicketService {
 
     }
 
+    @Transactional
+    public TicketMemoRes updateTicketMemo(String email, TicketMemoDTO ticketMemoDTO, MultipartFile multipartFile) throws FileUploadException {
 
-    public void updateTicketMemo(String email, TicketMemoDTO ticketMemoDTO) {
+        String url = null;
+
+        // 내용과 이미지 모두 null인 경우 예외처리
+        if (ticketMemoDTO.getContent() == null && multipartFile.isEmpty()) {
+            throw new CustomException(CommonCode.EMPTY_CONTENT);
+        }
+
+        MyCarrier myCarrier = checkValidCarrierId(email, ticketMemoDTO.getCarrierId());
+
+        Ticket ticket = checkValidTicketId(myCarrier, ticketMemoDTO.getTicketId());
+
+        Optional<TicketMemo> ticketMemoOptional = ticketMemoRepository.findByTicketId(ticketMemoDTO.getTicketId());
+
+        // 티켓 메모가 존재하지 않는 경우 예외처리
+        if (ticketMemoOptional.isEmpty()) {
+            throw new CustomException(CommonCode.NONEXISTENT_TICKET_MEMO);
+        }
+
+        TicketMemo ticketMemo = ticketMemoOptional.get();
+        // 티켓 메모의 이미지가 존재하는 경우에
+        if (ticketMemo.getImageUrl() != null) {
+            // 이미지를 수정한다면
+            if (!multipartFile.isEmpty()) {
+                // 기존 이미지 삭제하고
+                awsS3Service.deleteFile(ticketMemo.getImageUrl().replace(s3Url, ""));
+                // 새로운 이미지 업로드
+                url = awsS3Service.uploadFile(multipartFile);
+            } else {
+                url = ticketMemo.getImageUrl();
+            }
+        }
+
+        ticketMemoDTO.setMapper(ticket, url, ticketMemo.getId());
+
+        ticketMemoRepository.updateTicketMemo(ticketMemoDTO);
+
+        return new TicketMemoRes(ticketMemo.getImageUrl());
 
     }
 
+    @Transactional
     public void deleteTicketMemo(String email, Long carrierId, Long ticketId) {
 
     }

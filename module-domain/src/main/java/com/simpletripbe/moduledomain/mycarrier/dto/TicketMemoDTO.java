@@ -20,9 +20,17 @@ public class TicketMemoDTO {
     private String content;
 
     private Ticket ticket;
+    private Long ticketMemoId;
 
-    public void setMapper(Ticket ticket) {
+    public void setMapper(Ticket ticket, String imageUrl) {
         this.ticket = ticket;
+        this.imageUrl = imageUrl;
+    }
+
+    public void setMapper(Ticket ticket, String imageUrl, Long ticketMemoId) {
+        this.ticket = ticket;
+        this.imageUrl = imageUrl;
+        this.ticketMemoId = ticketMemoId;
     }
 }
 
