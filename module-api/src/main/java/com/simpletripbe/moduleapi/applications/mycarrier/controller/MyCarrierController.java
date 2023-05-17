@@ -8,6 +8,7 @@ import com.simpletripbe.modulecommon.common.response.ApiResponse;
 import com.simpletripbe.modulecommon.common.util.EmptyResponse;
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.TicketOrderListDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketUrlDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -156,6 +157,21 @@ public class MyCarrierController {
     ) throws FileUploadException {
 
         return ApiResponse.success(myCarrierService.saveFile(email, ticketUrlDTO, multipartFile));
+
+    }
+
+    /**
+     * 편집 - 티켓 순서 변경
+     */
+    @Operation(summary = "티켓 순서 변경 api", description = "updateTicketOrder")
+    @PutMapping("updateTicketOrder")
+    public ApiResponse<EmptyResponse> updateTicketOrder(
+            @RequestBody List<TicketOrderListDTO> ticketOrderListDTOS
+    ) {
+
+        myCarrierService.updateTicketOrder(ticketOrderListDTOS);
+
+        return ApiResponse.success(EmptyResponse.of());
 
     }
 

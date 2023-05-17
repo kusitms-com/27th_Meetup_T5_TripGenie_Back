@@ -1,6 +1,7 @@
 package com.simpletripbe.moduledomain.mycarrier.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.simpletripbe.moduledomain.mycarrier.dto.TicketOrderListDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,4 +29,14 @@ public class TicketRepositoryCustomImpl implements TicketRepositoryCustom {
 
     }
 
+    @Override
+    public void updateTicketSequence(List<TicketOrderListDTO> ticketOrderListDTOS) {
+
+        QTicket qt = QTicket.ticket;
+
+        ticketOrderListDTOS.forEach(t -> jpaQueryFactory.update(qt)
+                .set(qt.sequence, t.getSequence())
+                .where(qt.id.eq(t.getId()))
+                .execute());
+    }
 }

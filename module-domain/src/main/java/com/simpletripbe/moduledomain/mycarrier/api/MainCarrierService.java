@@ -128,6 +128,13 @@ public class MainCarrierService {
         return result;
     }
 
+    @Transactional
+    public void updateTicketOrder(List<TicketOrderListDTO> ticketOrderListDTOS) {
+
+        ticketRepository.updateTicketSequence(ticketOrderListDTOS);
+
+    }
+
     /**
      * 전달받은 캐리어 ID가 올바른지 확인하는 메서드
      */

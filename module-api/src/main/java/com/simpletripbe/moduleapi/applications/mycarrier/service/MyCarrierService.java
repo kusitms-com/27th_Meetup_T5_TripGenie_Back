@@ -3,6 +3,7 @@ package com.simpletripbe.moduleapi.applications.mycarrier.service;
 import com.simpletripbe.moduledomain.mycarrier.api.MainCarrierService;
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.TicketOrderListDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketUrlDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
@@ -59,4 +60,8 @@ public class MyCarrierService {
                 .selectTicketAll(email, carrierId);
     }
 
+    @Transactional
+    public void updateTicketOrder(List<TicketOrderListDTO> ticketOrderListDTOS) {
+        mainCarrierService.updateTicketOrder(ticketOrderListDTOS);
+    }
 }
