@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class UpdatePointDTO {
 
-    private Integer price;
     private Integer point;
+    private String email;
 
 }

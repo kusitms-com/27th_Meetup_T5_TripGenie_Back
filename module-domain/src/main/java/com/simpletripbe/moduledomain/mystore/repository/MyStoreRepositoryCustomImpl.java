@@ -7,6 +7,7 @@ import com.simpletripbe.moduledomain.mycarrier.entity.Country;
 import com.simpletripbe.moduledomain.mycarrier.entity.QCarrierCountry;
 import com.simpletripbe.moduledomain.mycarrier.entity.QMyCarrier;
 import com.simpletripbe.moduledomain.mypage.entity.MyPage;
+import com.simpletripbe.moduledomain.mystore.dto.UpdatePointDTO;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,9 +41,21 @@ public class MyStoreRepositoryCustomImpl extends QuerydslRepositorySupport imple
 
         if (!results.isEmpty()) {
             return results.get(0);
+        } else {
+            return 0;
         }
 
-        return 0;
+    }
+
+    @Override
+    public void updatePointByEmail(UpdatePointDTO pointDTO) {
+        QUser u = QUser.user;
+
+        jpaQueryFactory.update(u)
+                .set(u.cash, pointDTO.getPoint())
+                .where(u.email.eq(pointDTO.getEmail()))
+                .execute();
+
     }
 
 }

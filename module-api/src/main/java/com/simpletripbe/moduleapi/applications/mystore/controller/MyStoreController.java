@@ -49,6 +49,9 @@ public class MyStoreController {
             @RequestParam UpdatePointDTO pointDTO
             ) {
 
+        String refreshToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
+        String email = jwtTokenProvider.getUserEmail(refreshToken);
+
         final Integer responses
                 = myStoreService.updatePoint(pointDTO);
 
