@@ -43,7 +43,7 @@ public class MyBagTasklet implements Tasklet {
 
             for (int i=0; i<ticketList.size(); i++) {
 
-                if(LocalDate.now().isAfter(ticketList.get(i).getEndDate())) {
+                if(LocalDate.now().isEqual(ticketList.get(i).getEndDate().plusDays(1))) {
 
                     MyBagSaveDTO dto = new MyBagSaveDTO();
                     dto.setType(CarrierType.STORAGE);

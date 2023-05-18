@@ -55,6 +55,7 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
                 .select(constructor(MyBagTicketDTO.class, t.type, t.ticketUrl, t.imageUrl, t.title, t.sequence, q.endDate))
                 .from(t)
                 .leftJoin(t.myCarrier, q)
+                .where(q.deleteYn.eq("N").and(q.type.eq(CarrierType.CARRIER)))
                 .fetch();
 
         return results;
