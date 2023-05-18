@@ -2,6 +2,7 @@ package com.simpletripbe.moduledomain.mypage.api;
 
 import com.simpletripbe.moduledomain.community.dto.InfoDTO;
 import com.simpletripbe.moduledomain.community.entity.Community;
+import com.simpletripbe.moduledomain.login.entity.User;
 import com.simpletripbe.moduledomain.mypage.dto.MyPageDocumentListDTO;
 import com.simpletripbe.moduledomain.mypage.dto.MyPageProfileListDTO;
 import com.simpletripbe.moduledomain.mypage.dto.MyPageStampListDTO;
@@ -24,12 +25,18 @@ public class MainMyPageService {
 
     public MyPageProfileListDTO selectMyProfile(String nickname) {
 
-        MyPage entity = myPageRepository.findProfileByNickname(nickname);
+        User entity = myPageRepository.findProfileByNickname(nickname);
 
         MyPageProfileListDTO result = myPageMapper.toProfileDTO(entity);
 
         return result;
     }
+
+    public void updateMyNickname(MyPageProfileListDTO listDTO) {
+
+        myPageRepository.updateMyNickname(listDTO);
+    }
+
 
     public List<MyPageDocumentListDTO> selectMyDocument(String nickname) {
 

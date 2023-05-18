@@ -11,6 +11,6 @@ public class MyPageProfileListDTO {
     private String email;
     private String birth;
     private String picture;
-
+    private Integer cash;
 
 }

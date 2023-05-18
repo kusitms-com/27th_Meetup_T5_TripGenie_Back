@@ -7,6 +7,7 @@ import com.simpletripbe.moduledomain.mypage.dto.MyPageDocumentListDTO;
 import com.simpletripbe.moduledomain.mypage.dto.MyPageProfileListDTO;
 import com.simpletripbe.moduledomain.mypage.dto.MyPageStampListDTO;
 import com.simpletripbe.moduledomain.mypage.dto.StampRecordDTO;
+import com.simpletripbe.moduledomain.mystore.dto.UpdatePointDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,12 @@ public class MyPageService {
     public MyPageProfileListDTO selectMyProfile(String nickname) {
 
         return mainMyPageService.selectMyProfile(nickname);
+
+    }
+
+    public void updateMyNickname(MyPageProfileListDTO listDTO) {
+
+        mainMyPageService.updateMyNickname(listDTO);
 
     }
 
