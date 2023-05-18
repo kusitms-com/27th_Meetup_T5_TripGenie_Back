@@ -6,10 +6,13 @@ import com.simpletripbe.moduledomain.mypage.dto.MyPageProfileListDTO;
 import com.simpletripbe.moduledomain.mypage.entity.MyPage;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MyPageRepositoryCustom {
 
     User findProfileByNickname(String nickname);
+
+    String selectMyProfileImageByNickname(String nickname);
 
     void updateMyNickname(MyPageProfileListDTO listDTO);
 

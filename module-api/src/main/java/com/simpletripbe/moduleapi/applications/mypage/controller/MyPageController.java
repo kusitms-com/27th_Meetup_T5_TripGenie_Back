@@ -11,6 +11,7 @@ import com.simpletripbe.moduledomain.mypage.dto.StampRecordDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -71,8 +72,14 @@ public class MyPageController {
     @PutMapping("/updateMyProfileImage")
     public ResponseEntity<BaseResponseBody> updateMyProfileImage(
             @AuthUser String email,
-            @RequestBody MultipartFile multipartFile
-    ) {
+            @RequestPart(value = "image") MultipartFile image
+    ) throws FileUploadException {
+
+        MyPageProfileListDTO listDTO = new MyPageProfileListDTO();
+        listDTO.setEmail(email);
+        listDTO.setImage(image);
+
+        myPageService.updateMyProfileImage(listDTO);
 
         return new ResponseEntity<BaseResponseBody>(
                 new BaseResponseBody(

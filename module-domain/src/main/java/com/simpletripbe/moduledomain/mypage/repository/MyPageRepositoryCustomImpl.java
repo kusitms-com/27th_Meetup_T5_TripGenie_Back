@@ -39,6 +39,20 @@ public class MyPageRepositoryCustomImpl extends QuerydslRepositorySupport implem
     }
 
     @Override
+    public String selectMyProfileImageByNickname(String nickname) {
+
+        QUser u = QUser.user;
+
+        String profileImage = jpaQueryFactory
+                .select(u.picture)
+                .from(u)
+                .where(u.nickname.eq(nickname))
+                .fetchOne();
+
+        return profileImage != null ? profileImage : "EMPTY";
+    }
+
+    @Override
     public void updateMyNickname(MyPageProfileListDTO listDTO) {
 
         QUser u = QUser.user;
