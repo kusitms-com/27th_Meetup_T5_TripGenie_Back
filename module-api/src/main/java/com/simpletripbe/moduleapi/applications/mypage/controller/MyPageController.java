@@ -1,6 +1,7 @@
 package com.simpletripbe.moduleapi.applications.mypage.controller;
 
 import com.simpletripbe.moduleapi.applications.mypage.service.MyPageService;
+import com.simpletripbe.modulecommon.common.annotation.AuthUser;
 import com.simpletripbe.modulecommon.common.response.BaseResponseBody;
 import com.simpletripbe.moduledomain.community.dto.InfoDTO;
 import com.simpletripbe.moduledomain.mypage.dto.MyPageDocumentListDTO;
@@ -10,9 +11,11 @@ import com.simpletripbe.moduledomain.mypage.dto.StampRecordDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -40,6 +43,52 @@ public class MyPageController {
                 ),
                 HttpStatus.OK
         );
+    }
+
+    @Operation(summary = "나의 닉네임 수정 api", description = "updateMyNickname")
+    @PutMapping("/updateMyNickname")
+    public ResponseEntity<BaseResponseBody> updateMyNickname(
+            @AuthUser String email,
+            @RequestBody String nickname
+    ) {
+
+        MyPageProfileListDTO listDTO = new MyPageProfileListDTO();
+        listDTO.setNickname(nickname);
+        listDTO.setEmail(email);
+
+        myPageService.updateMyNickname(listDTO);
+
+        return new ResponseEntity<BaseResponseBody>(
+                new BaseResponseBody(
+                        HttpStatus.OK.value(),
+                        "성공"
+                ),
+                HttpStatus.OK
+        );
+
+    }
+
+    @Operation(summary = "나의 프로필 사진 수정 api", description = "updateMyProfileImage")
+    @PutMapping("/updateMyProfileImage")
+    public ResponseEntity<BaseResponseBody> updateMyProfileImage(
+            @AuthUser String email,
+            @RequestPart(value = "image") MultipartFile image
+    ) throws FileUploadException {
+
+        MyPageProfileListDTO listDTO = new MyPageProfileListDTO();
+        listDTO.setEmail(email);
+        listDTO.setImage(image);
+
+        myPageService.updateMyProfileImage(listDTO);
+
+        return new ResponseEntity<BaseResponseBody>(
+                new BaseResponseBody(
+                        HttpStatus.OK.value(),
+                        "성공"
+                ),
+                HttpStatus.OK
+        );
+
     }
 
     @Operation(summary = "나의 서류 조회 api", description = "selectMyDocument")

@@ -7,8 +7,10 @@ import com.simpletripbe.moduledomain.mypage.dto.MyPageDocumentListDTO;
 import com.simpletripbe.moduledomain.mypage.dto.MyPageProfileListDTO;
 import com.simpletripbe.moduledomain.mypage.dto.MyPageStampListDTO;
 import com.simpletripbe.moduledomain.mypage.dto.StampRecordDTO;
+import com.simpletripbe.moduledomain.mystore.dto.UpdatePointDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +26,16 @@ public class MyPageService {
 
         return mainMyPageService.selectMyProfile(nickname);
 
+    }
+
+    public void updateMyNickname(MyPageProfileListDTO listDTO) {
+
+        mainMyPageService.updateMyNickname(listDTO);
+    }
+
+    public void updateMyProfileImage(MyPageProfileListDTO listDTO) throws FileUploadException {
+
+        mainMyPageService.updateMyProfileImage(listDTO);
     }
 
     public List<MyPageDocumentListDTO> selectMyDocumentList(String nickname) {
