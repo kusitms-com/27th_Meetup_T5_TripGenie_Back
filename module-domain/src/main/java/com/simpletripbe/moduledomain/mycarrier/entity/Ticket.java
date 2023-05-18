@@ -3,11 +3,13 @@ package com.simpletripbe.moduledomain.mycarrier.entity;
 import com.simpletripbe.moduledomain.basetime.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -30,5 +32,4 @@ public class Ticket extends BaseTimeEntity {
     private String title;
     private String imageUrl;
     private Integer sequence;
-
 }

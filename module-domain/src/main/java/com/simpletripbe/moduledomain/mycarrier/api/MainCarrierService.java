@@ -16,6 +16,7 @@ import com.simpletripbe.moduledomain.mycarrier.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.Tuple;
 import java.time.LocalDate;
 import java.util.List;
@@ -43,11 +44,18 @@ public class MainCarrierService {
         return entityResult;
     }
 
+    public MyCarrier findMyCarrierById(Long carrierId) {
+        return myCarrierRepository.findById(carrierId).orElseThrow(() -> new IllegalArgumentException("캐리어 정보를 찾을 수 없습니다."));
+    }
+
     public List<MyBagTicketDTO> selectTicketList() {
 
         List<MyBagTicketDTO> entityResult = myCarrierRepository.selectTicketList();
 
         return entityResult;
+    }
+    public Ticket findTicketById(Long ticketId) {
+        return ticketRepository.findById(ticketId).orElseThrow(() -> new EntityNotFoundException("ticket이 존재하지 않습니다."));
     }
 
     public List<TicketTypeDTO> selectDetailAll(String email) {

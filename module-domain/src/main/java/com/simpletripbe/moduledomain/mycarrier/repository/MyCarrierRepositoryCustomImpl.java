@@ -3,6 +3,7 @@ package com.simpletripbe.moduledomain.mycarrier.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.simpletripbe.moduledomain.batch.dto.MyBagSaveDTO;
 import com.simpletripbe.moduledomain.batch.dto.MyBagTicketDTO;
+import com.simpletripbe.moduledomain.batch.dto.QMyBagTicketDTO;
 import com.simpletripbe.moduledomain.batch.dto.TicketListDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.*;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.querydsl.core.types.Projections.constructor;
+import static com.simpletripbe.moduledomain.mycarrier.entity.QTicket.ticket;
 
 @Repository
 @Transactional(readOnly = true)
@@ -37,7 +39,7 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
         List<Country> results = jpaQueryFactory
                 .select(c.country).distinct()
                 .from(c)
-                .leftJoin(c.myCarrier,q)
+                .leftJoin(c.myCarrier, q)
                 .where(q.deleteYn.eq("N").and(q.user.email.eq(email)))
                 .fetch();
 
@@ -48,12 +50,20 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
     @Override
     public List<MyBagTicketDTO> selectTicketList() {
 
-        QTicket t = QTicket.ticket;
+        QTicket t = ticket;
         QMyCarrier q = QMyCarrier.myCarrier;
 
-        List<MyBagTicketDTO> results = jpaQueryFactory
-                .select(constructor(MyBagTicketDTO.class, t.type, t.ticketUrl, t.imageUrl, t.title, t.sequence, q.endDate))
-                .from(t)
+        final List<MyBagTicketDTO> results = jpaQueryFactory.select(
+                        new QMyBagTicketDTO(
+                                t.id,
+                                t.type,
+                                t.ticketUrl,
+                                t.imageUrl,
+                                t.title,
+                                t.sequence,
+                                q.endDate
+                        )
+                ).from(t)
                 .leftJoin(t.myCarrier, q)
                 .where(q.deleteYn.eq("N").and(q.type.eq(CarrierType.CARRIER)))
                 .fetch();
@@ -67,8 +77,15 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
 
         QMyCarrier q = QMyCarrier.myCarrier;
 
+         Ticket findTicket = jpaQueryFactory
+                .select(QTicket.ticket)
+                .from(QTicket.ticket)
+                .where(QTicket.ticket.id.eq(dto.getTicketId()))
+                .fetchOne();
+
         jpaQueryFactory.update(q)
                 .set(q.type, dto.getType())
+                .where(q.id.eq(findTicket.getMyCarrier().getId()))
                 .execute();
 
     }
@@ -91,7 +108,7 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
     public List<Ticket> findTicketByEmail(String email) {
 
         QMyCarrier q = QMyCarrier.myCarrier;
-        QTicket t = QTicket.ticket;
+        QTicket t = ticket;
 
         List<Ticket> results = jpaQueryFactory
                 .selectFrom(t)

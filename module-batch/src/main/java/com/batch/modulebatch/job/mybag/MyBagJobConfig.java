@@ -29,6 +29,7 @@ public class MyBagJobConfig {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
+    @Primary
     @Bean("myBagJob")
     public Job saveMyBagJob(
             MyBagTasklet tasklet,
