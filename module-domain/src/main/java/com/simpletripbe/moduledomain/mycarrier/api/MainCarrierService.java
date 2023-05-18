@@ -3,6 +3,7 @@ package com.simpletripbe.moduledomain.mycarrier.api;
 import com.simpletripbe.moduledomain.batch.dto.MyBagTicketDTO;
 import com.simpletripbe.moduledomain.batch.dto.TicketListDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.EditCarrierDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketTypeDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.CarrierCountry;
 import com.simpletripbe.moduledomain.mycarrier.entity.Country;
@@ -66,9 +67,9 @@ public class MainCarrierService {
         carrierCountryRepository.save(carrierCountry);
     }
 
-    public void editCarrier(CarrierListDTO carrierListDTO) {
+    public void editCarrier(EditCarrierDTO carrierDTO) {
 
-        myCarrierRepository.updateCarrier(carrierListDTO);
+        myCarrierRepository.updateCarrier(carrierDTO);
     }
 
     public void deleteCarrier(String email) {

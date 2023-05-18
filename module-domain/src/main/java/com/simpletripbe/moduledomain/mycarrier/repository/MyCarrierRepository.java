@@ -1,6 +1,7 @@
 package com.simpletripbe.moduledomain.mycarrier.repository;
 
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.EditCarrierDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketRecordDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,7 +19,7 @@ public interface MyCarrierRepository extends JpaRepository<MyCarrier, Long>, MyC
             "m.startDate = :#{#carrier.startDate}," +
             "m.endDate = :#{#carrier.endDate}" +
             "WHERE m.email = :#{#carrier.email}", nativeQuery = true)
-    void updateCarrier(@Param("carrier") CarrierListDTO carrierListDTO);
+    void updateCarrier(@Param("carrier") EditCarrierDTO carrierDTO);
 
     @Modifying
     @Query(value = "UPDATE MyCarrier m " +

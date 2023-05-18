@@ -2,6 +2,7 @@ package com.simpletripbe.moduleapi.applications.mycarrier.service;
 
 import com.simpletripbe.moduledomain.mycarrier.api.MainCarrierService;
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.EditCarrierDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketTypeDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.Country;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +35,8 @@ public class MyCarrierService {
     }
 
     @Transactional(readOnly = true)
-    public void editOne(CarrierListDTO carrierListDTO) {
-        mainCarrierService.editCarrier(carrierListDTO);
+    public void editOne(EditCarrierDTO carrierDTO) {
+        mainCarrierService.editCarrier(carrierDTO);
     }
 
     @Transactional(readOnly = true)
