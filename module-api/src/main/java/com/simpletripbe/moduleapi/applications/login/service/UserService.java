@@ -28,8 +28,9 @@ public class UserService {
 
     @Value("${jwt.live.rtk}")
     private Long REFRESH_TOKEN_EXPIRE_LENGTH;
+    @Value("${cloud.aws.s3.tripGenieProfileUrl}")
+    private String DEFAULT_PICTURE_URL;
     private final UserRepository userRepository;
-    private final String DEFAULT_PICTURE_URL = "https://toppng.com//public/uploads/preview/user-account-management-logo-user-icon-11562867145a56rus2zwu.png";
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisService redisService;
     private final OauthService oauthService;
@@ -63,6 +64,7 @@ public class UserService {
                         .gender(signUpReq.getGender())
                         .birth(signUpReq.getBirth())
                         .roles(userOptional.get().getRoles())
+                        .cash(0)
                         .build();
 
                 userRepository.save(user);
