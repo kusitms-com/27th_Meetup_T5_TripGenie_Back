@@ -1,7 +1,7 @@
 package com.simpletripbe.moduledomain.mycarrier.repository;
 
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketRecordDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.TicketMemoDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -32,11 +32,11 @@ public interface MyCarrierRepository extends JpaRepository<MyCarrier, Long>, MyC
     String selectMyTicketRecord(@Param("ticket") String ticket);
 
     @Query(value = "insert into MyPage m" + ":#{#record.content}" + "where m.country = :country", nativeQuery = true)
-    void insertMyStampRecord(@Param("record") TicketRecordDTO record);
+    void insertMyStampRecord(@Param("record") TicketMemoDTO record);
 
     @Modifying
     @Query(value = "update MyPage m set m.content = :#{#record.content} where m.country = :#{#record.country}", nativeQuery = true)
-    void updateMyStampRecord(@Param("record") TicketRecordDTO record);
+    void updateMyStampRecord(@Param("record") TicketMemoDTO record);
 
     @Transactional
     @Modifying

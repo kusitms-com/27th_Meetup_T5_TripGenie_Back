@@ -41,7 +41,6 @@ public class MyCarrier extends BaseTimeEntity {
     @OneToMany(mappedBy = "myCarrier")
     private List<Ticket> tickets = new ArrayList<>();
 
-
     public LocalDate getStartDate() {
         return this.startDate;
     }
