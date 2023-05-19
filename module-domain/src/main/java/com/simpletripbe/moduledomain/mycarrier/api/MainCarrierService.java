@@ -47,11 +47,18 @@ public class MainCarrierService {
         return entityResult;
     }
 
+    public MyCarrier findMyCarrierById(Long carrierId) {
+        return myCarrierRepository.findById(carrierId).orElseThrow(() -> new IllegalArgumentException("캐리어 정보를 찾을 수 없습니다."));
+    }
+
     public List<MyBagTicketDTO> selectTicketList() {
 
         List<MyBagTicketDTO> entityResult = myCarrierRepository.selectTicketList();
 
         return entityResult;
+    }
+    public Ticket findTicketById(Long ticketId) {
+        return ticketRepository.findById(ticketId).orElseThrow(() -> new EntityNotFoundException("ticket이 존재하지 않습니다."));
     }
 
     public List<TicketTypeDTO> selectDetailAll(String email) {
@@ -71,9 +78,9 @@ public class MainCarrierService {
         carrierCountryRepository.save(carrierCountry);
     }
 
-    public void editCarrier(CarrierListDTO carrierListDTO) {
+    public void editCarrier(EditCarrierDTO carrierDTO) {
 
-        myCarrierRepository.updateCarrier(carrierListDTO);
+        myCarrierRepository.updateCarrier(carrierDTO);
     }
 
     public void deleteCarrier(String email) {

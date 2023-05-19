@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -47,6 +48,10 @@ public class MyCarrier extends BaseTimeEntity {
 
     public LocalDate getEndDate() {
         return this.endDate;
+    }
+
+    public void updateType(CarrierType carrierType) {
+        this.type = carrierType;
     }
 
 }

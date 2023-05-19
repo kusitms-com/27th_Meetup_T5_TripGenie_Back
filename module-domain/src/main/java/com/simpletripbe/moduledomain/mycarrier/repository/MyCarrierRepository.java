@@ -18,7 +18,7 @@ public interface MyCarrierRepository extends JpaRepository<MyCarrier, Long>, MyC
             "m.startDate = :#{#carrier.startDate}," +
             "m.endDate = :#{#carrier.endDate}" +
             "WHERE m.email = :#{#carrier.email}", nativeQuery = true)
-    void updateCarrier(@Param("carrier") CarrierListDTO carrierListDTO);
+    void updateCarrier(@Param("carrier") EditCarrierDTO carrierDTO);
 
     @Modifying
     @Query(value = "UPDATE MyCarrier m " +

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -32,5 +33,4 @@ public class Ticket extends BaseTimeEntity {
     private String title;
     private String imageUrl;
     private Integer sequence;
-
 }

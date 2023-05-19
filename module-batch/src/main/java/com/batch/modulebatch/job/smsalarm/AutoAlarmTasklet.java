@@ -43,7 +43,7 @@ public class AutoAlarmTasklet implements Tasklet {
         }
 
         for (int i = 0; i < ticketList.size(); i++) {
-            if (LocalDate.now().isBefore(ticketList.get(i).getStartDate())) {
+            if (LocalDate.now().isEqual(ticketList.get(i).getStartDate().minusDays(1))) {
                 AlarmSendDTO dto = new AlarmSendDTO();
                 dto.setMessage("여행이 시작되었습니다!");
                 dto.setName(ticketList.get(i).getName());
@@ -53,7 +53,7 @@ public class AutoAlarmTasklet implements Tasklet {
 
                 batchService.saveStartAlarm(dto);
                 isAlarmCreated = true;
-            } else if (LocalDate.now().isAfter(ticketList.get(i).getEndDate())) {
+            } else if (LocalDate.now().isEqual(ticketList.get(i).getEndDate().plusDays(1))) {
                 AlarmSendDTO dto = new AlarmSendDTO();
                 dto.setMessage("여행이 종료되었습니다!");
                 dto.setName(ticketList.get(i).getName());

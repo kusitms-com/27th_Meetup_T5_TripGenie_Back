@@ -70,21 +70,21 @@ public class MyCarrierController {
     @PutMapping("editCarrier")
     public ApiResponse<EmptyResponse> editCarrier(
             HttpServletRequest request,
-            @RequestBody CarrierListDTO carrierListDTO
-    ) {
+            @RequestBody EditCarrierDTO carrierDTO
+            ) {
 
         String refreshToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
         String email = jwtTokenProvider.getUserEmail(refreshToken);
 
-        carrierListDTO.setEmail(email);
+        carrierDTO.setEmail(email);
 
-        myCarrierService.editOne(carrierListDTO);
+        myCarrierService.editOne(carrierDTO);
 
         return ApiResponse.success(EmptyResponse.of());
     }
 
     /**
-     * 캐리어 삭제 - soft delete 로 dbsts 만 S 로 변경
+     * 캐리어 삭제 - soft delete 로 deleteYn 만 Y 로 변경
      */
     @Operation(summary = "캐리어 삭제 api", description = "deleteCarrier")
     @PutMapping("deleteCarrier")

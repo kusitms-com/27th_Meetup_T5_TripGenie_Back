@@ -28,8 +28,8 @@ public class MyCarrierService {
     }
 
     @Transactional(readOnly = true)
-    public void editOne(CarrierListDTO carrierListDTO) {
-        mainCarrierService.editCarrier(carrierListDTO);
+    public void editOne(EditCarrierDTO carrierDTO) {
+        mainCarrierService.editCarrier(carrierDTO);
     }
 
     @Transactional(readOnly = true)

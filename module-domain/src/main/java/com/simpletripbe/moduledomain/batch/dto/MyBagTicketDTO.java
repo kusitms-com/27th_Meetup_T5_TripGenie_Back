@@ -1,12 +1,15 @@
 package com.simpletripbe.moduledomain.batch.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.simpletripbe.moduledomain.mycarrier.entity.TicketType;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
 public class MyBagTicketDTO {
+    private Long id;
 
     private TicketType type;
     private String ticketUrl;
@@ -15,7 +18,9 @@ public class MyBagTicketDTO {
     private Integer sequence;
     private LocalDate endDate;
 
-    public MyBagTicketDTO(TicketType type, String ticketUrl, String imageUrl, String title, Integer sequence, LocalDate endDate) {
+    @QueryProjection
+    public MyBagTicketDTO(Long id, TicketType type, String ticketUrl, String imageUrl, String title, Integer sequence, LocalDate endDate) {
+        this.id = id;
         this.type = type;
         this.ticketUrl = ticketUrl;
         this.imageUrl = imageUrl;
