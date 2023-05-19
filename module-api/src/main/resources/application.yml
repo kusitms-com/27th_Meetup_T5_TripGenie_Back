@@ -73,6 +73,7 @@ cloud:
     s3:
       bucket: ${S3_BUCKET_NAME}
       url: ${S3_URL}
+      tripGenieProfileUrl: ${GENIE_PROFILE_URL}
     region:
       static: ${S3_REGION}
     stack:

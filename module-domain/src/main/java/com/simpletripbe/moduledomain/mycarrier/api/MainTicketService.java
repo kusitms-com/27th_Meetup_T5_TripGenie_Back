@@ -2,6 +2,7 @@ package com.simpletripbe.moduledomain.mycarrier.api;
 
 import com.simpletripbe.modulecommon.common.exception.CustomException;
 import com.simpletripbe.modulecommon.common.response.CommonCode;
+import com.simpletripbe.moduledomain.login.repository.UserRepository;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketMemoDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketMemoRes;
 import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
@@ -25,7 +26,8 @@ import java.util.Optional;
 public class MainTicketService {
 
     @Value("${cloud.aws.s3.url}")
-    private String s3Url;
+    private String S3_URL;
+    private final UserRepository userRepository;
     private final MyCarrierRepository myCarrierRepository;
     private final TicketMemoRepository ticketMemoRepository;
     private final TicketMemoMapper ticketMemoMapper;
@@ -35,10 +37,7 @@ public class MainTicketService {
     @Transactional
     public TicketMemoRes insertTicketMemo(String email, TicketMemoDTO ticketMemoDTO, MultipartFile multipartFile) throws FileUploadException {
 
-        // 내용과 이미지 모두 null인 경우 예외처리
-        if (ticketMemoDTO.getContent() == null && multipartFile.isEmpty()) {
-            throw new CustomException(CommonCode.EMPTY_CONTENT);
-        }
+        checkExistImageOrContent(multipartFile, ticketMemoDTO.getContent());
 
         MyCarrier myCarrier = checkValidCarrierId(email, ticketMemoDTO.getCarrierId());
 
@@ -46,19 +45,20 @@ public class MainTicketService {
 
         Optional<TicketMemo> ticketMemoOptional = ticketMemoRepository.findByTicketId(ticket.getId());
 
-        // 이미 티켓 메모가 존재하는 경우 예외처리
-        if (ticketMemoOptional.isPresent()) {
-            throw new CustomException(CommonCode.TICKET_MEMO_ALREADY_EXIST);
-        }
+        checkNotExistTicketMemo(ticketMemoOptional);
 
+        // 이미지가 존재하지 않는 경우
         if (multipartFile.isEmpty()) {
             ticketMemoDTO.setMapper(ticket, null);
-        } else {
+        } else { // 이미지가 존재하는 경우
             String url = awsS3Service.uploadFile(multipartFile);
             ticketMemoDTO.setMapper(ticket, url);
         }
 
         TicketMemo ticketMemo = ticketMemoMapper.toTicketMemoEntity(ticketMemoDTO);
+
+        // 글자수가 100자 이상이라면 캐시 지급
+        giveGenieCash(email, ticketMemoDTO.getContent());
 
         ticketMemoRepository.save(ticketMemo);
 
@@ -87,10 +87,7 @@ public class MainTicketService {
 
         String url = null;
 
-        // 내용과 이미지 모두 null인 경우 예외처리
-        if (ticketMemoDTO.getContent() == null && multipartFile.isEmpty()) {
-            throw new CustomException(CommonCode.EMPTY_CONTENT);
-        }
+        checkExistImageOrContent(multipartFile, ticketMemoDTO.getContent());
 
         MyCarrier myCarrier = checkValidCarrierId(email, ticketMemoDTO.getCarrierId());
 
@@ -98,10 +95,7 @@ public class MainTicketService {
 
         Optional<TicketMemo> ticketMemoOptional = ticketMemoRepository.findByTicketId(ticketMemoDTO.getTicketId());
 
-        // 티켓 메모가 존재하지 않는 경우 예외처리
-        if (ticketMemoOptional.isEmpty()) {
-            throw new CustomException(CommonCode.NONEXISTENT_TICKET_MEMO);
-        }
+        checkExistTicketMemo(ticketMemoOptional);
 
         TicketMemo ticketMemo = ticketMemoOptional.get();
 
@@ -110,7 +104,7 @@ public class MainTicketService {
             // 기존에 이미지가 존재했다면
             if (ticketMemo.getImageUrl() != null) {
                 // 해당 이미지 삭제
-                awsS3Service.deleteFile(ticketMemo.getImageUrl().replace(s3Url, ""));
+                awsS3Service.deleteFile(ticketMemo.getImageUrl().replace(S3_URL, ""));
             }
             url = awsS3Service.uploadFile(multipartFile);
         } else {
@@ -135,15 +129,13 @@ public class MainTicketService {
 
         Optional<TicketMemo> ticketMemoOptional = ticketMemoRepository.findByTicketId(ticketId);
 
-        if (ticketMemoOptional.isEmpty()) {
-            throw new CustomException(CommonCode.NONEXISTENT_TICKET_MEMO);
-        }
+        checkExistTicketMemo(ticketMemoOptional);
 
         TicketMemo ticketMemo = ticketMemoOptional.get();
 
         // 이미지가 존재하는 경우 S3 이미지 삭제
         if (ticketMemo.getImageUrl() != null) {
-            awsS3Service.deleteFile(ticketMemoOptional.get().getImageUrl().replace(s3Url, ""));
+            awsS3Service.deleteFile(ticketMemoOptional.get().getImageUrl().replace(S3_URL, ""));
         }
 
         ticketMemoRepository.delete(ticketMemo);
@@ -188,4 +180,47 @@ public class MainTicketService {
         throw new CustomException(CommonCode.NONEXISTENT_TICKET);
     }
 
+    /**
+     * 티켓 메모가 존재하는 경우 처리하는 메서드
+     */
+    private void checkNotExistTicketMemo(Optional<TicketMemo> ticketMemoOptional) {
+
+        if (ticketMemoOptional.isPresent()) {
+            throw new CustomException(CommonCode.TICKET_MEMO_ALREADY_EXIST);
+        }
+    }
+
+    /**
+     * 티켓 메모가 존재하지 않는 경우 처리하는 메서드
+     */
+    private void checkExistTicketMemo(Optional<TicketMemo> ticketMemoOptional) {
+
+        if (ticketMemoOptional.isEmpty()) {
+            throw new CustomException(CommonCode.NONEXISTENT_TICKET_MEMO);
+        }
+    }
+
+    /**
+     * 이미지 or 내용이 모두 존재하지 않는 경우 처리하는 메서드
+     */
+    private void checkExistImageOrContent(MultipartFile multipartFile, String content) {
+
+        if (multipartFile.isEmpty() && content == null) {
+            throw new CustomException(CommonCode.EMPTY_CONTENT);
+        }
+    }
+
+    /**
+     * 지니캐시 지급하는 메서드
+     */
+    private void giveGenieCash(String email, String content) {
+
+        int contentLength = 100; // 100자 이상
+        int cash = 100; // 100 캐시 지급
+
+        // 글자수가 100자를 넘기는 경우에만 지니 캐시 지급
+        if (content.length() >= contentLength) {
+            userRepository.updateUserCash(email, cash);
+        }
+    }
 }
