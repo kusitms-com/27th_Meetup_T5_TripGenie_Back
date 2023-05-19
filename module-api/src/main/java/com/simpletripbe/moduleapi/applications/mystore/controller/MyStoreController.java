@@ -46,11 +46,16 @@ public class MyStoreController {
     @GetMapping("updatePoint")
     public ApiResponse<Integer> updatePoint(
             HttpServletRequest request,
-            @RequestParam UpdatePointDTO pointDTO
+            @RequestParam Integer point
             ) {
 
         String refreshToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
         String email = jwtTokenProvider.getUserEmail(refreshToken);
+
+        UpdatePointDTO pointDTO = UpdatePointDTO.builder()
+                                            .point(point)
+                                            .email(email)
+                                            .build();
 
         final Integer responses
                 = myStoreService.updatePoint(pointDTO);
