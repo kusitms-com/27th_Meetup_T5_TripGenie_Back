@@ -22,6 +22,7 @@ public class TicketRecordService {
         return mainTicketService.insertTicketMemo(email, ticketMemoDTO, multipartFile);
     }
 
+    @Transactional
     public TicketMemoRes selectTicketMemo(String email, Long carrierId, Long ticketId) {
         return mainTicketService.selectTicketMemo(email, carrierId, ticketId);
     }

@@ -1,16 +1,26 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:test
+    url: jdbc:h2:mem:test;NON_KEYWORDS=user
     username: sa
     password:
     driver-class-name: org.h2.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       hibernate:
         format_sql: true
 logging:
   level:
     org.hibernate.SQL: debug
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    s3:
+      bucket: tripgenie
+      url: https://tripgenie.s3.ap-northeast-2.amazonaws.com/
