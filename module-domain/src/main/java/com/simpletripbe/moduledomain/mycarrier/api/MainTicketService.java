@@ -48,7 +48,7 @@ public class MainTicketService {
         checkNotExistTicketMemo(ticketMemoOptional);
 
         // 이미지가 존재하지 않는 경우
-        if (multipartFile.isEmpty()) {
+        if (multipartFile == null) {
             ticketMemoDTO.setMapper(ticket, null);
         } else { // 이미지가 존재하는 경우
             String url = awsS3Service.uploadFile(multipartFile);
@@ -66,6 +66,7 @@ public class MainTicketService {
 
     }
 
+    @Transactional
     public TicketMemoRes selectTicketMemo(String email, Long carrierId, Long ticketId) {
 
         MyCarrier myCarrier = checkValidCarrierId(email, carrierId);
@@ -100,7 +101,7 @@ public class MainTicketService {
         TicketMemo ticketMemo = ticketMemoOptional.get();
 
         // 티켓 메모의 이미지를 수정하는 경우
-        if (!multipartFile.isEmpty()) {
+        if (!(multipartFile == null)) {
             // 기존에 이미지가 존재했다면
             if (ticketMemo.getImageUrl() != null) {
                 // 해당 이미지 삭제
@@ -205,7 +206,7 @@ public class MainTicketService {
      */
     private void checkExistImageOrContent(MultipartFile multipartFile, String content) {
 
-        if (multipartFile.isEmpty() && content == null) {
+        if (multipartFile == null && content == null) {
             throw new CustomException(CommonCode.EMPTY_CONTENT);
         }
     }
