@@ -2,6 +2,7 @@ package com.simpletripbe.moduledomain.mycarrier.dto;
 
 import com.simpletripbe.moduledomain.mycarrier.entity.Ticket;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.Size;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class TicketMemoDTO {
 
     private Long carrierId;
