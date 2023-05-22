@@ -43,7 +43,7 @@ public class MyStoreController {
      * 포인트 차감 (db에서가 아닌 단순 차감 기능)
      */
     @Operation(summary = "포인트 차감 api", description = "updatePoint")
-    @GetMapping("updatePoint")
+    @PutMapping("updatePoint")
     public ApiResponse<Integer> updatePoint(
             HttpServletRequest request,
             @RequestParam Integer point
