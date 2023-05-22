@@ -22,22 +22,22 @@ public class MyCarrierService {
                 .selectAll(email);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public void saveOne(CarrierListDTO carrierListDTO) {
         mainCarrierService.addCarrier(carrierListDTO);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public void editOne(EditCarrierDTO carrierDTO) {
         mainCarrierService.editCarrier(carrierDTO);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public void deleteOne(String email) {
         mainCarrierService.deleteCarrier(email);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public void saveStamp(CarrierListDTO carrierListDTO) {
         mainCarrierService.addStamp(carrierListDTO);
     }

@@ -1,5 +1,6 @@
 package com.simpletripbe.moduledomain.mycarrier.dto;
 
+import com.simpletripbe.moduledomain.mycarrier.entity.CarrierType;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -16,5 +17,7 @@ public class CarrierListDTO {
     private String email;
     private LocalDate startDate;
     private LocalDate endDate;
+    private String deleteYn;
+    private CarrierType type;
 
 }

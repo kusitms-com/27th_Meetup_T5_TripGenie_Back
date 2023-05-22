@@ -24,8 +24,9 @@ public class MyCarrier extends BaseTimeEntity {
     @Column(name = "carrier_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "email")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "email", nullable = false)
+    @MapsId("id")
     private User user;
 
     private String name;
