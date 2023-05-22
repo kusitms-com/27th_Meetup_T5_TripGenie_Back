@@ -20,7 +20,7 @@ public class MyStoreService {
                 .selectPoint(email);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Integer updatePoint(UpdatePointDTO pointDTO) {
 
         Integer basicPoint = selectPoint(pointDTO.getEmail());
@@ -33,7 +33,7 @@ public class MyStoreService {
         return updatePoint;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public void saveNewPoint(UpdatePointDTO pointDTO) {
 
         mainStoreService.updatePoint(pointDTO);

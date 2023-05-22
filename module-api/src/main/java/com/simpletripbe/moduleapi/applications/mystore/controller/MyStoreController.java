@@ -4,6 +4,7 @@ import com.simpletripbe.moduleapi.applications.login.jwt.JwtFilter;
 import com.simpletripbe.moduleapi.applications.login.jwt.JwtTokenProvider;
 import com.simpletripbe.moduleapi.applications.mystore.service.MyStoreService;
 import com.simpletripbe.modulecommon.common.response.ApiResponse;
+import com.simpletripbe.moduledomain.mystore.dto.PointReqDTO;
 import com.simpletripbe.moduledomain.mystore.dto.UpdatePointDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,14 +47,14 @@ public class MyStoreController {
     @PutMapping("updatePoint")
     public ApiResponse<Integer> updatePoint(
             HttpServletRequest request,
-            @RequestBody Integer point
+            @RequestBody PointReqDTO pointReqDTO
             ) {
 
         String refreshToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
         String email = jwtTokenProvider.getUserEmail(refreshToken);
 
         UpdatePointDTO pointDTO = UpdatePointDTO.builder()
-                                            .point(point)
+                                            .point(pointReqDTO.getPoint())
                                             .email(email)
                                             .build();
 
