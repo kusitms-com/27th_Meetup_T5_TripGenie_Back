@@ -7,6 +7,7 @@ import com.simpletripbe.modulecommon.common.annotation.AuthUser;
 import com.simpletripbe.modulecommon.common.response.ApiResponse;
 import com.simpletripbe.modulecommon.common.util.EmptyResponse;
 import com.simpletripbe.moduledomain.mycarrier.dto.*;
+import com.simpletripbe.moduledomain.mycarrier.entity.CarrierType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Tag(name = "MyCarrierController", description = "나의 캐리어 컨트롤러")
@@ -50,13 +53,25 @@ public class MyCarrierController {
     @PostMapping("addCarrier")
     public ApiResponse<EmptyResponse> addCarrier(
             HttpServletRequest request,
-            @RequestBody CarrierListDTO carrierListDTO
+            @RequestBody CarrierReqDTO carrierReqDTO
     ) {
 
         String refreshToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
         String email = jwtTokenProvider.getUserEmail(refreshToken);
 
-        carrierListDTO.setEmail(email);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate startDate = LocalDate.parse(carrierReqDTO.getStartDate(), formatter);
+        LocalDate endDate = LocalDate.parse(carrierReqDTO.getEndDate(), formatter);
+
+        CarrierListDTO carrierListDTO = new CarrierListDTO(
+                carrierReqDTO.getCountry(),
+                carrierReqDTO.getName(),
+                email,
+                startDate,
+                endDate,
+                "N",
+                CarrierType.CARRIER
+        );
 
         myCarrierService.saveOne(carrierListDTO);
 

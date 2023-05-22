@@ -70,6 +70,7 @@ public class MainCarrierService {
         return result;
     }
 
+    @Transactional
     public void addCarrier(CarrierListDTO carrierListDTO) {
 
         MyCarrier myCarrier = myCarrierMapper.toCarrierEntity(carrierListDTO);
