@@ -46,7 +46,7 @@ public class MyStoreController {
     @PutMapping("updatePoint")
     public ApiResponse<Integer> updatePoint(
             HttpServletRequest request,
-            @RequestParam Integer point
+            @RequestBody Integer point
             ) {
 
         String refreshToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
