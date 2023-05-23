@@ -32,4 +32,5 @@ public class Ticket extends BaseTimeEntity {
     private String title;
     private String imageUrl;
     private Integer sequence;
+    private String deleteYn;
 }
