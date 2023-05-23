@@ -92,6 +92,11 @@ public class MainCarrierService {
         myCarrierRepository.updateCarrier(carrierDTO);
     }
 
+    public void editCountry(EditCarrierDTO carrierDTO) {
+
+        myCarrierRepository.updateCountry(carrierDTO);
+    }
+
     public void deleteCarrier(DeleteResDTO deleteResDTO) {
 
         myCarrierRepository.deleteCarrier(deleteResDTO);
