@@ -5,6 +5,7 @@ import com.simpletripbe.moduledomain.batch.dto.MyBagSaveDTO;
 import com.simpletripbe.moduledomain.batch.dto.MyBagTicketDTO;
 import com.simpletripbe.moduledomain.batch.dto.QMyBagTicketDTO;
 import com.simpletripbe.moduledomain.batch.dto.TicketListDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.StorageDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.*;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
@@ -117,6 +118,21 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
                 .where(
                         q.deleteYn.eq("N").and(q.user.email.eq(email))
                 )
+                .fetch();
+
+        return results;
+
+    }
+
+    @Override
+    public List<StorageDTO> findStorageByEmail(String email) {
+
+        QMyCarrier q = QMyCarrier.myCarrier;
+
+        List<StorageDTO> results = jpaQueryFactory
+                .select(constructor(StorageDTO.class, q.id, q.name))
+                .from(q)
+                .where(q.deleteYn.eq("N").and(q.user.email.eq(email)).and(q.type.eq(CarrierType.STORAGE)))
                 .fetch();
 
         return results;
