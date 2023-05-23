@@ -34,6 +34,11 @@ public class MyCarrierService {
     }
 
     @Transactional
+    public void editCountry(EditCarrierDTO carrierDTO) {
+        mainCarrierService.editCountry(carrierDTO);
+    }
+
+    @Transactional
     public void deleteOne(DeleteResDTO deleteResDTO) {
         mainCarrierService.deleteCarrier(deleteResDTO);
     }

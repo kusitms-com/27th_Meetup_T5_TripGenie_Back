@@ -134,7 +134,7 @@ public class MyCarrierController {
 
         carrierDTO.setEmail(email);
 
-        myCarrierService.editOne(carrierDTO);
+        myCarrierService.editCountry(carrierDTO);
 
         return ApiResponse.success(EmptyResponse.of());
     }
