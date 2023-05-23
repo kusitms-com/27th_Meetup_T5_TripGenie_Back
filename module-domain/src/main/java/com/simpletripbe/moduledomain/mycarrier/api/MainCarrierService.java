@@ -35,9 +35,9 @@ public class MainCarrierService {
     private final MyCarrierMapper myCarrierMapper;
     private final AwsS3Service awsS3Service;
 
-    public List<String> selectAll(String email) {
+    public List<CarrierSelectDTO> selectAll(String email) {
 
-        List<String> entityResult = myCarrierRepository.findAllByEmail(email);
+        List<CarrierSelectDTO> entityResult = myCarrierRepository.findAllByEmail(email);
 
         return entityResult;
     }

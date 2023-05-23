@@ -34,12 +34,12 @@ public class MyCarrierController {
      */
     @Operation(summary = "컈리어 전체 목록 조회 api", description = "selectAll")
     @GetMapping("selectAll")
-    public ApiResponse<List<String>> selectAll(HttpServletRequest request) {
+    public ApiResponse<List<CarrierSelectDTO>> selectAll(HttpServletRequest request) {
 
         String refreshToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
         String email = jwtTokenProvider.getUserEmail(refreshToken);
 
-        final List<String> responses
+        final List<CarrierSelectDTO> responses
                 = myCarrierService.selectAll(email);
 
         return ApiResponse.success(responses);
@@ -81,15 +81,56 @@ public class MyCarrierController {
     /**
      * 캐리어 수정
      */
-    @Operation(summary = "캐리어 수정 api", description = "editCarrier")
+    @Operation(summary = "캐리어 여행 기간, 이름 수정 api", description = "editCarrier")
     @PutMapping("editCarrier")
     public ApiResponse<EmptyResponse> editCarrier(
             HttpServletRequest request,
-            @RequestBody EditCarrierDTO carrierDTO
-            ) {
+            @RequestBody EditCarrierReqDTO editCarrierReqDTO
+    ) {
 
         String refreshToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
         String email = jwtTokenProvider.getUserEmail(refreshToken);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate startDate = LocalDate.parse(editCarrierReqDTO.getStartDate(), formatter);
+        LocalDate endDate = LocalDate.parse(editCarrierReqDTO.getEndDate(), formatter);
+
+        EditCarrierDTO carrierDTO = EditCarrierDTO.builder()
+                .country(editCarrierReqDTO.getCountry())
+                .name(editCarrierReqDTO.getName())
+                .email(email)
+                .startDate(startDate)
+                .endDate(endDate)
+                .build();
+
+        carrierDTO.setEmail(email);
+
+        myCarrierService.editOne(carrierDTO);
+
+        return ApiResponse.success(EmptyResponse.of());
+    }
+
+    @Operation(summary = "캐리어 여행지 수정 api", description = "editCarrierCountry")
+    @PutMapping("editCarrierCountry")
+    public ApiResponse<EmptyResponse> editCarrierCountry(
+            HttpServletRequest request,
+            @RequestBody EditCarrierReqDTO editCarrierReqDTO
+    ) {
+
+        String refreshToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
+        String email = jwtTokenProvider.getUserEmail(refreshToken);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate startDate = LocalDate.parse(editCarrierReqDTO.getStartDate(), formatter);
+        LocalDate endDate = LocalDate.parse(editCarrierReqDTO.getEndDate(), formatter);
+
+        EditCarrierDTO carrierDTO = EditCarrierDTO.builder()
+                .country(editCarrierReqDTO.getCountry())
+                .name(editCarrierReqDTO.getName())
+                .email(email)
+                .startDate(startDate)
+                .endDate(endDate)
+                .build();
 
         carrierDTO.setEmail(email);
 

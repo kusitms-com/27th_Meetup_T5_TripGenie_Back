@@ -17,7 +17,7 @@ public class MyCarrierService {
     private final MainCarrierService mainCarrierService;
 
     @Transactional(readOnly = true)
-    public List<String> selectAll(String email) {
+    public List<CarrierSelectDTO> selectAll(String email) {
         return mainCarrierService
                 .selectAll(email);
     }
