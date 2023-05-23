@@ -17,7 +17,7 @@ public class MyCarrierService {
     private final MainCarrierService mainCarrierService;
 
     @Transactional(readOnly = true)
-    public List<String> selectAll(String email) {
+    public List<CarrierSelectDTO> selectAll(String email) {
         return mainCarrierService
                 .selectAll(email);
     }
@@ -25,6 +25,7 @@ public class MyCarrierService {
     @Transactional
     public void saveOne(CarrierListDTO carrierListDTO) {
         mainCarrierService.addCarrier(carrierListDTO);
+
     }
 
     @Transactional
@@ -33,8 +34,8 @@ public class MyCarrierService {
     }
 
     @Transactional
-    public void deleteOne(String email) {
-        mainCarrierService.deleteCarrier(email);
+    public void deleteOne(DeleteResDTO deleteResDTO) {
+        mainCarrierService.deleteCarrier(deleteResDTO);
     }
 
     @Transactional

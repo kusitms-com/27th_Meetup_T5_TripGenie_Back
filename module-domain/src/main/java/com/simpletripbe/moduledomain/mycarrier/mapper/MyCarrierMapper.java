@@ -6,6 +6,7 @@ import com.simpletripbe.moduledomain.mycarrier.dto.TicketDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketTypeDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketUrlDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.CarrierCountry;
+import com.simpletripbe.moduledomain.mycarrier.entity.Country;
 import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
 import com.simpletripbe.moduledomain.mycarrier.entity.Ticket;
 import org.mapstruct.*;
@@ -29,21 +30,26 @@ public interface MyCarrierMapper {
     List<TicketTypeDTO> toTicketTypeDto(List<Ticket> tickets);
 
     @Mappings({
-            @Mapping(source = "name", target = "name", ignore = true),
-            @Mapping(source = "email", target = "user.email", ignore = true),
-            @Mapping(source = "startDate", target = "startDate", ignore = true),
-            @Mapping(source = "endDate", target = "endDate", ignore = true),
+            @Mapping(source = "name", target = "name"),
+            @Mapping(source = "email", target = "user.email"),
+            @Mapping(source = "startDate", target = "startDate"),
+            @Mapping(source = "endDate", target = "endDate"),
             @Mapping(target = "deleteYn", expression = "java(\"N\")"),
 //            @Mapping(target = "creDate", expression = "java(java.time.LocalDateTime.now())")
     })
     MyCarrier toCarrierEntity(CarrierListDTO carrierListDTO);
 
     @Mappings({
+            @Mapping(source = "country", target = "name")
+    })
+    Country toCountryEntity(CarrierListDTO carrierListDTO);
+
+    @Mappings({
             @Mapping(source = "country", target = "country", ignore = true),
+//            @Mapping(source = "", target = "myCarrier.id"),
 //            @Mapping(target = "creDate", expression = "java(java.time.LocalDateTime.now())")
     })
     CarrierCountry toCarrierCountryEntity(CarrierListDTO carrierListDTO);
-
 
     @Mappings({
             @Mapping(source = "type", target = "type"),

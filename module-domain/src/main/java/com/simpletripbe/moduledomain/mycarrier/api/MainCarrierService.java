@@ -6,6 +6,7 @@ import com.simpletripbe.moduledomain.batch.dto.MyBagTicketDTO;
 import com.simpletripbe.moduledomain.batch.dto.TicketListDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.*;
 import com.simpletripbe.moduledomain.mycarrier.entity.CarrierCountry;
+import com.simpletripbe.moduledomain.mycarrier.entity.Country;
 import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
 import com.simpletripbe.moduledomain.mycarrier.entity.Ticket;
 import com.simpletripbe.moduledomain.mycarrier.mapper.MyCarrierMapper;
@@ -34,9 +35,9 @@ public class MainCarrierService {
     private final MyCarrierMapper myCarrierMapper;
     private final AwsS3Service awsS3Service;
 
-    public List<String> selectAll(String email) {
+    public List<CarrierSelectDTO> selectAll(String email) {
 
-        List<String> entityResult = myCarrierRepository.findAllByEmail(email);
+        List<CarrierSelectDTO> entityResult = myCarrierRepository.findAllByEmail(email);
 
         return entityResult;
     }
@@ -74,7 +75,13 @@ public class MainCarrierService {
     public void addCarrier(CarrierListDTO carrierListDTO) {
 
         MyCarrier myCarrier = myCarrierMapper.toCarrierEntity(carrierListDTO);
-        CarrierCountry carrierCountry = myCarrierMapper.toCarrierCountryEntity(carrierListDTO);
+        Country country = myCarrierMapper.toCountryEntity(carrierListDTO);
+
+//        CarrierCountry carrierCountry = myCarrierMapper.toCarrierCountryEntity(carrierListDTO);
+
+        CarrierCountry carrierCountry = new CarrierCountry();
+        carrierCountry.setMyCarrier(myCarrier);
+        carrierCountry.setCountry(country);
 
         myCarrierRepository.save(myCarrier);
         carrierCountryRepository.save(carrierCountry);
@@ -85,9 +92,9 @@ public class MainCarrierService {
         myCarrierRepository.updateCarrier(carrierDTO);
     }
 
-    public void deleteCarrier(String email) {
+    public void deleteCarrier(DeleteResDTO deleteResDTO) {
 
-        myCarrierRepository.deleteCarrier(email);
+        myCarrierRepository.deleteCarrier(deleteResDTO);
     }
 
     public void addStamp(CarrierListDTO carrierListDTO) {

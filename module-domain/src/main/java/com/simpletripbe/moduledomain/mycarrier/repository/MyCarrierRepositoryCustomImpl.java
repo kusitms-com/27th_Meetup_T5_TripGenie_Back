@@ -1,10 +1,12 @@
 package com.simpletripbe.moduledomain.mycarrier.repository;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.simpletripbe.moduledomain.batch.dto.MyBagSaveDTO;
 import com.simpletripbe.moduledomain.batch.dto.MyBagTicketDTO;
 import com.simpletripbe.moduledomain.batch.dto.QMyBagTicketDTO;
 import com.simpletripbe.moduledomain.batch.dto.TicketListDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.CarrierSelectDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.*;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
@@ -31,20 +33,20 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
     }
 
     @Override
-    public List<String> findAllByEmail(String email) {
-
+    public List<CarrierSelectDTO> findAllByEmail(String email) {
         QMyCarrier q = QMyCarrier.myCarrier;
         QCarrierCountry c = QCarrierCountry.carrierCountry;
 
-        List<Country> results = jpaQueryFactory
-                .select(c.country).distinct()
+        List<Tuple> results = jpaQueryFactory
+                .select(q.id, q.name)
                 .from(c)
                 .leftJoin(c.myCarrier, q)
                 .where(q.deleteYn.eq("N").and(q.user.email.eq(email)))
                 .fetch();
 
-        return results.stream().map(Country::getName).collect(Collectors.toList());
-
+        return results.stream()
+                .map(tuple -> new CarrierSelectDTO(tuple.get(q.id), tuple.get(q.name)))
+                .collect(Collectors.toList());
     }
 
     @Override
