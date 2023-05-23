@@ -6,6 +6,8 @@ import com.simpletripbe.moduleapi.applications.mycarrier.service.MyCarrierServic
 import com.simpletripbe.modulecommon.common.annotation.AuthUser;
 import com.simpletripbe.modulecommon.common.response.ApiResponse;
 import com.simpletripbe.modulecommon.common.util.EmptyResponse;
+import com.simpletripbe.moduledomain.login.entity.User;
+import com.simpletripbe.moduledomain.login.repository.UserRepository;
 import com.simpletripbe.moduledomain.mycarrier.dto.*;
 import com.simpletripbe.moduledomain.mycarrier.entity.CarrierType;
 import io.swagger.v3.oas.annotations.Operation;

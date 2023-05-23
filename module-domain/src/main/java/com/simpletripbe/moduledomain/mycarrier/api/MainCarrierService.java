@@ -6,6 +6,7 @@ import com.simpletripbe.moduledomain.batch.dto.MyBagTicketDTO;
 import com.simpletripbe.moduledomain.batch.dto.TicketListDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.*;
 import com.simpletripbe.moduledomain.mycarrier.entity.CarrierCountry;
+import com.simpletripbe.moduledomain.mycarrier.entity.Country;
 import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
 import com.simpletripbe.moduledomain.mycarrier.entity.Ticket;
 import com.simpletripbe.moduledomain.mycarrier.mapper.MyCarrierMapper;
@@ -74,7 +75,13 @@ public class MainCarrierService {
     public void addCarrier(CarrierListDTO carrierListDTO) {
 
         MyCarrier myCarrier = myCarrierMapper.toCarrierEntity(carrierListDTO);
-        CarrierCountry carrierCountry = myCarrierMapper.toCarrierCountryEntity(carrierListDTO);
+        Country country = myCarrierMapper.toCountryEntity(carrierListDTO);
+
+//        CarrierCountry carrierCountry = myCarrierMapper.toCarrierCountryEntity(carrierListDTO);
+
+        CarrierCountry carrierCountry = new CarrierCountry();
+        carrierCountry.setMyCarrier(myCarrier);
+        carrierCountry.setCountry(country);
 
         myCarrierRepository.save(myCarrier);
         carrierCountryRepository.save(carrierCountry);

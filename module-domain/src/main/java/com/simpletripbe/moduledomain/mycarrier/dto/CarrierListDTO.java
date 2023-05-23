@@ -1,6 +1,8 @@
 package com.simpletripbe.moduledomain.mycarrier.dto;
 
+import com.simpletripbe.moduledomain.login.entity.User;
 import com.simpletripbe.moduledomain.mycarrier.entity.CarrierType;
+import com.simpletripbe.moduledomain.mycarrier.entity.Country;
 import lombok.*;
 
 import java.time.LocalDate;
