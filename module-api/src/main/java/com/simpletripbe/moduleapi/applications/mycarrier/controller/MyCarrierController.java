@@ -6,8 +6,6 @@ import com.simpletripbe.moduleapi.applications.mycarrier.service.MyCarrierServic
 import com.simpletripbe.modulecommon.common.annotation.AuthUser;
 import com.simpletripbe.modulecommon.common.response.ApiResponse;
 import com.simpletripbe.modulecommon.common.util.EmptyResponse;
-import com.simpletripbe.moduledomain.login.entity.User;
-import com.simpletripbe.moduledomain.login.repository.UserRepository;
 import com.simpletripbe.moduledomain.mycarrier.dto.*;
 import com.simpletripbe.moduledomain.mycarrier.entity.CarrierType;
 import io.swagger.v3.oas.annotations.Operation;
@@ -106,13 +104,19 @@ public class MyCarrierController {
     @Operation(summary = "캐리어 삭제 api", description = "deleteCarrier")
     @PutMapping("deleteCarrier")
     public ApiResponse<EmptyResponse> deleteCarrier(
-            HttpServletRequest request
-    ) {
+            HttpServletRequest request,
+            @RequestBody DeleteCarrierReqDTO deleteCarrierReqDTO
+            ) {
 
         String refreshToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
         String email = jwtTokenProvider.getUserEmail(refreshToken);
 
-        myCarrierService.deleteOne(email);
+        DeleteResDTO deleteResDTO = DeleteResDTO.builder()
+                .name(deleteCarrierReqDTO.getName())
+                .email(email)
+                .build();
+
+        myCarrierService.deleteOne(deleteResDTO);
 
         return ApiResponse.success(EmptyResponse.of());
     }

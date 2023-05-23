@@ -92,9 +92,9 @@ public class MainCarrierService {
         myCarrierRepository.updateCarrier(carrierDTO);
     }
 
-    public void deleteCarrier(String email) {
+    public void deleteCarrier(DeleteResDTO deleteResDTO) {
 
-        myCarrierRepository.deleteCarrier(email);
+        myCarrierRepository.deleteCarrier(deleteResDTO);
     }
 
     public void addStamp(CarrierListDTO carrierListDTO) {

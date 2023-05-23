@@ -1,6 +1,7 @@
 package com.simpletripbe.moduledomain.mycarrier.repository;
 
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.DeleteResDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.EditCarrierDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketMemoDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
@@ -13,19 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 public interface MyCarrierRepository extends JpaRepository<MyCarrier, Long>, MyCarrierRepositoryCustom {
 
     @Modifying
-    @Query(value = "UPDATE MyCarrier m " +
+    @Query(value = "UPDATE my_carrier m " +
             "SET m.name = :#{#carrier.name}," +
             "m.email = :#{#carrier.email}," +
-            "m.startDate = :#{#carrier.startDate}," +
-            "m.endDate = :#{#carrier.endDate}" +
+            "m.start_date = :#{#carrier.startDate}," +
+            "m.end_date = :#{#carrier.endDate}" +
             "WHERE m.email = :#{#carrier.email}", nativeQuery = true)
     void updateCarrier(@Param("carrier") EditCarrierDTO carrierDTO);
 
     @Modifying
-    @Query(value = "UPDATE MyCarrier m " +
-            "SET m.deleteYn = 'Y' " +
-            "WHERE m.email = :email", nativeQuery = true)
-    void deleteCarrier(@Param("email") String email);
+    @Query(value = "UPDATE my_carrier m " +
+            "SET m.delete_yn = 'Y' " +
+            "WHERE m.email = :#{#carrier.email} AND m.name = :#{#carrier.name}", nativeQuery = true)
+    void deleteCarrier(@Param("carrier") DeleteResDTO deleteResDTO);
 
     @Query(value = "select tm.content from TicketMemo tm " +
             "left outer join Ticket tc on tm.ticketId = tc.id " +

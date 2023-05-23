@@ -34,8 +34,8 @@ public class MyCarrierService {
     }
 
     @Transactional
-    public void deleteOne(String email) {
-        mainCarrierService.deleteCarrier(email);
+    public void deleteOne(DeleteResDTO deleteResDTO) {
+        mainCarrierService.deleteCarrier(deleteResDTO);
     }
 
     @Transactional
