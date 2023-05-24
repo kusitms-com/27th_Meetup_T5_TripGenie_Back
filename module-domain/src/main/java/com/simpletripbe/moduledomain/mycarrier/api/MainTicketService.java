@@ -5,6 +5,7 @@ import com.simpletripbe.modulecommon.common.response.CommonCode;
 import com.simpletripbe.moduledomain.login.repository.UserRepository;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketMemoDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketMemoRes;
+import com.simpletripbe.moduledomain.mycarrier.entity.CarrierType;
 import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
 import com.simpletripbe.moduledomain.mycarrier.entity.Ticket;
 import com.simpletripbe.moduledomain.mycarrier.entity.TicketMemo;
@@ -41,6 +42,8 @@ public class MainTicketService {
 
         MyCarrier myCarrier = checkValidCarrierId(email, ticketMemoDTO.getCarrierId());
 
+        checkCarrierType(myCarrier);
+
         Ticket ticket = checkValidTicketId(myCarrier, ticketMemoDTO.getTicketId());
 
         Optional<TicketMemo> ticketMemoOptional = ticketMemoRepository.findByTicketId(ticket.getId());
@@ -71,6 +74,8 @@ public class MainTicketService {
 
         MyCarrier myCarrier = checkValidCarrierId(email, carrierId);
 
+        checkCarrierType(myCarrier);
+
         checkValidTicketId(myCarrier, ticketId);
 
         Optional<TicketMemo> ticketMemoOptional = ticketMemoRepository.findByTicketId(ticketId);
@@ -91,6 +96,8 @@ public class MainTicketService {
         checkExistImageOrContent(multipartFile, ticketMemoDTO.getContent());
 
         MyCarrier myCarrier = checkValidCarrierId(email, ticketMemoDTO.getCarrierId());
+
+        checkCarrierType(myCarrier);
 
         Ticket ticket = checkValidTicketId(myCarrier, ticketMemoDTO.getTicketId());
 
@@ -126,6 +133,8 @@ public class MainTicketService {
 
         MyCarrier myCarrier = checkValidCarrierId(email, carrierId);
 
+        checkCarrierType(myCarrier);
+
         checkValidTicketId(myCarrier, ticketId);
 
         Optional<TicketMemo> ticketMemoOptional = ticketMemoRepository.findByTicketId(ticketId);
@@ -147,6 +156,8 @@ public class MainTicketService {
     public void checkExist(String email, Long carrierId, Long ticketId) {
 
         MyCarrier myCarrier = checkValidCarrierId(email, carrierId);
+
+        checkCarrierType(myCarrier);
 
         checkValidTicketId(myCarrier, ticketId);
 
@@ -235,6 +246,16 @@ public class MainTicketService {
         // 글자수가 100자를 넘기는 경우에만 지니 캐시 지급
         if (content.length() >= contentLength) {
             userRepository.updateUserCash(email, cash);
+        }
+    }
+
+    /**
+     * 보관함 상태인지 확인하는 메서드
+     */
+    private void checkCarrierType(MyCarrier myCarrier) {
+
+        if (myCarrier.getType().equals(CarrierType.CARRIER)) {
+            throw new CustomException(CommonCode.NOT_STORAGE_TYPE);
         }
     }
 }

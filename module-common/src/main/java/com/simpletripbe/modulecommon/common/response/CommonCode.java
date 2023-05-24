@@ -34,6 +34,9 @@ public enum CommonCode {
     EMPTY_CONTENT(400, -2003, "추가 또는 변경할 내용이 존재하지 않습니다."),
     NONEXISTENT_TICKET_MEMO(400, -2004, "존재하지 않는 티켓 메모입니다."),
     TICKET_MEMO_ALREADY_EXIST(400, -2005, "이미 존재하는 티켓 메모입니다."),
+    NOT_CARRIER_TYPE(400, -2006, "보관함 상태에서는 캐리어에 데이터를 추가할 수 없습니다."),
+    NOT_STORAGE_TYPE(400, -2007, "캐리어 상태에서는 티켓 기록에 접근할 수 없습니다."),
+
     //-3000: Posts
     WRONG_FILE_FORMAT(400, -3000, "잘못된 형식의 파일입니다."),
     FILE_UPLOAD_FAIL(400, -3001, "파일 업로드에 실패했습니다"),

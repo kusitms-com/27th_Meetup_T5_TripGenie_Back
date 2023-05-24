@@ -252,7 +252,7 @@ public class MyCarrierController {
     /**
      * 편집 - 티켓 이름 변경
      */
-    @Operation(summary = "티켓 순서 변경 api", description = "updateTicketOrder")
+    @Operation(summary = "티켓 이름 변경 api", description = "updateTicketTitle")
     @PutMapping("updateTicket/title")
     public ApiResponse<EmptyResponse> updateTicketTitle(
             @AuthUser String email,
