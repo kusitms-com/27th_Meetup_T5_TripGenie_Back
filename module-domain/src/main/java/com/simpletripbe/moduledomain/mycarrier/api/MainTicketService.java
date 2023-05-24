@@ -143,6 +143,19 @@ public class MainTicketService {
 
     }
 
+    @Transactional
+    public void checkExist(String email, Long carrierId, Long ticketId) {
+
+        MyCarrier myCarrier = checkValidCarrierId(email, carrierId);
+
+        checkValidTicketId(myCarrier, ticketId);
+
+        Optional<TicketMemo> ticketMemoOptional = ticketMemoRepository.findByTicketId(ticketId);
+
+        checkExistTicketMemo(ticketMemoOptional);
+
+    }
+
     /**
      * 전달받은 캐리어 ID가 올바른지 확인하는 메서드
      */
