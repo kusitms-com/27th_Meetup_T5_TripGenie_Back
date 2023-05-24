@@ -1,10 +1,9 @@
 package com.simpletripbe.moduledomain.mycarrier.repository;
 
-import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.DeleteResDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.EditCarrierDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketMemoDTO;
-import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
+import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;import com.simpletripbe.moduledomain.mycarrier.entity.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

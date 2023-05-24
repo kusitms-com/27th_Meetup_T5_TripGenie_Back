@@ -78,7 +78,7 @@ public class MainTicketService {
         if (ticketMemoOptional.isPresent()) {
             return ticketMemoMapper.toTicketMemoRes(ticketMemoOptional.get());
         } else {
-            return new TicketMemoRes();
+            throw new CustomException(CommonCode.NONEXISTENT_TICKET_MEMO);
         }
 
     }
@@ -139,7 +139,7 @@ public class MainTicketService {
             awsS3Service.deleteFile(ticketMemoOptional.get().getImageUrl().replace(S3_URL, ""));
         }
 
-        ticketMemoRepository.delete(ticketMemo);
+        ticketMemoRepository.deleteTicketMemo(ticketMemo.getId());
 
     }
 
@@ -151,7 +151,7 @@ public class MainTicketService {
         Optional<MyCarrier> myCarrierOptional = myCarrierRepository.findById(carrierId);
 
         // 존재하지 않는 캐리어 예외처리
-        if (myCarrierOptional.isEmpty()) {
+        if (myCarrierOptional.isEmpty() || myCarrierOptional.get().getDeleteYn().equals("Y")) {
             throw new CustomException(CommonCode.NONEXISTENT_CARRIER);
         }
 
@@ -173,7 +173,7 @@ public class MainTicketService {
         List<Ticket> tickets = myCarrier.getTickets();
 
         for (Ticket ticket : tickets) {
-            if (ticket.getId().equals(ticketId)) {
+            if (ticket.getId().equals(ticketId) && ticket.getDeleteYn().equals("N")) {
                 return ticket;
             }
         }

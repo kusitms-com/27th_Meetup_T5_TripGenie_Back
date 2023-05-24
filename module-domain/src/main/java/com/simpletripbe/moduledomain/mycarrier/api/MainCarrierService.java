@@ -5,13 +5,11 @@ import com.simpletripbe.modulecommon.common.response.CommonCode;
 import com.simpletripbe.moduledomain.batch.dto.MyBagTicketDTO;
 import com.simpletripbe.moduledomain.batch.dto.TicketListDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.*;
-import com.simpletripbe.moduledomain.mycarrier.entity.CarrierCountry;
-import com.simpletripbe.moduledomain.mycarrier.entity.Country;
-import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
-import com.simpletripbe.moduledomain.mycarrier.entity.Ticket;
+import com.simpletripbe.moduledomain.mycarrier.entity.*;
 import com.simpletripbe.moduledomain.mycarrier.mapper.MyCarrierMapper;
 import com.simpletripbe.moduledomain.mycarrier.repository.CarrierCountryRepository;
 import com.simpletripbe.moduledomain.mycarrier.repository.MyCarrierRepository;
+import com.simpletripbe.moduledomain.mycarrier.repository.TicketMemoRepository;
 import com.simpletripbe.moduledomain.mycarrier.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
@@ -34,6 +32,7 @@ public class MainCarrierService {
     private final TicketRepository ticketRepository;
     private final MyCarrierMapper myCarrierMapper;
     private final AwsS3Service awsS3Service;
+    private final TicketMemoRepository ticketMemoRepository;
 
     public List<CarrierSelectDTO> selectAll(String email) {
 
@@ -42,7 +41,7 @@ public class MainCarrierService {
         return entityResult;
     }
 
-
+    @Transactional
     public CarrierInfoRes getInfo(String email, Long carrierId) {
 
         MyCarrier myCarrier = checkValidCarrierId(email, carrierId);
@@ -148,6 +147,7 @@ public class MainCarrierService {
 
     }
 
+    @Transactional
     public List<TicketDTO> selectTicketAll(String email, Long carrierId) {
 
         checkValidCarrierId(email, carrierId);
@@ -188,9 +188,19 @@ public class MainCarrierService {
 
         checkValidTicketId(myCarrier, ticketId);
 
-        ticketRepository.deleteById(ticketId);
+        checkExistTicketMemo(ticketId);
+
+        Optional<TicketMemo> ticketMemoOptional = ticketMemoRepository.findByTicketId(ticketId);
+        // 티켓 메모가 존재하면, 티켓 메모까지 soft delete
+        if (ticketMemoOptional.isPresent()) {
+            ticketMemoRepository.deleteTicketMemo(ticketMemoOptional.get().getId());
+        }
+
+        ticketRepository.deleteTicket(ticketId);
 
     }
+
+
 
     /**
      * 전달받은 캐리어 ID가 올바른지 확인하는 메서드
@@ -200,7 +210,7 @@ public class MainCarrierService {
         Optional<MyCarrier> myCarrierOptional = myCarrierRepository.findById(carrierId);
 
         // 존재하지 않는 캐리어 예외처리
-        if (myCarrierOptional.isEmpty()) {
+        if (myCarrierOptional.isEmpty() || myCarrierOptional.get().getDeleteYn().equals("Y")) {
             throw new CustomException(CommonCode.NONEXISTENT_CARRIER);
         }
 
@@ -222,6 +232,7 @@ public class MainCarrierService {
         List<Ticket> tickets = myCarrier.getTickets();
 
         Set<Long> ticketIdSet = tickets.stream()
+                .filter(t -> t.getDeleteYn().equals("N"))
                 .map(Ticket::getId)
                 .collect(Collectors.toSet());
 
@@ -237,16 +248,32 @@ public class MainCarrierService {
     /**
      * 전달받은 티켓이 캐리어에 존재하는지 확인하는 메서드
      */
-    private void checkValidTicketId(MyCarrier myCarrier, Long ticketId) {
+    private Ticket checkValidTicketId(MyCarrier myCarrier, Long ticketId) {
 
         List<Ticket> tickets = myCarrier.getTickets();
 
-        Set<Long> ticketIdSet = tickets.stream()
-                .map(Ticket::getId)
-                .collect(Collectors.toSet());
-
-        if (!ticketIdSet.contains(ticketId)) {
-            throw new CustomException(CommonCode.NONEXISTENT_TICKET);
+        for (Ticket ticket : tickets) {
+            if (ticket.getId().equals(ticketId) && ticket.getDeleteYn().equals("N")) {
+                return ticket;
+            }
         }
+
+        throw new CustomException(CommonCode.NONEXISTENT_TICKET);
+
+    }
+
+    /**
+     * 티켓 메모가 존재하는 지 확인하는 메서드
+     */
+    private TicketMemo checkExistTicketMemo(Long ticketId) {
+
+        Optional<TicketMemo> ticketMemoOptional = ticketMemoRepository.findByTicketId(ticketId);
+
+        if (ticketMemoOptional.isPresent()) {
+            return ticketMemoOptional.get();
+        }
+
+        return null;
+
     }
 }

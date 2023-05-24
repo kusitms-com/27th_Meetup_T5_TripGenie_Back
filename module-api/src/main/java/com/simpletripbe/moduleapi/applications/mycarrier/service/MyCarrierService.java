@@ -63,9 +63,9 @@ public class MyCarrierService {
         return mainCarrierService.saveTicketFile(email, ticketUrlDTO, multipartFile);
     }
 
+    @Transactional
     public List<TicketDTO> selectTicketAll(String email, Long carrierId) {
-        return mainCarrierService
-                .selectTicketAll(email, carrierId);
+        return mainCarrierService.selectTicketAll(email, carrierId);
     }
 
     @Transactional
