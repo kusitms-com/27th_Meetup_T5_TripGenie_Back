@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +31,7 @@ public class MyCarrierController {
      */
     @Operation(summary = "컈리어 전체 목록 조회 api", description = "selectAll")
     @GetMapping("selectAll")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ApiResponse<List<CarrierSelectDTO>> selectAll(@AuthUser String email) {
 
         final List<CarrierSelectDTO> responses
@@ -44,6 +46,7 @@ public class MyCarrierController {
      */
     @Operation(summary = "캐리어 정보 조회 api", description = "getInfo")
     @GetMapping("getInfo")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ApiResponse<CarrierInfoRes> getInfo(
             @AuthUser String email,
             @RequestParam("id") Long carrierId
@@ -58,6 +61,7 @@ public class MyCarrierController {
      */
     @Operation(summary = "캐리어 추가 api", description = "addCarrier")
     @PostMapping("addCarrier")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ApiResponse<EmptyResponse> addCarrier(
             @AuthUser String email,
             @RequestBody CarrierReqDTO carrierReqDTO
@@ -87,6 +91,7 @@ public class MyCarrierController {
      */
     @Operation(summary = "캐리어 여행 기간, 이름 수정 api", description = "editCarrier")
     @PutMapping("editCarrier")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ApiResponse<EmptyResponse> editCarrier(
             @AuthUser String email,
             @RequestBody EditCarrierReqDTO editCarrierReqDTO
@@ -113,6 +118,7 @@ public class MyCarrierController {
 
     @Operation(summary = "캐리어 여행지 수정 api", description = "editCarrierCountry")
     @PutMapping("editCarrierCountry")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ApiResponse<EmptyResponse> editCarrierCountry(
             @AuthUser String email,
             @RequestBody EditCarrierReqDTO editCarrierReqDTO
@@ -142,6 +148,7 @@ public class MyCarrierController {
      */
     @Operation(summary = "캐리어 삭제 api", description = "deleteCarrier")
     @PutMapping("deleteCarrier")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ApiResponse<EmptyResponse> deleteCarrier(
             @AuthUser String email,
             @RequestBody DeleteCarrierReqDTO deleteCarrierReqDTO
@@ -162,6 +169,7 @@ public class MyCarrierController {
      */
     @Operation(summary = "스탬프 생성 api", description = "addStamp")
     @PostMapping("addStamp")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ApiResponse<EmptyResponse> addStamp(
             @RequestBody CarrierListDTO carrierListDTO
     ) {
@@ -176,6 +184,7 @@ public class MyCarrierController {
      */
     @Operation(summary = "티켓 목록 조회 api", description = "selectTicketAll")
     @GetMapping("selectTicketAll")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ApiResponse<List<TicketDTO>> selectTicketAll(
             @AuthUser String email,
             @RequestParam("id") Long carrierId
@@ -190,7 +199,8 @@ public class MyCarrierController {
      */
     @Operation(summary = "티켓 url 추가 api", description = "addTicketInfo")
     @PostMapping("addTicket/url")
-    public ApiResponse<List<TicketDTO>> addTicketInfo(
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ApiResponse<List<TicketDTO>> addTicketUrl(
             @AuthUser String email,
             @RequestBody TicketUrlDTO ticketUrlDTO
     ) {
@@ -204,6 +214,7 @@ public class MyCarrierController {
      */
     @Operation(summary = "티켓 파일 추가 api", description = "addTicketFile")
     @PostMapping("addTicket/file")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ApiResponse<List<TicketDTO>> addTicketFile(
             @AuthUser String email,
             @RequestPart(value = "dto") TicketUrlDTO ticketUrlDTO,
@@ -219,6 +230,7 @@ public class MyCarrierController {
      */
     @Operation(summary = "티켓 순서 변경 api", description = "updateTicketOrder")
     @PutMapping("updateTicket/order")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ApiResponse<EmptyResponse> updateTicketOrder(
             @AuthUser String email,
             @RequestBody TicketEditListDTO ticketEditListDTO
@@ -235,6 +247,7 @@ public class MyCarrierController {
      */
     @Operation(summary = "티켓 이름 변경 api", description = "updateTicketTitle")
     @PutMapping("updateTicket/title")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ApiResponse<EmptyResponse> updateTicketTitle(
             @AuthUser String email,
             @RequestBody TicketEditDTO ticketEditDTO
@@ -251,6 +264,7 @@ public class MyCarrierController {
      */
     @Operation(summary = "티켓 삭제 api", description = "deleteTicket")
     @DeleteMapping("delete/{carrierId}/ticket")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ApiResponse<EmptyResponse> deleteTicket(
             @AuthUser String email,
             @PathVariable Long carrierId,

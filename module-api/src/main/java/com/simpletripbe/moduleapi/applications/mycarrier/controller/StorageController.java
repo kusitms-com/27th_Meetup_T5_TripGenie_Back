@@ -7,6 +7,7 @@ import com.simpletripbe.moduledomain.mycarrier.dto.StorageDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,7 @@ public class StorageController {
      */
     @Operation(summary = "보관함 전체 목록 조회 api", description = "selectAll")
     @GetMapping("")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ApiResponse<List<StorageDTO>> selectAll(@AuthUser String email) {
 
         return ApiResponse.success(storageService.selectAll(email));
