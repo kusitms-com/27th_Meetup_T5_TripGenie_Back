@@ -22,7 +22,7 @@ import java.util.List;
 @Tag(name = "MyPageController", description = "마이 페이지 컨트롤러")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/mypage")
+@RequestMapping(value = "v1/myPage")
 public class MyPageController {
 
     private final MyPageService myPageService;
