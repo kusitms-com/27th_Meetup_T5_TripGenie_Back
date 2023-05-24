@@ -14,4 +14,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query(value = "update user u set u.cash = u.cash + :cash, u.modified_date = CURRENT_TIMESTAMP where u.email = :email", nativeQuery = true)
     void updateUserCash(@Param("email") String email, @Param("cash") int cash);
 
+    @Query(value = "select * from user u where u.email = :email and u.delete_yn = 'N'", nativeQuery = true)
+    Optional<User> findByUserId(@Param("email") String email);
+
 }

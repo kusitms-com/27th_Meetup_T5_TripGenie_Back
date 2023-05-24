@@ -116,6 +116,24 @@ public class MainCarrierService {
         myCarrierRepository.save(myCarrier);
     }
 
+    /**
+     * 티켓 리스트 조회 서비스 로직
+     */
+    @Transactional
+    public List<TicketDTO> selectTicketAll(String email, Long carrierId) {
+
+        checkValidCarrierId(email, carrierId);
+
+        List<Ticket> tickets = ticketRepository.findAllByCarrierIdOrderBySequenceAsc(carrierId);
+
+        List<TicketDTO> result = myCarrierMapper.toTicketDTO(tickets);
+
+        return result;
+    }
+
+    /**
+     * 티켓 링크 저장 서비스 로직
+     */
     @Transactional
     public List<TicketDTO> saveTicketUrl(String email, TicketUrlDTO ticketUrlDTO) {
 
@@ -132,6 +150,9 @@ public class MainCarrierService {
         return selectTicketAll(email, ticketUrlDTO.getId());
     }
 
+    /**
+     * 티켓 이미지, 파일 저장 서비스 로직
+     */
     @Transactional
     public List<TicketDTO> saveTicketFile(String email, TicketUrlDTO ticketUrlDTO, MultipartFile multipartFile) throws FileUploadException {
 
@@ -151,18 +172,9 @@ public class MainCarrierService {
 
     }
 
-    @Transactional
-    public List<TicketDTO> selectTicketAll(String email, Long carrierId) {
-
-        checkValidCarrierId(email, carrierId);
-
-        List<Ticket> tickets = ticketRepository.findAllByCarrierIdOrderBySequenceAsc(carrierId);
-
-        List<TicketDTO> result = myCarrierMapper.toTicketDTO(tickets);
-
-        return result;
-    }
-
+    /**
+     * 티켓 순서 변경 서비스 로직
+     */
     @Transactional
     public void updateTicketOrder(String email, TicketEditListDTO ticketEditListDTO) {
 
@@ -174,6 +186,9 @@ public class MainCarrierService {
 
     }
 
+    /**
+     * 티켓 이름 변경 서비스 로직
+     */
     @Transactional
     public void updateTicketTitle(String email, TicketEditDTO ticketEditDTO) {
 
@@ -185,6 +200,9 @@ public class MainCarrierService {
 
     }
 
+    /**
+     * 티켓 삭제 서비스 로직
+     */
     @Transactional
     public void deleteTicket(String email, Long carrierId, Long ticketId) {
 
@@ -195,6 +213,7 @@ public class MainCarrierService {
         checkExistTicketMemo(ticketId);
 
         Optional<TicketMemo> ticketMemoOptional = ticketMemoRepository.findByTicketId(ticketId);
+
         // 티켓 메모가 존재하면, 티켓 메모까지 soft delete
         if (ticketMemoOptional.isPresent()) {
             ticketMemoRepository.deleteTicketMemo(ticketMemoOptional.get().getId());

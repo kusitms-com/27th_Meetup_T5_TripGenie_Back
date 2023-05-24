@@ -1,10 +1,10 @@
-package com.simpletripbe.moduleapi.applications.login.service;
+package com.simpletripbe.moduledomain.login.oauth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.simpletripbe.moduledomain.login.dto.SocialOAuthDTO;
 import com.simpletripbe.modulecommon.common.exception.CustomException;
 import com.simpletripbe.modulecommon.common.response.CommonCode;
+import com.simpletripbe.moduledomain.login.dto.SocialOAuthDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,9 +22,7 @@ public class GoogleOauth {
 
     @Value("${app.google.api.url}")
     private String GOOGLE_API_URL;
-
     private final ObjectMapper objectMapper;
-
     /**
      * 구글 리소스 서버에 ID토큰 전달하여 결과 받아오는 메서드
      */

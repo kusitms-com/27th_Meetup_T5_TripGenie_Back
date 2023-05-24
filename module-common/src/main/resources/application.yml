@@ -1,4 +1,4 @@
-# swagger setting
+# swagger settings
 springdoc:
   swagger-ui:
     path: /api-docs
@@ -17,11 +17,11 @@ spring:
 
   servlet:
     multipart:
-      maxFileSize: 20MB
-      maxRequestSize: 20MB
+      maxFileSize: 100MB
+      maxRequestSize: 100MB
 
 
-# AWS S3 setting
+# AWS S3 settings
 cloud:
   aws:
     credentials:
@@ -29,6 +29,8 @@ cloud:
       secretKey: ${S3_SECRET_KEY}
     s3:
       bucket: ${S3_BUCKET_NAME}
+      url: ${S3_URL}
+      tripGenieProfileUrl: ${GENIE_PROFILE_URL}
     region:
       static: ${S3_REGION}
     stack:

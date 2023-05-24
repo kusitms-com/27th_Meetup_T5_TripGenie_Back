@@ -1,9 +1,9 @@
-package com.simpletripbe.moduleapi.applications.login.security;
+package com.simpletripbe.moduledomain.config;
 
-import com.simpletripbe.moduleapi.applications.login.jwt.JwtSecurityConfig;
+import com.simpletripbe.moduledomain.login.jwt.JwtSecurityConfig;
 import com.simpletripbe.modulecommon.common.exception.jwt.JwtAccessDeniedHandler;
 import com.simpletripbe.modulecommon.common.exception.jwt.JwtAuthenticationEntryPoint;
-import com.simpletripbe.moduleapi.applications.login.jwt.JwtTokenProvider;
+import com.simpletripbe.moduledomain.login.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true) // @PreAuthorize 어노테이션을 메소드 단위로 추가하기 위해 적용
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;

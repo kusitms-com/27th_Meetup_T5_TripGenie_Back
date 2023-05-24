@@ -34,7 +34,9 @@ public class MainTicketService {
     private final TicketMemoMapper ticketMemoMapper;
     private final AwsS3Service awsS3Service;
 
-
+    /**
+     * 티켓 메모 추가 서비스 로직
+     */
     @Transactional
     public TicketMemoRes insertTicketMemo(String email, TicketMemoDTO ticketMemoDTO, MultipartFile multipartFile) throws FileUploadException {
 
@@ -69,6 +71,9 @@ public class MainTicketService {
 
     }
 
+    /**
+     * 티켓 메모 조회 서비스 로직
+     */
     @Transactional
     public TicketMemoRes selectTicketMemo(String email, Long carrierId, Long ticketId) {
 
@@ -88,6 +93,9 @@ public class MainTicketService {
 
     }
 
+    /**
+     * 티켓 메모 수정 서비스 로직
+     */
     @Transactional
     public TicketMemoRes updateTicketMemo(String email, TicketMemoDTO ticketMemoDTO, MultipartFile multipartFile) throws FileUploadException {
 
@@ -128,6 +136,9 @@ public class MainTicketService {
 
     }
 
+    /**
+     * 티켓 메모 삭제 서비스 로직
+     */
     @Transactional
     public void deleteTicketMemo(String email, Long carrierId, Long ticketId) {
 
@@ -152,6 +163,9 @@ public class MainTicketService {
 
     }
 
+    /**
+     * 티켓 메모 존재 여부 조회 서비스 로직
+     */
     @Transactional
     public void checkExist(String email, Long carrierId, Long ticketId) {
 

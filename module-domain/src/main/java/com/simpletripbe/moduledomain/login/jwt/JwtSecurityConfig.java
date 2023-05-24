@@ -1,6 +1,6 @@
-package com.simpletripbe.moduleapi.applications.login.jwt;
+package com.simpletripbe.moduledomain.login.jwt;
 
-import com.simpletripbe.moduleapi.applications.login.security.ExceptionHandlerFilter;
+import com.simpletripbe.moduledomain.login.security.ExceptionHandlerFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

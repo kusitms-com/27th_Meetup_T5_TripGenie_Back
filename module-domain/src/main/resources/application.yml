@@ -22,33 +22,38 @@ spring:
     jdbc:
       initialize-schema: always
 
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+
   servlet:
     multipart:
-      maxFileSize: 20MB
-      maxRequestSize: 20MB
-
+      maxFileSize: 100MB
+      maxRequestSize: 100MB
 
 logging:
   level:
     sql: info
 
-# oauth settings
 app:
+  # oauth setting
   google:
-    url: https://accounts.google.com/o/oauth2/v2/auth
-    callback:
-      url: ${GOOGLE_CALLBACK_URL}
-    client:
-      id: ${GOOGLE_CLIENT_ID}
-      secret: ${GOOGLE_CLIENT_SECRET}
-    auth:
-      scope: profile,email
-    token:
-      url: https://oauth2.googleapis.com/token
-    userinfo:
-      url: https://www.googleapis.com/oauth2/vi/userinfo
+    api:
+      url: https://oauth2.googleapis.com/tokeninfo
 
-# AWS S3 setting
+  # security setting
+  security:
+    credential: ${SECRET_CREDENTIAL}
+
+# jwt settings
+jwt:
+  header: Authorization
+  secret: ${JWT_SECRET}
+  live:
+    atk: 1800000 # 60 * 30 * 1000
+    rtk: 2592000000 # 60 * 60 * 24 * 30 * 1000
+
+# AWS S3 settings
 cloud:
   aws:
     credentials:
@@ -57,6 +62,7 @@ cloud:
     s3:
       bucket: ${S3_BUCKET_NAME}
       url: ${S3_URL}
+      tripGenieProfileUrl: ${GENIE_PROFILE_URL}
     region:
       static: ${S3_REGION}
     stack:

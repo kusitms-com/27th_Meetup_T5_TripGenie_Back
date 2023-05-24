@@ -30,6 +30,7 @@ public class User extends BaseTimeEntity {
     private Integer cash;
 
     private String roles; // ROLE_USER, ROLE_ADMIN
+    private String deleteYn;
 
     public List<String> getRoleList() {
         if (this.roles.length() > 0) {
@@ -41,6 +42,7 @@ public class User extends BaseTimeEntity {
     public User(String email) {
         this.email = email;
         this.roles = "ROLE_USER";
+        this.deleteYn = "N";
     }
 
 }
