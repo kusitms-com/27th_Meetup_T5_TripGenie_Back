@@ -14,6 +14,9 @@ public class MainStorageService {
 
     private final MyCarrierRepository myCarrierRepository;
 
+    /**
+     * 보관함 리스트 조회 서비스 로직
+     */
     @Transactional
     public List<StorageDTO> selectAll(String email) {
 

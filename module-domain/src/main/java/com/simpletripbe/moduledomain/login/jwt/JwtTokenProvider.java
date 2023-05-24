@@ -1,8 +1,8 @@
-package com.simpletripbe.moduleapi.applications.login.jwt;
+package com.simpletripbe.moduledomain.login.jwt;
 
 import com.simpletripbe.modulecommon.common.exception.jwt.InvalidTokenException;
-import com.simpletripbe.moduleapi.applications.login.service.CustomUserDetailsService;
-import com.simpletripbe.moduleapi.applications.login.service.RedisService;
+import com.simpletripbe.moduledomain.login.security.CustomUserDetailsService;
+import com.simpletripbe.moduledomain.login.redis.RedisService;
 import com.simpletripbe.modulecommon.common.exception.CustomException;
 import com.simpletripbe.modulecommon.common.response.CommonCode;
 import com.simpletripbe.moduledomain.login.entity.User;

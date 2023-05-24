@@ -1,4 +1,4 @@
-package com.simpletripbe.moduleapi.applications.login.security;
+package com.simpletripbe.moduledomain.login.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simpletripbe.modulecommon.common.exception.jwt.EmptyJwtTokenException;

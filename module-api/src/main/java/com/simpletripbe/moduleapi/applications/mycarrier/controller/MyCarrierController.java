@@ -1,7 +1,5 @@
 package com.simpletripbe.moduleapi.applications.mycarrier.controller;
 
-import com.simpletripbe.moduleapi.applications.login.jwt.JwtFilter;
-import com.simpletripbe.moduleapi.applications.login.jwt.JwtTokenProvider;
 import com.simpletripbe.moduleapi.applications.mycarrier.service.MyCarrierService;
 import com.simpletripbe.modulecommon.common.annotation.AuthUser;
 import com.simpletripbe.modulecommon.common.response.ApiResponse;
@@ -15,7 +13,6 @@ import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -27,17 +24,13 @@ import java.util.List;
 public class MyCarrierController {
 
     private final MyCarrierService myCarrierService;
-    private final JwtTokenProvider jwtTokenProvider;
 
     /**
      * 캐리어 목록 조회
      */
     @Operation(summary = "컈리어 전체 목록 조회 api", description = "selectAll")
     @GetMapping("selectAll")
-    public ApiResponse<List<CarrierSelectDTO>> selectAll(HttpServletRequest request) {
-
-        String refreshToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
-        String email = jwtTokenProvider.getUserEmail(refreshToken);
+    public ApiResponse<List<CarrierSelectDTO>> selectAll(@AuthUser String email) {
 
         final List<CarrierSelectDTO> responses
                 = myCarrierService.selectAll(email);
@@ -66,12 +59,9 @@ public class MyCarrierController {
     @Operation(summary = "캐리어 추가 api", description = "addCarrier")
     @PostMapping("addCarrier")
     public ApiResponse<EmptyResponse> addCarrier(
-            HttpServletRequest request,
+            @AuthUser String email,
             @RequestBody CarrierReqDTO carrierReqDTO
     ) {
-
-        String refreshToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
-        String email = jwtTokenProvider.getUserEmail(refreshToken);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         LocalDate startDate = LocalDate.parse(carrierReqDTO.getStartDate(), formatter);
@@ -98,12 +88,9 @@ public class MyCarrierController {
     @Operation(summary = "캐리어 여행 기간, 이름 수정 api", description = "editCarrier")
     @PutMapping("editCarrier")
     public ApiResponse<EmptyResponse> editCarrier(
-            HttpServletRequest request,
+            @AuthUser String email,
             @RequestBody EditCarrierReqDTO editCarrierReqDTO
     ) {
-
-        String refreshToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
-        String email = jwtTokenProvider.getUserEmail(refreshToken);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         LocalDate startDate = LocalDate.parse(editCarrierReqDTO.getStartDate(), formatter);
@@ -127,12 +114,9 @@ public class MyCarrierController {
     @Operation(summary = "캐리어 여행지 수정 api", description = "editCarrierCountry")
     @PutMapping("editCarrierCountry")
     public ApiResponse<EmptyResponse> editCarrierCountry(
-            HttpServletRequest request,
+            @AuthUser String email,
             @RequestBody EditCarrierReqDTO editCarrierReqDTO
     ) {
-
-        String refreshToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
-        String email = jwtTokenProvider.getUserEmail(refreshToken);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         LocalDate startDate = LocalDate.parse(editCarrierReqDTO.getStartDate(), formatter);
@@ -159,12 +143,9 @@ public class MyCarrierController {
     @Operation(summary = "캐리어 삭제 api", description = "deleteCarrier")
     @PutMapping("deleteCarrier")
     public ApiResponse<EmptyResponse> deleteCarrier(
-            HttpServletRequest request,
+            @AuthUser String email,
             @RequestBody DeleteCarrierReqDTO deleteCarrierReqDTO
             ) {
-
-        String refreshToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
-        String email = jwtTokenProvider.getUserEmail(refreshToken);
 
         DeleteResDTO deleteResDTO = DeleteResDTO.builder()
                 .name(deleteCarrierReqDTO.getName())
@@ -191,7 +172,7 @@ public class MyCarrierController {
     }
 
     /**
-     * 상세페이지 - 티켓 조회
+     * 상세페이지 - 티켓 리스트 조회 컨트롤러
      */
     @Operation(summary = "티켓 목록 조회 api", description = "selectTicketAll")
     @GetMapping("selectTicketAll")
@@ -205,7 +186,7 @@ public class MyCarrierController {
     }
 
     /**
-     * 상세 페이지 - 티켓 링크 저장
+     * 상세 페이지 - 티켓 링크 저장 컨트롤러
      */
     @Operation(summary = "티켓 url 추가 api", description = "addTicketInfo")
     @PostMapping("addTicket/url")
@@ -219,7 +200,7 @@ public class MyCarrierController {
     }
 
     /**
-     * 상세 페이지 - 티켓 이미지, 파일 저장
+     * 상세 페이지 - 티켓 이미지, 파일 저장 컨트롤러
      */
     @Operation(summary = "티켓 파일 추가 api", description = "addTicketFile")
     @PostMapping("addTicket/file")
@@ -234,7 +215,7 @@ public class MyCarrierController {
     }
 
     /**
-     * 편집 - 티켓 순서 변경
+     * 편집 - 티켓 순서 변경 컨트롤러
      */
     @Operation(summary = "티켓 순서 변경 api", description = "updateTicketOrder")
     @PutMapping("updateTicket/order")
@@ -250,7 +231,7 @@ public class MyCarrierController {
     }
 
     /**
-     * 편집 - 티켓 이름 변경
+     * 편집 - 티켓 이름 변경 컨트롤러
      */
     @Operation(summary = "티켓 이름 변경 api", description = "updateTicketTitle")
     @PutMapping("updateTicket/title")
@@ -266,7 +247,7 @@ public class MyCarrierController {
     }
 
     /**
-     * 티켓 삭제
+     * 티켓 삭제 컨트롤러
      */
     @Operation(summary = "티켓 삭제 api", description = "deleteTicket")
     @DeleteMapping("delete/{carrierId}/ticket")

@@ -28,24 +28,25 @@ spring:
 
   servlet:
     multipart:
-      maxFileSize: 20MB
-      maxRequestSize: 20MB
+      maxFileSize: 100MB
+      maxRequestSize: 100MB
 
 
 logging:
   level:
     sql: info
 
-# oauth settings
 app:
+  # oauth setting
   google:
     api:
       url: https://oauth2.googleapis.com/tokeninfo
 
+  # security setting
   security:
     credential: ${SECRET_CREDENTIAL}
 
-# swagger setting
+# swagger settings
 springdoc:
   swagger-ui:
     path: /api-docs
@@ -57,6 +58,7 @@ springdoc:
   paths-to-match:
     - /**
 
+# jwt settings
 jwt:
   header: Authorization
   secret: ${JWT_SECRET}
@@ -64,7 +66,7 @@ jwt:
     atk: 1800000 # 60 * 30 * 1000
     rtk: 2592000000 # 60 * 60 * 24 * 30 * 1000
 
-# AWS S3 setting
+# AWS S3 settings
 cloud:
   aws:
     credentials:

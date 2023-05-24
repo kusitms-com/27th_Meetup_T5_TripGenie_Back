@@ -4,7 +4,6 @@ import com.simpletripbe.moduledomain.batch.dto.MyBagSaveDTO;
 import com.simpletripbe.moduledomain.batch.dto.MyBagTicketDTO;
 import com.simpletripbe.moduledomain.batch.dto.TicketListDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.CarrierSelectDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketTypeDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.StorageDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.Ticket;
 

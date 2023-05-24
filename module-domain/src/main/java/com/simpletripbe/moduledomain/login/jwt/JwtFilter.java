@@ -1,4 +1,4 @@
-package com.simpletripbe.moduleapi.applications.login.jwt;
+package com.simpletripbe.moduledomain.login.jwt;
 
 import com.simpletripbe.modulecommon.common.exception.jwt.EmptyJwtTokenException;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class JwtFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        System.out.println(httpServletRequest.getRequestURI());
+
         if (!httpServletRequest.getRequestURI().startsWith("/v1/user/oauth")) {
             String jwt = resolveToken(httpServletRequest);
 

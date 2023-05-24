@@ -1,4 +1,4 @@
-package com.simpletripbe.moduleapi.applications.login.service;
+package com.simpletripbe.moduledomain.login.redis;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;

@@ -22,7 +22,7 @@ public class TicketRecordController {
     private final TicketRecordService ticketRecordService;
 
     /**
-     * 티켓 메모 추가
+     * 티켓 메모 추가 컨트롤러
      */
     @Operation(summary = "나의 티켓 기록 작성 api", description = "insertTicketMemo")
     @PostMapping("")
@@ -37,7 +37,7 @@ public class TicketRecordController {
     }
 
     /**
-     * 티켓 메모 조회
+     * 티켓 메모 조회 컨트롤러
      */
     @Operation(summary = "나의 티켓 기록 조회 api", description = "selectTicketMemo")
     @GetMapping("{carrierId}")
@@ -52,7 +52,7 @@ public class TicketRecordController {
     }
 
     /**
-     * 티켓 메모 수정
+     * 티켓 메모 수정 컨트롤러
      */
     @Operation(summary = "나의 티켓 기록 수정 api", description = "updateTicketMemo")
     @PostMapping("update")
@@ -67,7 +67,7 @@ public class TicketRecordController {
     }
 
     /**
-     * 티켓 메모 삭제
+     * 티켓 메모 삭제 컨트롤러
      */
     @Operation(summary = "나의 티켓 기록 삭제 api", description = "deleteTicketMemo")
     @DeleteMapping("{carrierId}")
@@ -83,7 +83,7 @@ public class TicketRecordController {
     }
 
     /**
-     * 티켓 메모 존재 여부 조회
+     * 티켓 메모 존재 여부 조회 컨트롤러
      */
     @Operation(summary = "티켓 기록 존재 여부 조회 api", description = "checkExist")
     @GetMapping("/checkExist/{carrierId}")

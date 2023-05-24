@@ -21,6 +21,9 @@ public class StorageController {
 
     private final StorageService storageService;
 
+    /**
+     * 보관함 리스트 조회 컨트롤러
+     */
     @Operation(summary = "보관함 전체 목록 조회 api", description = "selectAll")
     @GetMapping("")
     public ApiResponse<List<StorageDTO>> selectAll(@AuthUser String email) {

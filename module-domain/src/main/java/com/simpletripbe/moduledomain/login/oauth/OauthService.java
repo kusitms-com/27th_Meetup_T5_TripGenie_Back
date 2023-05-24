@@ -1,4 +1,4 @@
-package com.simpletripbe.moduleapi.applications.login.service;
+package com.simpletripbe.moduledomain.login.oauth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.simpletripbe.moduledomain.login.dto.SocialOAuthDTO;

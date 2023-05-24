@@ -1,4 +1,4 @@
-package com.simpletripbe.moduleapi.applications.login.service;
+package com.simpletripbe.moduledomain.login.security;
 
 import com.simpletripbe.moduledomain.login.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findById(email)
+        return userRepository.findByUserId(email)
                 .map(user -> createUser(user))
                 .orElseThrow(() -> new UsernameNotFoundException(email + " -> 데이터베이스에 존재하지 않습니다."));
     }
