@@ -1,10 +1,7 @@
 package com.simpletripbe.moduledomain.mycarrier.mapper;
 
 import com.simpletripbe.moduledomain.batch.dto.MyBagSaveDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.CarrierListDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketTypeDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.TicketUrlDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.*;
 import com.simpletripbe.moduledomain.mycarrier.entity.CarrierCountry;
 import com.simpletripbe.moduledomain.mycarrier.entity.Country;
 import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
@@ -73,4 +70,12 @@ public interface MyCarrierMapper {
             @Mapping(source = "ticketUrl", target = "ticketUrl")
     })
     List<TicketDTO> toTicketDTO(List<Ticket> tickets);
+
+    @Mappings({
+            @Mapping(source = "name", target = "name"),
+            @Mapping(source = "startDate", target = "startDate"),
+            @Mapping(source = "endDate", target = "endDate")
+    })
+    CarrierInfoRes toCarrierInfoRes(MyCarrier myCarrier);
+
 }

@@ -42,6 +42,14 @@ public class MainCarrierService {
         return entityResult;
     }
 
+
+    public CarrierInfoRes getInfo(String email, Long carrierId) {
+
+        MyCarrier myCarrier = checkValidCarrierId(email, carrierId);
+
+        return myCarrierMapper.toCarrierInfoRes(myCarrier);
+    }
+
     public List<TicketListDTO> selectCarrierList() {
 
         List<TicketListDTO> entityResult = myCarrierRepository.selectCarrierList();

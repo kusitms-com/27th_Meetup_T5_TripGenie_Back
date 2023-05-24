@@ -23,6 +23,11 @@ public class MyCarrierService {
     }
 
     @Transactional
+    public CarrierInfoRes getInfo(String email, Long carrierId) {
+        return mainCarrierService.getInfo(email, carrierId);
+    }
+
+    @Transactional
     public void saveOne(CarrierListDTO carrierListDTO) {
         mainCarrierService.addCarrier(carrierListDTO);
 

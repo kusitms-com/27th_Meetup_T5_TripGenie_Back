@@ -47,6 +47,20 @@ public class MyCarrierController {
     }
 
     /**
+     * 캐리어 정보 조회
+     */
+    @Operation(summary = "캐리어 정보 조회 api", description = "getInfo")
+    @GetMapping("getInfo")
+    public ApiResponse<CarrierInfoRes> getInfo(
+            @AuthUser String email,
+            @RequestParam("id") Long carrierId
+    ) {
+
+        return ApiResponse.success(myCarrierService.getInfo(email, carrierId));
+
+    }
+
+    /**
      * 캐리어 추가
      */
     @Operation(summary = "캐리어 추가 api", description = "addCarrier")
