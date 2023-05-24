@@ -121,6 +121,8 @@ public class MainCarrierService {
 
         MyCarrier myCarrier = checkValidCarrierId(email, ticketUrlDTO.getId());
 
+        checkCarrierType(myCarrier);
+
         ticketUrlDTO.setMapper(myCarrier, ticketUrlDTO.getUrl(), myCarrier.getTickets().size() + 1);
 
         Ticket ticket = myCarrierMapper.toTicketEntity(ticketUrlDTO);
@@ -134,6 +136,8 @@ public class MainCarrierService {
     public List<TicketDTO> saveTicketFile(String email, TicketUrlDTO ticketUrlDTO, MultipartFile multipartFile) throws FileUploadException {
 
         MyCarrier myCarrier = checkValidCarrierId(email, ticketUrlDTO.getId());
+
+        checkCarrierType(myCarrier);
 
         String url = awsS3Service.uploadFile(multipartFile);
 
@@ -199,8 +203,6 @@ public class MainCarrierService {
         ticketRepository.deleteTicket(ticketId);
 
     }
-
-
 
     /**
      * 전달받은 캐리어 ID가 올바른지 확인하는 메서드
@@ -275,5 +277,15 @@ public class MainCarrierService {
 
         return null;
 
+    }
+
+    /**
+     * 캐리어 상태인지 확인하는 메서드
+     */
+    private void checkCarrierType(MyCarrier myCarrier) {
+
+        if (myCarrier.getType().equals(CarrierType.STORAGE)) {
+            throw new CustomException(CommonCode.NOT_CARRIER_TYPE);
+        }
     }
 }
