@@ -16,7 +16,8 @@ public interface TicketMemoMapper {
     @Mappings({
             @Mapping(source = "ticket", target = "ticket"),
             @Mapping(source = "imageUrl", target = "imageUrl"),
-            @Mapping(source = "content", target = "content")
+            @Mapping(source = "content", target = "content"),
+            @Mapping(target = "deleteYn", expression = "java(\"N\")")
     })
     TicketMemo toTicketMemoEntity(TicketMemoDTO ticketMemoDTO);
 

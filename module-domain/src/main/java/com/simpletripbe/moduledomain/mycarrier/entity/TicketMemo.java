@@ -26,5 +26,5 @@ public class TicketMemo extends BaseTimeEntity {
 
     private String content;
     private String imageUrl;
-
+    private String deleteYn;
 }

@@ -21,7 +21,7 @@ public class TicketRepositoryCustomImpl implements TicketRepositoryCustom {
         List<Ticket> results = jpaQueryFactory
                 .select(qt)
                 .from(qt)
-                .where(qt.myCarrier.id.eq(carrierId))
+                .where(qt.myCarrier.id.eq(carrierId).and(qt.deleteYn.eq("N")))
                 .orderBy(qt.sequence.asc())
                 .fetch();
 

@@ -36,4 +36,9 @@ public class TicketRecordService {
     public void deleteTicketMemo(String email, Long carrierId, Long ticketId) {
         mainTicketService.deleteTicketMemo(email, carrierId, ticketId);
     }
+
+    @Transactional
+    public void checkExist(String email, Long carrierId, Long ticketId) {
+        mainTicketService.checkExist(email, carrierId, ticketId);
+    }
 }

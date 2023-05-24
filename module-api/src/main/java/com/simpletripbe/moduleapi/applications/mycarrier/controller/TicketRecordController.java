@@ -82,5 +82,19 @@ public class TicketRecordController {
         return ApiResponse.success(EmptyResponse.of());
     }
 
+    /**
+     * 티켓 메모 존재 여부 조회
+     */
+    @Operation(summary = "티켓 기록 존재 여부 조회 api", description = "checkExist")
+    @GetMapping("/checkExist/{carrierId}")
+    public ApiResponse<EmptyResponse> checkExist(
+            @AuthUser String email,
+            @PathVariable Long carrierId,
+            @RequestParam("id") Long ticketId
+    ) {
 
+        ticketRecordService.checkExist(email, carrierId, ticketId);
+
+        return ApiResponse.success(EmptyResponse.of());
+    }
 }
