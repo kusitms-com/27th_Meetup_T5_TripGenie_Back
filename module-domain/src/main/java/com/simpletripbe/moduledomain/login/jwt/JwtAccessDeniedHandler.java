@@ -1,4 +1,4 @@
-package com.simpletripbe.modulecommon.common.exception.jwt;
+package com.simpletripbe.moduledomain.login.jwt;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
