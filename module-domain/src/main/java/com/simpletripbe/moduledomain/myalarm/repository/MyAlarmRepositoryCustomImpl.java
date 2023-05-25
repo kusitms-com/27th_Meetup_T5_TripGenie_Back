@@ -41,9 +41,13 @@ public class MyAlarmRepositoryCustomImpl extends QuerydslRepositorySupport imple
                 .fetch();
 
         return results.stream()
-                .map(tuple -> new AlarmInfoDTO(tuple.get(a.id), tuple.get(a.message), tuple.get(a.createdDate.stringValue())))
+                .map(tuple -> new AlarmInfoDTO(
+                        tuple.get(a.id),
+                        tuple.get(a.message),
+                        tuple.get(a.createdDate).toString()))
                 .collect(Collectors.toList());
 
     }
+
 
 }
