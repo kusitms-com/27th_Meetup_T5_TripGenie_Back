@@ -43,7 +43,7 @@ public class MyCarrierController {
     }
 
     /**
-     * 캐리어 정보 조회
+     * 캐리어 정보 조회 컨트롤러
      */
     @Operation(summary = "캐리어 정보 조회 api", description = "getInfo")
     @GetMapping("getInfo")
