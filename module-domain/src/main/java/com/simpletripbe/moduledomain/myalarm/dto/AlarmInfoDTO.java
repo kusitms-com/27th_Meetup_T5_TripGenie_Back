@@ -9,12 +9,12 @@ public class AlarmInfoDTO {
 
     private Long id;
     private String message;
-    private String date;
+    private String createdDate;
 
-    public AlarmInfoDTO(Long id, String message, String date) {
+    public AlarmInfoDTO(Long id, String message, String createdDate) {
         this.id = id;
         this.message = message;
-        this.date = date;
+        this.createdDate = createdDate;
     }
 
 }
