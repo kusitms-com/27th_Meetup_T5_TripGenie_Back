@@ -9,5 +9,6 @@ public class DeleteResDTO {
 
     private String email;
     private String name;
+    private Long id;
 
 }

@@ -37,10 +37,10 @@ public interface MyCarrierRepository extends JpaRepository<MyCarrier, Long>, MyC
 
     @Modifying
     @Query(value = "UPDATE my_carrier m " +
-            "JOIN ticket t ON m.carrier_id = t.carrier_id " +
+            "LEFT JOIN ticket t ON m.carrier_id = t.carrier_id " +
             "SET m.delete_yn = 'Y', " +
             "t.delete_yn = 'Y' " +
-            "WHERE m.email = :#{#carrier.email} AND m.name = :#{#carrier.name}", nativeQuery = true)
+            "WHERE m.email = :#{#carrier.email} AND m.carrier_id = :#{#carrier.id}", nativeQuery = true)
     void deleteCarrier(@Param("carrier") DeleteResDTO deleteResDTO);
 
     @Query(value = "select tm.content from TicketMemo tm " +
