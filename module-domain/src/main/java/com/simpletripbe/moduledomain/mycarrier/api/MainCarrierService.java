@@ -5,6 +5,9 @@ import com.simpletripbe.modulecommon.common.response.CommonCode;
 import com.simpletripbe.moduledomain.batch.dto.MyBagTicketDTO;
 import com.simpletripbe.moduledomain.batch.dto.TicketListDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.*;
+import com.simpletripbe.moduledomain.mycarrier.dto.CarrierEdit.EditCarrierCountryResDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.CarrierEdit.EditCarrierNameResDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.CarrierEdit.EditCarrierPeriodResDTO;
 import com.simpletripbe.moduledomain.mycarrier.entity.*;
 import com.simpletripbe.moduledomain.mycarrier.mapper.MyCarrierMapper;
 import com.simpletripbe.moduledomain.mycarrier.repository.CarrierCountryRepository;
@@ -94,14 +97,19 @@ public class MainCarrierService {
         carrierCountryRepository.save(carrierCountry);
     }
 
-    public void editCarrier(EditCarrierDTO carrierDTO) {
+    public void editCarrierName(EditCarrierNameResDTO carrierDTO) {
 
-        myCarrierRepository.updateCarrier(carrierDTO);
+        myCarrierRepository.updateCarrierName(carrierDTO);
     }
 
-    public void editCountry(EditCarrierDTO carrierDTO) {
+    public void editCarrierPeriod(EditCarrierPeriodResDTO carrierDTO) {
 
-        myCarrierRepository.updateCountry(carrierDTO);
+        myCarrierRepository.updateCarrierPeriod(carrierDTO);
+    }
+
+    public void editCarrierCountry(EditCarrierCountryResDTO carrierDTO) {
+
+        myCarrierRepository.updateCarrierCountry(carrierDTO);
     }
 
     public void deleteCarrier(DeleteResDTO deleteResDTO) {

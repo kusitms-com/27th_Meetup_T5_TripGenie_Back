@@ -14,7 +14,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @Repository
-@Transactional(readOnly = true)
+@Transactional
 public class MyPageRepositoryCustomImpl extends QuerydslRepositorySupport implements MyPageRepositoryCustom{
 
     private final EntityManager entityManager;

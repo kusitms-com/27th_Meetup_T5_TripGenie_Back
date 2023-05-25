@@ -5,6 +5,7 @@ import com.simpletripbe.modulecommon.common.annotation.AuthUser;
 import com.simpletripbe.modulecommon.common.response.ApiResponse;
 import com.simpletripbe.modulecommon.common.util.EmptyResponse;
 import com.simpletripbe.moduledomain.mycarrier.dto.*;
+import com.simpletripbe.moduledomain.mycarrier.dto.CarrierEdit.*;
 import com.simpletripbe.moduledomain.mycarrier.entity.CarrierType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -89,29 +90,43 @@ public class MyCarrierController {
     /**
      * 캐리어 수정
      */
-    @Operation(summary = "캐리어 여행 기간, 이름 수정 api", description = "editCarrier")
-    @PutMapping("editCarrier")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ApiResponse<EmptyResponse> editCarrier(
+    @Operation(summary = "캐리어 이름 수정 api", description = "editCarrierName")
+    @PutMapping("editCarrierName")
+    public ApiResponse<EmptyResponse> editCarrierName(
             @AuthUser String email,
-            @RequestBody EditCarrierReqDTO editCarrierReqDTO
+            @RequestBody EditCarrierNameReqDTO editCarrierNameReqDTO
     ) {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        LocalDate startDate = LocalDate.parse(editCarrierReqDTO.getStartDate(), formatter);
-        LocalDate endDate = LocalDate.parse(editCarrierReqDTO.getEndDate(), formatter);
-
-        EditCarrierDTO carrierDTO = EditCarrierDTO.builder()
-                .country(editCarrierReqDTO.getCountry())
-                .name(editCarrierReqDTO.getName())
+        EditCarrierNameResDTO carrierDTO = EditCarrierNameResDTO.builder()
+                .name(editCarrierNameReqDTO.getName())
                 .email(email)
+                .id(editCarrierNameReqDTO.getId())
+                .build();
+
+        myCarrierService.editName(carrierDTO);
+
+        return ApiResponse.success(EmptyResponse.of());
+    }
+
+    @Operation(summary = "캐리어 여행 기간 수정 api", description = "editCarrierPeriod")
+    @PutMapping("editCarrierPeriod")
+    public ApiResponse<EmptyResponse> editCarrierPeriod(
+            @AuthUser String email,
+            @RequestBody EditCarrierPeriodReqDTO editCarrierPeriodReqDTO
+            ) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate startDate = LocalDate.parse(editCarrierPeriodReqDTO.getStartDate(), formatter);
+        LocalDate endDate = LocalDate.parse(editCarrierPeriodReqDTO.getEndDate(), formatter);
+
+        EditCarrierPeriodResDTO carrierDTO = EditCarrierPeriodResDTO.builder()
+                .email(email)
+                .id(editCarrierPeriodReqDTO.getId())
                 .startDate(startDate)
                 .endDate(endDate)
                 .build();
 
-        carrierDTO.setEmail(email);
-
-        myCarrierService.editOne(carrierDTO);
+        myCarrierService.editPeriod(carrierDTO);
 
         return ApiResponse.success(EmptyResponse.of());
     }
@@ -121,22 +136,14 @@ public class MyCarrierController {
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ApiResponse<EmptyResponse> editCarrierCountry(
             @AuthUser String email,
-            @RequestBody EditCarrierReqDTO editCarrierReqDTO
-    ) {
+            @RequestBody EditCarrierCountryReqDTO editCarrierCountryReqDTO
+            ) {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        LocalDate startDate = LocalDate.parse(editCarrierReqDTO.getStartDate(), formatter);
-        LocalDate endDate = LocalDate.parse(editCarrierReqDTO.getEndDate(), formatter);
-
-        EditCarrierDTO carrierDTO = EditCarrierDTO.builder()
-                .country(editCarrierReqDTO.getCountry())
-                .name(editCarrierReqDTO.getName())
+        EditCarrierCountryResDTO carrierDTO = EditCarrierCountryResDTO.builder()
+                .id(editCarrierCountryReqDTO.getId())
+                .country(editCarrierCountryReqDTO.getCountry())
                 .email(email)
-                .startDate(startDate)
-                .endDate(endDate)
                 .build();
-
-        carrierDTO.setEmail(email);
 
         myCarrierService.editCountry(carrierDTO);
 

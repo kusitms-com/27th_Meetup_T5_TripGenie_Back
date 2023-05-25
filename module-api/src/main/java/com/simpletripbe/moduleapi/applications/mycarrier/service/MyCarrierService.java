@@ -2,6 +2,9 @@ package com.simpletripbe.moduleapi.applications.mycarrier.service;
 
 import com.simpletripbe.moduledomain.mycarrier.api.MainCarrierService;
 import com.simpletripbe.moduledomain.mycarrier.dto.*;
+import com.simpletripbe.moduledomain.mycarrier.dto.CarrierEdit.EditCarrierCountryResDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.CarrierEdit.EditCarrierNameResDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.CarrierEdit.EditCarrierPeriodResDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.stereotype.Service;
@@ -34,13 +37,18 @@ public class MyCarrierService {
     }
 
     @Transactional
-    public void editOne(EditCarrierDTO carrierDTO) {
-        mainCarrierService.editCarrier(carrierDTO);
+    public void editName(EditCarrierNameResDTO carrierDTO) {
+        mainCarrierService.editCarrierName(carrierDTO);
     }
 
     @Transactional
-    public void editCountry(EditCarrierDTO carrierDTO) {
-        mainCarrierService.editCountry(carrierDTO);
+    public void editPeriod(EditCarrierPeriodResDTO carrierDTO) {
+        mainCarrierService.editCarrierPeriod(carrierDTO);
+    }
+
+    @Transactional
+    public void editCountry(EditCarrierCountryResDTO carrierDTO) {
+        mainCarrierService.editCarrierCountry(carrierDTO);
     }
 
     @Transactional
