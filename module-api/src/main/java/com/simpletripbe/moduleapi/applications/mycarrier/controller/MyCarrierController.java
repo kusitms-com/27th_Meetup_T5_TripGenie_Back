@@ -7,10 +7,7 @@ import com.simpletripbe.modulecommon.common.annotation.AuthUser;
 import com.simpletripbe.modulecommon.common.response.ApiResponse;
 import com.simpletripbe.modulecommon.common.util.EmptyResponse;
 import com.simpletripbe.moduledomain.mycarrier.dto.*;
-import com.simpletripbe.moduledomain.mycarrier.dto.CarrierEdit.EditCarrierCountryReqDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.CarrierEdit.EditCarrierNameResDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.CarrierEdit.EditCarrierNameReqDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.CarrierEdit.EditCarrierPeriodReqDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.CarrierEdit.*;
 import com.simpletripbe.moduledomain.mycarrier.entity.CarrierType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -99,7 +96,7 @@ public class MyCarrierController {
     /**
      * 캐리어 수정
      */
-    @Operation(summary = "캐리어 여행 기간, 이름 수정 api", description = "editCarrier")
+    @Operation(summary = "캐리어 이름 수정 api", description = "editCarrierName")
     @PutMapping("editCarrierName")
     public ApiResponse<EmptyResponse> editCarrierName(
             @AuthUser String email,
@@ -112,36 +109,30 @@ public class MyCarrierController {
                 .id(editCarrierNameReqDTO.getId())
                 .build();
 
-        myCarrierService.editOne(carrierDTO);
+        myCarrierService.editName(carrierDTO);
 
         return ApiResponse.success(EmptyResponse.of());
     }
 
-    @Operation(summary = "캐리어 여행 기간, 이름 수정 api", description = "editCarrier")
+    @Operation(summary = "캐리어 여행 기간 수정 api", description = "editCarrierPeriod")
     @PutMapping("editCarrierPeriod")
     public ApiResponse<EmptyResponse> editCarrierPeriod(
-            HttpServletRequest request,
+            @AuthUser String email,
             @RequestBody EditCarrierPeriodReqDTO editCarrierPeriodReqDTO
             ) {
 
-        String refreshToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
-        String email = jwtTokenProvider.getUserEmail(refreshToken);
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        LocalDate startDate = LocalDate.parse(editCarrierNameReqDTO.getStartDate(), formatter);
-        LocalDate endDate = LocalDate.parse(editCarrierNameReqDTO.getEndDate(), formatter);
+        LocalDate startDate = LocalDate.parse(editCarrierPeriodReqDTO.getStartDate(), formatter);
+        LocalDate endDate = LocalDate.parse(editCarrierPeriodReqDTO.getEndDate(), formatter);
 
-        EditCarrierNameResDTO carrierDTO = EditCarrierNameResDTO.builder()
-                .country(editCarrierNameReqDTO.getCountry())
-                .name(editCarrierNameReqDTO.getName())
+        EditCarrierPeriodResDTO carrierDTO = EditCarrierPeriodResDTO.builder()
                 .email(email)
+                .id(editCarrierPeriodReqDTO.getId())
                 .startDate(startDate)
                 .endDate(endDate)
                 .build();
 
-        carrierDTO.setEmail(email);
-
-        myCarrierService.editOne(carrierDTO);
+        myCarrierService.editPeriod(carrierDTO);
 
         return ApiResponse.success(EmptyResponse.of());
     }
@@ -149,26 +140,15 @@ public class MyCarrierController {
     @Operation(summary = "캐리어 여행지 수정 api", description = "editCarrierCountry")
     @PutMapping("editCarrierCountry")
     public ApiResponse<EmptyResponse> editCarrierCountry(
-            HttpServletRequest request,
+            @AuthUser String email,
             @RequestBody EditCarrierCountryReqDTO editCarrierCountryReqDTO
             ) {
 
-        String refreshToken = request.getHeader(JwtFilter.AUTHORIZATION_HEADER).substring(7);
-        String email = jwtTokenProvider.getUserEmail(refreshToken);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        LocalDate startDate = LocalDate.parse(editCarrierNameReqDTO.getStartDate(), formatter);
-        LocalDate endDate = LocalDate.parse(editCarrierNameReqDTO.getEndDate(), formatter);
-
-        EditCarrierNameResDTO carrierDTO = EditCarrierNameResDTO.builder()
-                .country(editCarrierNameReqDTO.getCountry())
-                .name(editCarrierNameReqDTO.getName())
+        EditCarrierCountryResDTO carrierDTO = EditCarrierCountryResDTO.builder()
+                .id(editCarrierCountryReqDTO.getId())
+                .country(editCarrierCountryReqDTO.getCountry())
                 .email(email)
-                .startDate(startDate)
-                .endDate(endDate)
                 .build();
-
-        carrierDTO.setEmail(email);
 
         myCarrierService.editCountry(carrierDTO);
 
