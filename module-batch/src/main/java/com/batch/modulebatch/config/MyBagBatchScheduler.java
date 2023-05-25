@@ -18,7 +18,7 @@ public class MyBagBatchScheduler {
 
     private final MyBagJobLauncherController myBagJobLauncherController;
 
-    @Scheduled(cron = "0 56 9 * * ?")
+    @Scheduled(cron = "0 0 22 * * ?")
     public void runBatchJob() throws Exception {
         myBagJobLauncherController.startJob(myBagJob);
     }
