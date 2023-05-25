@@ -38,7 +38,7 @@ app:
     credential: testCredential
 
 jwt:
-  secret: 236979CB6F1AD6B6A6184A31E6BE37DB3818CC36871E26235DD67DCFE4041492
+  secret: secretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKeysecretKey
   live:
     atk: 1800000 # 60 * 30 * 1000
     rtk: 2592000000 # 60 * 60 * 24 * 30 * 1000
