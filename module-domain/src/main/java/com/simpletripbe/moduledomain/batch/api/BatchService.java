@@ -25,6 +25,7 @@ public class BatchService {
 //        Alarm alarm = alarmMapper.toEntity(alarmSendDTO);
         Alarm alarm = new Alarm();
         alarm.setMessage(alarmSendDTO.getMessage());
+        alarm.setUser(alarmSendDTO.getEmail());
         alarmRepository.save(alarm);
 
     }
@@ -37,7 +38,11 @@ public class BatchService {
 
     public void saveEndAlarm(AlarmSendDTO alarmSendDTO) {
 
-        Alarm alarm = alarmMapper.toEntity(alarmSendDTO);
+        Alarm alarm = new Alarm();
+        alarm.setMessage(alarmSendDTO.getMessage());
+        alarm.setUser(alarmSendDTO.getEmail());
+
+//        Alarm alarm = alarmMapper.toEntity(alarmSendDTO);
         alarmRepository.save(alarm);
 
     }

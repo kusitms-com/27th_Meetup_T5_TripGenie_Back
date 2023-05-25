@@ -45,7 +45,7 @@ public class AutoAlarmTasklet implements Tasklet {
         for (int i = 0; i < ticketList.size(); i++) {
             if (LocalDate.now().isEqual(ticketList.get(i).getStartDate().minusDays(1))) {
                 AlarmSendDTO dto = new AlarmSendDTO();
-                dto.setMessage(ticketList.get(0).getUser().getNickname() + "님, 오늘은 " + ticketList.get(0).getName() + " 가는 날 입니다! 티켓을 잘 모았는지 확인해보세요!");
+                dto.setMessage(ticketList.get(0).getUser().getNickname() + "님, 오늘은 " + ticketList.get(0).getName() + " 가는 날 입니다!₩n티켓을 잘 모았는지 확인해보세요!");
                 dto.setName(ticketList.get(i).getName());
                 dto.setStartDate(ticketList.get(i).getStartDate());
                 dto.setEndDate(ticketList.get(i).getEndDate());
@@ -55,7 +55,7 @@ public class AutoAlarmTasklet implements Tasklet {
                 isAlarmCreated = true;
             } else if (LocalDate.now().isEqual(ticketList.get(i).getEndDate().plusDays(1))) {
                 AlarmSendDTO dto = new AlarmSendDTO();
-                dto.setMessage(ticketList.get(0).getUser().getNickname() + "님, " + ticketList.get(0).getName() + " 즐거우셨나요? 보관함에서 회고를 진행해보세요!");
+                dto.setMessage(ticketList.get(0).getUser().getNickname() + "님, " + ticketList.get(0).getName() + " 즐거우셨나요?₩n보관함에서 회고를 진행해보세요!");
                 dto.setName(ticketList.get(i).getName());
                 dto.setStartDate(ticketList.get(i).getStartDate());
                 dto.setEndDate(ticketList.get(i).getEndDate());
