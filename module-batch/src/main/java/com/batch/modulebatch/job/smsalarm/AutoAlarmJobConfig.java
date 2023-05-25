@@ -29,7 +29,7 @@ public class AutoAlarmJobConfig {
     private final JobRepository jobRepository;
     private final StepBuilderFactory stepBuilderFactory;
 
-    @Primary
+//    @Primary
     @Bean("autoAlarmJob")
     public Job autoAlarmJob(
             AutoAlarmTasklet autoAlarmTasklet,
