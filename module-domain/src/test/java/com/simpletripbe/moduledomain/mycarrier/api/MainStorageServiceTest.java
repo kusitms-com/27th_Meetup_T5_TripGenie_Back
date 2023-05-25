@@ -34,13 +34,13 @@ class MainStorageServiceTest {
         userRepository.save(user);
 
         // 캐리어 5개
-        for (Long i = 0L; i < 5; i++) {
+        for (Long i = 1L; i <= 5; i++) {
             MyCarrier carrier = createMyCarrier(user, i, CarrierType.CARRIER);
             myCarrierRepository.save(carrier);
         }
 
         // 보관함 캐리어 10개
-        for (Long i = 5L; i < 15; i++) {
+        for (Long i = 6L; i <= 15; i++) {
             MyCarrier storage = createMyCarrier(user, i, CarrierType.STORAGE);
             myCarrierRepository.save(storage);
         }

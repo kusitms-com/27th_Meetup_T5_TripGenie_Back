@@ -44,6 +44,9 @@ public class MainCarrierService {
         return entityResult;
     }
 
+    /**
+     * 캐리어 정보 조회 서비스 로직
+     */
     @Transactional
     public CarrierInfoRes getInfo(String email, Long carrierId) {
 
