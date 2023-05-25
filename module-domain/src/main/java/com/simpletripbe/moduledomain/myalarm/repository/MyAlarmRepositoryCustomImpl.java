@@ -35,13 +35,13 @@ public class MyAlarmRepositoryCustomImpl extends QuerydslRepositorySupport imple
         QAlarm a = QAlarm.alarm;
 
         List<Tuple> results = jpaQueryFactory
-                .select(a.id, a.message)
+                .select(a.id, a.message, a.createdDate)
                 .from(a)
                 .where(a.user.email.eq(email))
                 .fetch();
 
         return results.stream()
-                .map(tuple -> new AlarmInfoDTO(tuple.get(a.id), tuple.get(a.message)))
+                .map(tuple -> new AlarmInfoDTO(tuple.get(a.id), tuple.get(a.message), tuple.get(a.createdDate.stringValue())))
                 .collect(Collectors.toList());
 
     }
