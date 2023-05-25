@@ -25,7 +25,8 @@ public class AlarmBatchScheduler {
 
     private final JobLauncher jobLauncher;
 
-    @Scheduled(cron = "0 25 22 * * ?")
+    @Scheduled(cron = "0 40 22 * * ?")
+//    @Scheduled(cron = "0 0/1 * * * ?")
     public void runBatchJob() throws Exception {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("jobName", "myBagJob" + System.currentTimeMillis())
