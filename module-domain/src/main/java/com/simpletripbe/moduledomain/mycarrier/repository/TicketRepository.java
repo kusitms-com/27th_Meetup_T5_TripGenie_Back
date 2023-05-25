@@ -10,11 +10,11 @@ import org.springframework.data.repository.query.Param;
 public interface TicketRepository extends JpaRepository<Ticket, Long>, TicketRepositoryCustom {
 
     @Modifying
-    @Query(value = "update Ticket t set t.title = :#{#ticket.title} where t.ticket_id = :#{#ticket.ticketId}", nativeQuery = true)
+    @Query(value = "update Ticket t set t.title = :#{#ticket.title}, t.modified_date = CURRENT_TIMESTAMP where t.ticket_id = :#{#ticket.ticketId}", nativeQuery = true)
     void updateTicketTitle(@Param("ticket") TicketEditDTO ticketEditDTO);
 
     @Modifying
-    @Query(value = "update Ticket t SET t.delete_yn = 'Y' where t.ticket_id = :ticketId", nativeQuery = true)
+    @Query(value = "update Ticket t SET t.delete_yn = 'Y', t.modified_date = CURRENT_TIMESTAMP where t.ticket_id = :ticketId", nativeQuery = true)
     void deleteTicket(@Param("ticketId") Long ticketId);
 
 }

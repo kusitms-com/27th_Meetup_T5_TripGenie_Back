@@ -6,6 +6,7 @@ import com.simpletripbe.moduledomain.mycarrier.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Transactional(readOnly = true)
@@ -36,6 +37,7 @@ public class TicketRepositoryCustomImpl implements TicketRepositoryCustom {
 
         ticketEditDTOS.forEach(t -> jpaQueryFactory.update(qt)
                 .set(qt.sequence, t.getSequence())
+                .set(qt.modifiedDate, LocalDateTime.now())
                 .where(qt.id.eq(t.getTicketId()))
                 .execute());
     }

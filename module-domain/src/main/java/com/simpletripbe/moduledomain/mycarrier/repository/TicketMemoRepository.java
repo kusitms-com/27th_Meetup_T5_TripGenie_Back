@@ -19,6 +19,6 @@ public interface TicketMemoRepository extends JpaRepository<TicketMemo, Long> {
     void updateTicketMemo(@Param("ticketMemo") TicketMemoDTO ticketMemo);
 
     @Modifying
-    @Query(value = "update ticket_memo tm SET tm.delete_yn = 'Y' where tm.memo_id = :ticketMemoId", nativeQuery = true)
+    @Query(value = "update ticket_memo tm SET tm.delete_yn = 'Y', tm.modified_date = CURRENT_TIMESTAMP where tm.memo_id = :ticketMemoId", nativeQuery = true)
     void deleteTicketMemo(@Param("ticketMemoId") Long ticketMemoId);
 }
