@@ -16,13 +16,13 @@ public interface MyCarrierRepository extends JpaRepository<MyCarrier, Long>, MyC
 
     @Modifying
     @Query(value = "UPDATE my_carrier m " +
-            "SET m.name = :#{#carrier.name}, " +
+            "SET m.name = :#{#carrier.name} " +
             "WHERE m.email = :#{#carrier.email} AND m.carrier_id = :#{#carrier.id}", nativeQuery = true)
     void updateCarrierName(@Param("carrier") EditCarrierNameResDTO carrierDTO);
 
     @Modifying
     @Query(value = "UPDATE my_carrier m " +
-            "m.start_date = :#{#carrier.startDate}, " +
+            "SET m.start_date = :#{#carrier.startDate}, " +
             "m.end_date = :#{#carrier.endDate} " +
             "WHERE m.email = :#{#carrier.email} AND m.carrier_id = :#{#carrier.id}", nativeQuery = true)
     void updateCarrierPeriod(@Param("carrier") EditCarrierPeriodResDTO carrierDTO);
@@ -33,6 +33,7 @@ public interface MyCarrierRepository extends JpaRepository<MyCarrier, Long>, MyC
             "SET cc.country_name = :#{#carrier.country} " +
             "WHERE m.email = :#{#carrier.email} AND m.carrier_id = :#{#carrier.id}", nativeQuery = true)
     void updateCarrierCountry(@Param("carrier") EditCarrierCountryResDTO carrierDTO);
+
 
     @Modifying
     @Query(value = "UPDATE my_carrier m " +
