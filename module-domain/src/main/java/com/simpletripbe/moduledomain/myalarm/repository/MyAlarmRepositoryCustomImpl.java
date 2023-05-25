@@ -1,6 +1,7 @@
 package com.simpletripbe.moduledomain.myalarm.repository;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.simpletripbe.moduledomain.batch.entity.QAlarm;
 import com.simpletripbe.moduledomain.myalarm.dto.AlarmInfoDTO;
@@ -35,7 +36,7 @@ public class MyAlarmRepositoryCustomImpl extends QuerydslRepositorySupport imple
         QAlarm a = QAlarm.alarm;
 
         List<Tuple> results = jpaQueryFactory
-                .select(a.id, a.message, a.createdDate)
+                .select(a.id, a.message, Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m-%d')", a.createdDate))
                 .from(a)
                 .where(a.user.email.eq(email))
                 .fetch();
@@ -44,10 +45,12 @@ public class MyAlarmRepositoryCustomImpl extends QuerydslRepositorySupport imple
                 .map(tuple -> new AlarmInfoDTO(
                         tuple.get(a.id),
                         tuple.get(a.message),
-                        tuple.get(a.createdDate).toString()))
+                        tuple.get(Expressions.stringTemplate("DATE_FORMAT({0}, '%Y-%m-%d')", a.createdDate))))
                 .collect(Collectors.toList());
 
     }
+
+
 
 
 }
