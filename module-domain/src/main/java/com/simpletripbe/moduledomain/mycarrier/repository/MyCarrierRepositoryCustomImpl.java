@@ -42,7 +42,7 @@ public class MyCarrierRepositoryCustomImpl extends QuerydslRepositorySupport imp
                 .select(q.id, q.name)
                 .from(c)
                 .leftJoin(c.myCarrier, q)
-                .where(q.deleteYn.eq("N").and(q.user.email.eq(email)))
+                .where(q.deleteYn.eq("N").and(q.user.email.eq(email)).and(q.type.eq(CarrierType.CARRIER)))
                 .fetch();
 
         return results.stream()
