@@ -162,7 +162,7 @@ public class MyCarrierController {
             ) {
 
         DeleteResDTO deleteResDTO = DeleteResDTO.builder()
-                .name(deleteCarrierReqDTO.getName())
+                .id(deleteCarrierReqDTO.getId())
                 .email(email)
                 .build();
 

@@ -50,8 +50,8 @@ jwt:
   header: Authorization
   secret: ${JWT_SECRET}
   live:
-    atk: 1800000 # 60 * 30 * 1000
-    rtk: 2592000000 # 60 * 60 * 24 * 30 * 1000
+    atk: ${JWT_ATK_EXPIRATION_TIME}
+    rtk: ${JWT_RTK_EXPIRATION_TIME}
 
 # AWS S3 settings
 cloud:
