@@ -1,9 +1,9 @@
 package com.simpletripbe.moduledomain.mycarrier.repository;
 
 import com.simpletripbe.moduledomain.mycarrier.dto.DeleteResDTO;
-import com.simpletripbe.moduledomain.mycarrier.dto.EditCarrierDTO;
+import com.simpletripbe.moduledomain.mycarrier.dto.CarrierEdit.EditCarrierNameResDTO;
 import com.simpletripbe.moduledomain.mycarrier.dto.TicketMemoDTO;
-import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;import com.simpletripbe.moduledomain.mycarrier.entity.Ticket;
+import com.simpletripbe.moduledomain.mycarrier.entity.MyCarrier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,20 +14,36 @@ public interface MyCarrierRepository extends JpaRepository<MyCarrier, Long>, MyC
 
     @Modifying
     @Query(value = "UPDATE my_carrier m " +
+            "SET m.name = :#{#carrier.name}, " +
+            "WHERE m.email = :#{#carrier.email} AND m.carrier_id = :#{#carrrier.id}", nativeQuery = true)
+    void updateCarrierName(@Param("carrier") EditCarrierNameResDTO carrierDTO);
+
+    @Modifying
+    @Query(value = "UPDATE my_carrier m " +
             "JOIN carrier_country cc ON m.carrier_id = cc.carrier_id " +
             "SET m.name = :#{#carrier.name}, " +
             "m.email = :#{#carrier.email}, " +
             "m.start_date = :#{#carrier.startDate}, " +
             "m.end_date = :#{#carrier.endDate} " +
             "WHERE m.email = :#{#carrier.email} AND cc.country_name = :#{#carrier.country}", nativeQuery = true)
-    void updateCarrier(@Param("carrier") EditCarrierDTO carrierDTO);
+    void updateCarrierPeriod(@Param("carrier") EditCarrierNameResDTO carrierDTO);
+
+    @Modifying
+    @Query(value = "UPDATE my_carrier m " +
+            "JOIN carrier_country cc ON m.carrier_id = cc.carrier_id " +
+            "SET m.name = :#{#carrier.name}, " +
+            "m.email = :#{#carrier.email}, " +
+            "m.start_date = :#{#carrier.startDate}, " +
+            "m.end_date = :#{#carrier.endDate} " +
+            "WHERE m.email = :#{#carrier.email} AND cc.country_name = :#{#carrier.country}", nativeQuery = true)
+    void updateCarrierCountry(@Param("carrier") EditCarrierNameResDTO carrierDTO);
 
     @Modifying
     @Query(value = "UPDATE my_carrier m " +
             "JOIN carrier_country cc ON m.carrier_id = cc.carrier_id " +
             "SET cc.country_name = :#{#carrier.country} " +
             "WHERE m.email = :#{#carrier.email} AND m.name = :#{#carrier.name} AND m.carrier_id = cc.carrier_id", nativeQuery = true)
-    void updateCountry(@Param("carrier") EditCarrierDTO carrierDTO);
+    void updateCountry(@Param("carrier") EditCarrierNameResDTO carrierDTO);
 
     @Modifying
     @Query(value = "UPDATE my_carrier m " +
