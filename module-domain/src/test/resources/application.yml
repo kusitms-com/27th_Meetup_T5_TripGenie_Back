@@ -24,3 +24,21 @@ cloud:
     s3:
       bucket: tripgenie
       url: https://tripgenie.s3.ap-northeast-2.amazonaws.com/
+      tripGenieProfileUrl: https://tripgenie.s3.ap-northeast-2.amazonaws.com/profile.png
+
+# 테스트를 위한 더미 데이터 settings
+app:
+  # oauth setting
+  google:
+    api:
+      url: https://oauth2.googleapis.com/tokeninfo
+
+  # security setting
+  security:
+    credential: testCredential
+
+jwt:
+  secret: 236979CB6F1AD6B6A6184A31E6BE37DB3818CC36871E26235DD67DCFE4041492
+  live:
+    atk: 1800000 # 60 * 30 * 1000
+    rtk: 2592000000 # 60 * 60 * 24 * 30 * 1000

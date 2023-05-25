@@ -162,29 +162,30 @@ class MainTicketServiceTest {
 
     }
 
-    User createUser(String email) {
+    private User createUser(String email) {
         return User.builder()
                 .email(email)
                 .name("asdf")
                 .nickname("qwer")
                 .cash(0)
                 .roles("ROLE_USER")
+                .deleteYn("N")
                 .build();
     }
 
-    MyCarrier createMyCarrier(User user, Long id) {
+    private MyCarrier createMyCarrier(User user, Long id) {
         return MyCarrier.builder()
                 .id(id)
                 .user(user)
                 .name("일본여행캐리어")
                 .startDate(LocalDate.of(2023, 5, 19))
                 .endDate(LocalDate.of(2023, 5, 23))
-                .deleteYn("n")
-                .type(CarrierType.CARRIER)
+                .deleteYn("N")
+                .type(CarrierType.STORAGE)
                 .build();
     }
 
-    Ticket createTicket(MyCarrier myCarrier, Long id) {
+    private Ticket createTicket(MyCarrier myCarrier, Long id) {
         return Ticket.builder()
                 .id(id)
                 .myCarrier(myCarrier)
@@ -192,14 +193,16 @@ class MainTicketServiceTest {
                 .type(TicketType.IMAGE)
                 .title("title")
                 .sequence(1)
+                .deleteYn("N")
                 .build();
     }
 
-    TicketMemo createTicketMemo(Ticket ticket) {
+    private TicketMemo createTicketMemo(Ticket ticket) {
         return TicketMemo.builder()
                 .id(1L)
                 .ticket(ticket)
                 .content("asdf")
+                .deleteYn("N")
                 .build();
     }
 }

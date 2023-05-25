@@ -1,4 +1,4 @@
-package com.simpletripbe.modulecommon.common.exception.jwt;
+package com.simpletripbe.moduledomain.login.jwt;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
