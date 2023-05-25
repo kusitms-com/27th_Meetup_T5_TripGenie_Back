@@ -25,7 +25,7 @@ public class AlarmBatchScheduler {
 
     private final JobLauncher jobLauncher;
 
-    @Scheduled(cron = "0 0 * 1 1 ?")
+    @Scheduled(cron = "0 25 22 * * ?")
     public void runBatchJob() throws Exception {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("jobName", "myBagJob" + System.currentTimeMillis())
@@ -33,15 +33,6 @@ public class AlarmBatchScheduler {
 
         JobExecution execution1 = jobLauncher.run(myBagJob, jobParameters);
         while (execution1.isRunning()) {
-            // 대기
-        }
-
-        jobParameters = new JobParametersBuilder()
-                .addString("jobName", "autoAlarmJob" + System.currentTimeMillis())
-                .toJobParameters();
-
-        JobExecution execution2 = jobLauncher.run(autoAlarmJob, jobParameters);
-        while (execution2.isRunning()) {
             // 대기
         }
     }
